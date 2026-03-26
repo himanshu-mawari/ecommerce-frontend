@@ -4,6 +4,7 @@ import cartIcon from "./frontend_assets/cart_icon.png";
 import profileIcon from "./frontend_assets/profile_icon.png";
 import logo from "./frontend_assets/logo.png";
 import dropdownIcon from "./frontend_assets/dropdown_icon.png"
+import heroImage from "./frontend_assets/hero_img.png";
 
 export const assets = {
   searchIcon,
@@ -11,5 +12,6 @@ export const assets = {
   cartIcon,
   profileIcon,
   logo,
-  dropdownIcon
+  dropdownIcon,
+  heroImage
 };

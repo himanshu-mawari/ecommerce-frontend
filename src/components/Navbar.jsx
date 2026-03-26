@@ -13,7 +13,7 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-gray-100">
+    <>
       <div className="max-w-8xl mx-auto px-4 md:px-12 lg:px-28 h-20 flex items-center justify-between">
         <div className="cursor-pointer">
           <img src={assets.logo} className="w-36" />
@@ -59,11 +59,19 @@ const Navbar = () => {
           <div className="relative group cursor-pointer">
             <img src={assets.profileIcon} className="w-5" />
 
-            <div className="absolute top-full left-0 pt-4 hidden group-hover:block">
-              <div className="flex flex-col gap-3 w-40 py-4 px-5 bg-white shadow-xl rounded-xl">
-                <p className="text-sm">My Profile</p>
-                <p className="text-sm">Orders</p>
-                <p className="text-sm text-red-500">Logout</p>
+            <div className="absolute top-full left-0 pt-4 hidden group-hover:block transition-all">
+              <div className="flex flex-col gap-1 w-40 py-3 px-0 bg-white shadow-[0px_15px_50px_rgba(0,0,0,0.1)] rounded-lg border border-gray-100 overflow-hidden animate-fadeIn">
+                <p className="px-5 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-black cursor-pointer transition-colors duration-200">
+                  My Profile
+                </p>
+                <p className="px-5 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-black cursor-pointer transition-colors duration-200">
+                  Orders
+                </p>
+                <div className="my-1 border-t border-gray-100"></div>{" "}
+                {/* Subtle Divider */}
+                <p className="px-5 py-2 text-sm text-red-500 hover:bg-red-50 cursor-pointer transition-colors duration-200 font-medium">
+                  Logout
+                </p>
               </div>
             </div>
           </div>
@@ -83,37 +91,53 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-
       <div
-        className={`fixed w-full top-0 bg-white  p-5 transform transition-transform duration-300 ${
+        className={`fixed top-0 right-0 h-full  w-full sm:w-1/3 bg-white z-50 transform transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        <div className="flex items-center mb-8">
-          <img src={assets.dropdownIcon} className="h-5 mr-2 rotate-180" />
-          <button className="cursor-pointer" onClick={() => setIsOpen(false)}>
-            Back
-          </button>
-        </div>
+        <div className="flex flex-col text-gray-600 h-full">
+          <div
+            onClick={() => setIsOpen(false)}
+            className="flex items-center gap-2 p-3 cursor-pointer"
+          >
+            <img src={assets.dropdownIcon} className="h-4 rotate-180" />
+            <p className="sm:text-lg">Back</p>
+          </div>
 
-        <ul className="flex flex-col gap-4">
-          {navLinks.map((link) => (
-            <li
-              key={link.label}
-              className="border-b border-slate-300 pl-3 pb-2"
+          <div className="flex flex-col ml-4  text-lg sm:ml-6 sm:text-xl font-medium">
+            <NavLink
+              onClick={() => setIsOpen(false)}
+              className="py-3 pl-6 border-b"
+              to="/"
             >
-              <NavLink
-                to={link.path}
-                onClick={() => setIsOpen(false)}
-                className="text-lg"
-              >
-                {link.label}
-              </NavLink>
-            </li>
-          ))}
-        </ul>
+              Home
+            </NavLink>
+            <NavLink
+              onClick={() => setIsOpen(false)}
+              className="py-3 pl-6 border-b"
+              to="/collection"
+            >
+              Collection
+            </NavLink>
+            <NavLink
+              onClick={() => setIsOpen(false)}
+              className="py-3 pl-6 border-b"
+              to="/about"
+            >
+              About
+            </NavLink>
+            <NavLink
+              onClick={() => setIsOpen(false)}
+              className="py-3 pl-6 border-b"
+              to="/contact"
+            >
+              Contact
+            </NavLink>
+          </div>
+        </div>
       </div>
-    </nav>
+    </>
   );
 };
 
