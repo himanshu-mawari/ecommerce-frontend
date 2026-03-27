@@ -7,13 +7,11 @@ const Hero = () => {
         <div className="text-[#414141]">
           <div className="flex items-center gap-2">
             <p className="w-8 md:w-11 h-[1px] bg-[#414141]"></p>
-            {/* Made line thinner (1px) and label smaller */}
             <p className="font-medium text-xs md:text-sm tracking-widest uppercase">
               OUR BESTSELLERS
             </p>
           </div>
 
-          {/* Reduced from 6xl to 4xl/5xl for laptop screens */}
           <h1 className="playfair-display text-3xl sm:py-3 lg:text-4xl xl:text-5xl leading-relaxed">
             Latest Arrivals
           </h1>
@@ -27,7 +25,6 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* Hero Right Side */}
       <img
         className="w-full sm:w-1/2 object-cover"
         src={assets.heroImage}

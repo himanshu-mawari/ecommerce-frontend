@@ -37,7 +37,7 @@ const Navbar = () => {
                     {link.label}
                     <span
                       className={`absolute -bottom-1 left-0 h-0.5 bg-gray-700 transition-all duration-300 ${
-                        isActive ? "w-full" : "w-0 group-hover:w-full"
+                        isActive ? " ml-4 rounded-full w-1" : "w-0 group-hover:w-full"
                       }`}
                     ></span>
                   </>
