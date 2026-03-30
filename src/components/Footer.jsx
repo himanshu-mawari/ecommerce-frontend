@@ -1,9 +1,9 @@
-import {assets} from "../assets/assets"
+import { assets } from "../assets/assets";
 
 const Footer = () => {
   return (
     <div>
-      <div className="pt-28 pb-6 px-4">
+      <div className="pt-28 pb-6 px-7 md:px-24 lg:px-28">
         <div className="grid grid-cols-1 sm:grid-cols-2  xl:grid-cols-4 gap-8">
           <div>
             <img src={assets.logo} className="w-32 mb-4" />
@@ -61,8 +61,9 @@ const Footer = () => {
             <span>Terms</span>
           </div>
         </div>
-      </div></div>
-  )
-}
+      </div>
+    </div>
+  );
+};
 
-export default Footer
+export default Footer;

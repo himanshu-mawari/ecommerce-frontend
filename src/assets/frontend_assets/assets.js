@@ -95,29 +95,62 @@ export const assets = {
     cross_icon
 }
 
+
 export const products = [
     {
         _id: "aaaaa",
         name: "Women Round Neck Cotton Top",
-        description: "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
+        description: "Soft cotton top with a comfortable regular fit. Lightweight and breathable, ideal for everyday casual wear.",
         price: 100,
         image: [p_img1],
         category: "Women",
         subCategory: "Topwear",
-        sizes: ["S", "M", "L"],
+        sizes: ["S", "M", "L" ],
         date: 1716634345448,
+        reviews: [
+          {
+            id: 1,
+            user: "Rahul Sharma",
+            rating: 4,
+            comment: "Good quality, fits well.",
+            date: "2026-03-20"
+          },
+          {
+            id: 2,
+            user: "Priya Singh",
+            rating: 5,
+            comment: "Very comfortable. Worth it.",
+            date: "2026-03-18"
+          }
+        ],
         bestseller: true
     },
     {
         _id: "aaaab",
         name: "Men Round Neck Pure Cotton T-shirt",
-        description: "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
+        description: "Breathable cotton t-shirt with a regular fit. Designed for daily wear with durable stitching and all-day comfort..",
         price: 200,
         image: [p_img2_1,p_img2_2,p_img2_3,p_img2_4],
         category: "Men",
         subCategory: "Topwear",
         sizes: ["M", "L", "XL"],
         date: 1716621345448,
+        reviews: [
+          {
+            id: 1,
+            user: "Rahul Sharma",
+            rating: 4,
+            comment: "Good quality, fits well.",
+            date: "2026-03-20"
+          },
+          {
+            id: 2,
+            user: "Priya Singh",
+            rating: 5,
+            comment: "Very comfortable. Worth it.",
+            date: "2026-03-18"
+          }
+        ],
         bestseller: true
     },
     {
@@ -135,7 +168,7 @@ export const products = [
     {
         _id: "aaaad",
         name: "Men Round Neck Pure Cotton T-shirt",
-        description: "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
+        description: "Soft and lightweight cotton top designed for kids. Comfortable fit with breathable fabric for active daily wear.",
         price: 110,
         image: [p_img4],
         category: "Men",
@@ -154,6 +187,22 @@ export const products = [
         subCategory: "Topwear",
         sizes: ["M", "L", "XL"],
         date: 1716622345448,
+        reviews: [
+          {
+            id: 1,
+            user: "Rahul Sharma",
+            rating: 4,
+            comment: "Good quality, fits well.",
+            date: "2026-03-20"
+          },
+          {
+            id: 2,
+            user: "Priya Singh",
+            rating: 5,
+            comment: "Very comfortable. Worth it.",
+            date: "2026-03-18"
+          }
+        ],
         bestseller: true
     },
     {
@@ -166,6 +215,22 @@ export const products = [
         subCategory: "Topwear",
         sizes: ["S", "L", "XL"],
         date: 1716623423448,
+        reviews: [
+          {
+            id: 1,
+            user: "Rahul Sharma",
+            rating: 4,
+            comment: "Good quality, fits well.",
+            date: "2026-03-20"
+          },
+          {
+            id: 2,
+            user: "Priya Singh",
+            rating: 5,
+            comment: "Very comfortable. Worth it.",
+            date: "2026-03-18"
+          }
+        ],
         bestseller: true
     },
     {
@@ -226,6 +291,22 @@ export const products = [
         subCategory: "Topwear",
         sizes: ["S", "M", "L"],
         date: 1716623345448,
+        reviews: [
+          {
+            id: 1,
+            user: "Rahul Sharma",
+            rating: 4,
+            comment: "Good quality, fits well.",
+            date: "2026-03-20"
+          },
+          {
+            id: 2,
+            user: "Priya Singh",
+            rating: 5,
+            comment: "Very comfortable. Worth it.",
+            date: "2026-03-18"
+          }
+        ],
         bestseller: false
     },
     {
@@ -250,6 +331,22 @@ export const products = [
         subCategory: "Topwear",
         sizes: ["S", "M", "L", "XL"],
         date: 1716625545448,
+        reviews: [
+          {
+            id: 1,
+            user: "Rahul Sharma",
+            rating: 4,
+            comment: "Good quality, fits well.",
+            date: "2026-03-20"
+          },
+          {
+            id: 2,
+            user: "Priya Singh",
+            rating: 5,
+            comment: "Very comfortable. Worth it.",
+            date: "2026-03-18"
+          }
+        ],
         bestseller: false
     },
     {
@@ -334,6 +431,22 @@ export const products = [
         subCategory: "Bottomwear",
         sizes: ["S", "M", "L", "XL"],
         date: 1716633245448,
+        reviews: [
+          {
+            id: 1,
+            user: "Rahul Sharma",
+            rating: 4,
+            comment: "Good quality, fits well.",
+            date: "2026-03-20"
+          },
+          {
+            id: 2,
+            user: "Priya Singh",
+            rating: 5,
+            comment: "Very comfortable. Worth it.",
+            date: "2026-03-18"
+          }
+        ],
         bestseller: false
     },
     {
@@ -382,6 +495,22 @@ export const products = [
         subCategory: "Topwear",
         sizes: ["S", "M", "L", "XL"],
         date: 1716637645448,
+        reviews: [
+          {
+            id: 1,
+            user: "Rahul Sharma",
+            rating: 4,
+            comment: "Good quality, fits well.",
+            date: "2026-03-20"
+          },
+          {
+            id: 2,
+            user: "Priya Singh",
+            rating: 5,
+            comment: "Very comfortable. Worth it.",
+            date: "2026-03-18"
+          }
+        ],
         bestseller: false
     },
     {
@@ -430,6 +559,22 @@ export const products = [
         subCategory: "Winterwear",
         sizes: ["S", "M", "L", "XL"],
         date: 1716642045448,
+        reviews: [
+          {
+            id: 1,
+            user: "Rahul Sharma",
+            rating: 4,
+            comment: "Good quality, fits well.",
+            date: "2026-03-20"
+          },
+          {
+            id: 2,
+            user: "Priya Singh",
+            rating: 5,
+            comment: "Very comfortable. Worth it.",
+            date: "2026-03-18"
+          }
+        ],
         bestseller: false
     },
     {
@@ -478,6 +623,22 @@ export const products = [
         subCategory: "Topwear",
         sizes: ["S", "M", "L", "XL"],
         date: 1716646445448,
+        reviews: [
+          {
+            id: 1,
+            user: "Rahul Sharma",
+            rating: 4,
+            comment: "Good quality, fits well.",
+            date: "2026-03-20"
+          },
+          {
+            id: 2,
+            user: "Priya Singh",
+            rating: 5,
+            comment: "Very comfortable. Worth it.",
+            date: "2026-03-18"
+          }
+        ],
         bestseller: false
     },
     {
@@ -514,6 +675,22 @@ export const products = [
         subCategory: "Winterwear",
         sizes: ["S", "M", "L", "XL"],
         date: 1716649745448,
+        reviews: [
+          {
+            id: 1,
+            user: "Rahul Sharma",
+            rating: 4,
+            comment: "Good quality, fits well.",
+            date: "2026-03-20"
+          },
+          {
+            id: 2,
+            user: "Priya Singh",
+            rating: 5,
+            comment: "Very comfortable. Worth it.",
+            date: "2026-03-18"
+          }
+        ],
         bestseller: false
     },
     {
@@ -721,3 +898,9 @@ export const products = [
     }
 
 ]
+export const enrichedProducts = products.map(p => ({
+  ...p,
+  rating: (Math.random() * 2 + 3).toFixed(1),
+  reviews: Math.floor(Math.random() * 200) + 20,
+  inStock: Math.random() > 0.2,
+}));

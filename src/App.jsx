@@ -2,6 +2,7 @@ import Navbar from "./components/Navbar.jsx"
 import { createBrowserRouter , Outlet , RouterProvider } from "react-router-dom"
 import Home from "./pages/Home.jsx"
 import Footer from "./components/Footer.jsx"
+import Product from "./pages/Product.jsx"
 
 const Layout = () => {
   return (
@@ -17,7 +18,8 @@ const router = createBrowserRouter([
   {path: "/",
     element: <Layout/>,
     children: [
-      {path: "/" ,element: <Home/>}
+      {path: "/" ,element: <Home/>},
+      {path:"/product/:id", element: <Product />}
     ]
   }
 ])

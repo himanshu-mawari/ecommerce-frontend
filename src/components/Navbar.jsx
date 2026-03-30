@@ -16,7 +16,10 @@ const Navbar = () => {
     <>
       <div className="max-w-8xl mx-auto px-4 md:px-12 lg:px-28 h-20 flex items-center justify-between">
         <div className="cursor-pointer">
+          <NavLink to={"/"}>
+
           <img src={assets.logo} className="w-36" />
+          </NavLink>
         </div>
 
         <ul className="hidden lg:flex items-center gap-6">
