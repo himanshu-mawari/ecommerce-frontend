@@ -14,7 +14,7 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="max-w-8xl mx-auto px-4 md:px-12 lg:px-28 h-20 flex items-center justify-between">
+      <div className="max-w-8xl mx-auto px-4 md:px-12 lg:px-14 xl:px-24 h-20 flex items-center justify-between">
         <div className="cursor-pointer">
           <NavLink to={"/"}>
 

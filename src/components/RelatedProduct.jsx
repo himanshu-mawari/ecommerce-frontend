@@ -17,7 +17,7 @@ const RelatedProduct = ({ currentProduct }) => {
         Related<span className="playfair-italic font-light ml-2">products</span>
       </h1>
     </div>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-5 gap-4">
         {similiar.map((p) => (
           <ProductCard data={p} />
         ))}
