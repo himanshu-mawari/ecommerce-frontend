@@ -1,34 +1,37 @@
-import Navbar from "./components/Navbar.jsx"
-import { createBrowserRouter , Outlet , RouterProvider } from "react-router-dom"
-import Home from "./pages/Home.jsx"
-import Footer from "./components/Footer.jsx"
-import Product from "./pages/Product.jsx"
-import Collection from "./pages/Collection.jsx"
+import Navbar from "./components/Navbar.jsx";
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
+import Home from "./pages/Home.jsx";
+import Footer from "./components/Footer.jsx";
+import Product from "./pages/Product.jsx";
+import Collection from "./pages/Collection.jsx";
+import Cart from "./pages/Cart.jsx";
 
 const Layout = () => {
   return (
     <>
-    <Navbar/>
-    <Outlet />
-    <Footer />
+      <Navbar />
+      <Outlet />
+      <Footer />
     </>
-  )
-}
+  );
+};
 
 const router = createBrowserRouter([
-  {path: "/",
-    element: <Layout/>,
+  {
+    path: "/",
+    element: <Layout />,
     children: [
-      {path: "/" ,element: <Home/>},
-      {path:"/product/:id", element: <Product />},
-      {path:"/collections/:category" , element: <Collection/>},
-      {path:"/collections/:category/:gender" , element: <Collection/>}
-    ]
-  }
-])
+      { path: "/", element: <Home /> },
+      { path: "/product/:id", element: <Product /> },
+      { path: "/collections/:category", element: <Collection /> },
+      { path: "/collections/:category/:gender", element: <Collection /> },
+      { path: "/cart", element: <Cart /> },
+    ],
+  },
+]);
 
 const App = () => {
-  return <RouterProvider router={router}/>;
-}
+  return <RouterProvider router={router} />;
+};
 
-export default App
+export default App;

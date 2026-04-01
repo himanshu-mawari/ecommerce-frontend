@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { assets } from "../assets/assets.js";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -114,7 +114,9 @@ const Navbar = () => {
           </div>
 
           <div className="relative cursor-pointer">
-            <img src={assets.cartIcon} className="w-5" />
+            <Link to="/cart">
+              <img src={assets.cartIcon} className="w-5" />
+            </Link>
             <p className="absolute -top-2 -right-2 w-4 h-4 flex items-center justify-center bg-black text-white text-[9px] rounded-full">
               1
             </p>
