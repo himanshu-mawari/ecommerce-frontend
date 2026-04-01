@@ -26,26 +26,25 @@ const Reviews = ({ productReview = [] }) => {
         </h2>
 
         {!productReview || productReview.length === 0 ? (
-<div className="flex flex-col lg:flex-row lg:justify-between lg:items-center w-full">
-  
-  <div className="flex flex-col items-center lg:items-start">
-    <div className="flex gap-1 my-2">
-      <FiStar className="text-yellow-500 text-xl" />
-      <FiStar className="text-yellow-500 text-xl" />
-      <FiStar className="text-yellow-500 text-xl" />
-      <FiStar className="text-yellow-500 text-xl" />
-      <FiStar className="text-yellow-500 text-xl" />
-    </div>
+          <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center w-full">
+            <div className="flex flex-col items-center lg:items-start">
+              <div className="flex gap-1 my-2">
+                <FiStar className="text-yellow-500 text-xl" />
+                <FiStar className="text-yellow-500 text-xl" />
+                <FiStar className="text-yellow-500 text-xl" />
+                <FiStar className="text-yellow-500 text-xl" />
+                <FiStar className="text-yellow-500 text-xl" />
+              </div>
 
-    <p className="text-gray-400 text-sm tracking-tight mb-8 lg:mb-0">
-      Be the first to review this product
-    </p>
-  </div>
+              <p className="text-gray-400 text-sm tracking-tight mb-8 lg:mb-0">
+                Be the first to review this product
+              </p>
+            </div>
 
-  <button className="text-white bg-[#222222] py-3 px-10 tracking-[0.15em] w-full lg:w-auto rounded-xl transition-all hover:bg-black active:scale-[0.98] cursor-pointer">
-    Write a review
-  </button>
-</div>
+            <button className="text-white bg-[#222222] py-3 px-10 tracking-[0.15em] w-full lg:w-auto rounded-xl transition-all hover:bg-black active:scale-[0.98] cursor-pointer">
+              Write a review
+            </button>
+          </div>
         ) : (
           <div className="flex flex-col lg:flex-row lg:items-start lg:gap-18 w-full px-4 lg:px-0">
             <div className="flex flex-col gap-4 w-full max-w-md  lg:max-w-xs mx-auto lg:mx-0 mt-8 font-sans border border-gray-100 bg-white px-8 py-7 lg:px-4  rounded-2xl shadow-sm lg:sticky lg:top-10">

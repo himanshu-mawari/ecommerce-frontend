@@ -94,7 +94,7 @@ export const assets = {
     stripe_logo,
     cross_icon
 }
-
+  
 
 export const products = [
     {
@@ -111,14 +111,15 @@ export const products = [
           {
             id: 1,
             user: "Rahul Sharma",
-            rating: 4,
+            rating: 1,
             comment: "Good quality, fits well.",
             date: "2026-03-20"
+        
           },
           {
             id: 2,
             user: "Priya Singh",
-            rating: 5,
+            rating: 3,
             comment: "Very comfortable. Worth it.",
             date: "2026-03-18"
           }
@@ -139,14 +140,14 @@ export const products = [
           {
             id: 1,
             user: "Rahul Sharma",
-            rating: 4,
+            rating: 5,
             comment: "Good quality, fits well.",
             date: "2026-03-20"
           },
           {
             id: 2,
             user: "Priya Singh",
-            rating: 5,
+            rating: 4,
             comment: "Very comfortable. Worth it.",
             date: "2026-03-18"
           }
@@ -162,6 +163,7 @@ export const products = [
         category: "Kids",
         subCategory: "Topwear",
         sizes: ["S", "L", "XL"],
+          reviews: [] ,
         date: 1716234545448,
         bestseller: true
     },
@@ -174,6 +176,7 @@ export const products = [
         category: "Men",
         subCategory: "Topwear",
         sizes: ["S", "M", "XXL"],
+          reviews: [] ,
         date: 1716621345448,
         bestseller: true
     },
@@ -191,14 +194,14 @@ export const products = [
           {
             id: 1,
             user: "Rahul Sharma",
-            rating: 4,
+            rating: 2,
             comment: "Good quality, fits well.",
             date: "2026-03-20"
           },
           {
             id: 2,
             user: "Priya Singh",
-            rating: 5,
+            rating: 3,
             comment: "Very comfortable. Worth it.",
             date: "2026-03-18"
           }
@@ -219,14 +222,14 @@ export const products = [
           {
             id: 1,
             user: "Rahul Sharma",
-            rating: 4,
+            rating: 2,
             comment: "Good quality, fits well.",
             date: "2026-03-20"
           },
           {
             id: 2,
             user: "Priya Singh",
-            rating: 5,
+            rating: 1,
             comment: "Very comfortable. Worth it.",
             date: "2026-03-18"
           }
@@ -242,6 +245,7 @@ export const products = [
         category: "Men",
         subCategory: "Bottomwear",
         sizes: ["S", "L", "XL"],
+          reviews: [] ,
         date: 1716621542448,
         bestseller: false
     },
@@ -254,6 +258,7 @@ export const products = [
         category: "Men",
         subCategory: "Topwear",
         sizes: ["S", "M", "L", "XL"],
+          reviews: [] ,
         date: 1716622345448,
         bestseller: false
     },
@@ -266,6 +271,7 @@ export const products = [
         category: "Kids",
         subCategory: "Topwear",
         sizes: ["M", "L", "XL"],
+          reviews: [] ,
         date: 1716621235448,
         bestseller: false
     },
@@ -278,6 +284,7 @@ export const products = [
         category: "Men",
         subCategory: "Bottomwear",
         sizes: ["S", "L", "XL"],
+          reviews: [] ,
         date: 1716622235448,
         bestseller: false
     },
@@ -318,6 +325,7 @@ export const products = [
         category: "Men",
         subCategory: "Topwear",
         sizes: ["S", "M", "L", "XL"],
+          reviews: [] ,
         date: 1716624445448,
         bestseller: false
     },
@@ -358,6 +366,7 @@ export const products = [
         category: "Kids",
         subCategory: "Topwear",
         sizes: ["S", "M", "L", "XL"],
+          reviews: [] ,
         date: 1716626645448,
         bestseller: false
     },
@@ -370,6 +379,7 @@ export const products = [
         category: "Men",
         subCategory: "Bottomwear",
         sizes: ["S", "M", "L", "XL"],
+          reviews: [] ,
         date: 1716627745448,
         bestseller: false
     },
@@ -382,6 +392,7 @@ export const products = [
         category: "Kids",
         subCategory: "Topwear",
         sizes: ["S", "M", "L", "XL"],
+          reviews: [] ,
         date: 1716628845448,
         bestseller: false
     },
@@ -394,6 +405,7 @@ export const products = [
         category: "Men",
         subCategory: "Bottomwear",
         sizes: ["S", "M", "L", "XL"],
+          reviews: [] ,
         date: 1716629945448,
         bestseller: false
     },
@@ -406,6 +418,7 @@ export const products = [
         category: "Kids",
         subCategory: "Topwear",
         sizes: ["S", "M", "L", "XL"],
+          reviews: [] ,
         date: 1716631045448,
         bestseller: false
     },
@@ -418,6 +431,7 @@ export const products = [
         category: "Kids",
         subCategory: "Topwear",
         sizes: ["S", "M", "L", "XL"],
+          reviews: [] ,
         date: 1716632145448,
         bestseller: false
     },
@@ -458,6 +472,7 @@ export const products = [
         category: "Women",
         subCategory: "Winterwear",
         sizes: ["S", "M", "L", "XL"],
+          reviews: [] ,
         date: 1716634345448,
         bestseller: false
     },
@@ -470,6 +485,7 @@ export const products = [
         category: "Women",
         subCategory: "Bottomwear",
         sizes: ["S", "M", "L", "XL"],
+          reviews: [] ,
         date: 1716635445448,
         bestseller: false
     },
@@ -482,6 +498,7 @@ export const products = [
         category: "Kids",
         subCategory: "Topwear",
         sizes: ["S", "M", "L", "XL"],
+          reviews: [] ,
         date: 1716636545448,
         bestseller: false
     },
@@ -522,6 +539,7 @@ export const products = [
         category: "Kids",
         subCategory: "Topwear",
         sizes: ["S", "M", "L", "XL"],
+          reviews: [] ,
         date: 1716638745448,
         bestseller: false
     },
@@ -534,6 +552,7 @@ export const products = [
         category: "Women",
         subCategory: "Winterwear",
         sizes: ["S", "M", "L", "XL"],
+          reviews: [] ,
         date: 1716639845448,
         bestseller: false
     },
@@ -546,6 +565,7 @@ export const products = [
         category: "Kids",
         subCategory: "Topwear",
         sizes: ["S", "M", "L", "XL"],
+          reviews: [] ,
         date: 1716640945448,
         bestseller: false
     },
@@ -586,6 +606,7 @@ export const products = [
         category: "Women",
         subCategory: "Topwear",
         sizes: ["S", "M", "L", "XL"],
+          reviews: [] ,
         date: 1716643145448,
         bestseller: false
     },
@@ -598,6 +619,7 @@ export const products = [
         category: "Kids",
         subCategory: "Topwear",
         sizes: ["S", "M", "L", "XL"],
+          reviews: [] ,
         date: 1716644245448,
         bestseller: false
     },
@@ -610,6 +632,7 @@ export const products = [
         category: "Men",
         subCategory: "Topwear",
         sizes: ["S", "M", "L", "XL"],
+          reviews: [] ,
         date: 1716645345448,
         bestseller: false
     },
@@ -650,6 +673,7 @@ export const products = [
         category: "Kids",
         subCategory: "Topwear",
         sizes: ["S", "M", "L", "XL"],
+          reviews: [] ,
         date: 1716647545448,
         bestseller: false
     },
@@ -662,6 +686,7 @@ export const products = [
         category: "Women",
         subCategory: "Topwear",
         sizes: ["S", "M", "L", "XL"],
+          reviews: [] ,
         date: 1716648645448,
         bestseller: false
     },
@@ -702,6 +727,7 @@ export const products = [
         category: "Women",
         subCategory: "Winterwear",
         sizes: ["S", "M", "L", "XL"],
+          reviews: [] ,
         date: 1716650845448,
         bestseller: false
     },
@@ -714,6 +740,7 @@ export const products = [
         category: "Women",
         subCategory: "Topwear",
         sizes: ["S", "M", "L", "XL"],
+          reviews: [] ,
         date: 1716651945448,
         bestseller: false
     },
@@ -726,6 +753,7 @@ export const products = [
         category: "Men",
         subCategory: "Topwear",
         sizes: ["S", "M", "L", "XL"],
+          reviews: [] ,
         date: 1716653045448,
         bestseller: false
     },
@@ -738,6 +766,7 @@ export const products = [
         category: "Men",
         subCategory: "Topwear",
         sizes: ["S", "M", "L", "XL"],
+          reviews: [] ,
         date: 1716654145448,
         bestseller: false
     },
@@ -750,6 +779,7 @@ export const products = [
         category: "Men",
         subCategory: "Winterwear",
         sizes: ["S", "M", "L", "XL"],
+          reviews: [] ,
         date: 1716655245448,
         bestseller: false
     },
@@ -762,6 +792,7 @@ export const products = [
         category: "Men",
         subCategory: "Topwear",
         sizes: ["S", "M", "L", "XL"],
+          reviews: [] ,
         date: 1716656345448,
         bestseller: false
     },
@@ -774,6 +805,7 @@ export const products = [
         category: "Kids",
         subCategory: "Topwear",
         sizes: ["S", "M", "L", "XL"],
+          reviews: [] ,
         date: 1716657445448,
         bestseller: false
     },
@@ -786,6 +818,7 @@ export const products = [
         category: "Kids",
         subCategory: "Bottomwear",
         sizes: ["S", "M", "L", "XL"],
+          reviews: [] ,
         date: 1716658545448,
         bestseller: false
     },
@@ -798,6 +831,7 @@ export const products = [
         category: "Women",
         subCategory: "Winterwear",
         sizes: ["S", "M", "L", "XL"],
+          reviews: [] ,
         date: 1716659645448,
         bestseller: false
     },
@@ -810,6 +844,7 @@ export const products = [
         category: "Men",
         subCategory: "Winterwear",
         sizes: ["S", "M", "L", "XL"],
+          reviews: [] ,
         date: 1716660745448,
         bestseller: false
     },
@@ -822,6 +857,7 @@ export const products = [
         category: "Men",
         subCategory: "Winterwear",
         sizes: ["S", "M", "L", "XL"],
+          reviews: [] ,
         date: 1716661845448,
         bestseller: false
     },
@@ -834,6 +870,7 @@ export const products = [
         category: "Kids",
         subCategory: "Bottomwear",
         sizes: ["S", "M", "L", "XL"],
+          reviews: [] ,
         date: 1716662945448,
         bestseller: false
     },
@@ -846,6 +883,7 @@ export const products = [
         category: "Men",
         subCategory: "Winterwear",
         sizes: ["S", "M", "L", "XL"],
+          reviews: [] ,
         date: 1716664045448,
         bestseller: false
     },
@@ -858,6 +896,7 @@ export const products = [
         category: "Kids",
         subCategory: "Bottomwear",
         sizes: ["S", "M", "L", "XL"],
+          reviews: [] ,
         date: 1716665145448,
         bestseller: false
     },
@@ -869,6 +908,7 @@ export const products = [
         image: [p_img50],
         category: "Kids",
         subCategory: "Bottomwear",
+          reviews: [] ,
         sizes: ["S", "M", "L", "XL"],
         date: 1716666245448, bestseller: false
     },
@@ -881,6 +921,7 @@ export const products = [
         category: "Women",
         subCategory: "Winterwear",
         sizes: ["S", "M", "L", "XL"],
+          reviews: [] ,
         date: 1716667345448,
         bestseller: false
     },
@@ -893,6 +934,7 @@ export const products = [
         category: "Men",
         subCategory: "Winterwear",
         sizes: ["S", "M", "L", "XL"],
+          reviews: [] ,
         date: 1716668445448,
         bestseller: false
     }

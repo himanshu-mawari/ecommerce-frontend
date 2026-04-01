@@ -4,12 +4,14 @@ import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isWinterOpen, setIsWinterOpen] = useState(false);
 
   const navLinks = [
-    { label: "HOME", path: "/" },
-    { label: "COLLECTION", path: "/collection" },
-    { label: "ABOUT", path: "/about" },
-    { label: "CONTACT", path: "/contact" },
+    { label: "MEN", path: "/men" },
+    { label: "WOMEN", path: "/women" },
+    { label: "KIDS", path: "/kids" },
+    { label: "WINTERS", path: "/winter-collection" },
+    { label: "SHOP All", path: "/shop-all" },
   ];
 
   return (
@@ -17,8 +19,7 @@ const Navbar = () => {
       <div className="max-w-8xl mx-auto px-4 md:px-12 lg:px-14 xl:px-24 h-20 flex items-center justify-between">
         <div className="cursor-pointer">
           <NavLink to={"/"}>
-
-          <img src={assets.logo} className="w-36" />
+            <img src={assets.logo} className="w-36" />
           </NavLink>
         </div>
 
@@ -26,7 +27,7 @@ const Navbar = () => {
           {navLinks.map((link) => (
             <li key={link.label} className="relative group">
               <NavLink
-                to={link.path}
+                to={`/collections/${link.path}`}
                 className={({ isActive }) =>
                   `text-sm font-medium transition-colors duration-300 ${
                     isActive
@@ -35,28 +36,58 @@ const Navbar = () => {
                   }`
                 }
               >
-                {({ isActive }) => (
-                  <>
-                    {link.label}
-                    <span
-                      className={`absolute -bottom-1 left-0 h-0.5 bg-gray-700 transition-all duration-300 ${
-                        isActive ? " ml-4 rounded-full w-1" : "w-0 group-hover:w-full"
-                      }`}
-                    ></span>
-                  </>
-                )}
+                {link.label}
+                <div>
+                  {link.label === "WINTERS" ? (
+                    <div className="absolute top-full left-0 pt-2 hidden group-hover:block transition-all duration-300 z-50">
+                      <div className="flex flex-col w-44 bg-white shadow-[0px_15px_50px_rgba(0,0,0,0.15)] rounded-xl border border-gray-100 overflow-hidden animate-fadeIn">
+                        <NavLink
+                          to="/collections/winter-collection/men"
+                          onClick={() => {
+                            setIsOpen(false);
+                          }}
+                          className={({ isActive }) =>
+                            `px-5 py-3 text-sm flex items-center justify-between transition-all duration-200 group/item
+        ${isActive ? "bg-gray-50 text-black font-semibold" : "text-gray-600 hover:bg-gray-50 hover:text-black"}`
+                          }
+                        >
+                          <span>Men</span>
+                          <span className="text-xs opacity-0 -translate-x-2 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all duration-200">
+                            →
+                          </span>
+                        </NavLink>
+
+                        {/* Elegant Divider */}
+                        <div className="h-[1px] w-[85%] bg-gray-100 mx-auto"></div>
+
+                        {/* Women Link */}
+                        <NavLink
+                          to="/collections/winter-collection/women"
+                          onClick={() => {
+                            setIsOpen(false);
+                          }}
+                          className={({ isActive }) =>
+                            `px-5 py-3 text-sm flex items-center justify-between transition-all duration-200 group/item
+        ${isActive ? "bg-gray-50 text-black font-semibold" : "text-gray-600 hover:bg-gray-50 hover:text-black"}`
+                          }
+                        >
+                          <span>Women</span>
+                          <span className="text-xs opacity-0 -translate-x-2 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all duration-200">
+                            →
+                          </span>
+                        </NavLink>
+                      </div>
+                    </div>
+                  ) : (
+                    <div></div>
+                  )}
+                </div>
               </NavLink>
             </li>
           ))}
-
-          <li>
-            <button className="ml-4 px-6 py-1.5 border border-gray-800 rounded-full text-xs font-medium uppercase tracking-wider hover:bg-gray-800 hover:text-white transition-all duration-300">
-              Admin Panel
-            </button>
-          </li>
         </ul>
 
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-6 ">
           <img src={assets.searchIcon} className="w-5 cursor-pointer" />
 
           <div className="relative group cursor-pointer">
@@ -69,6 +100,9 @@ const Navbar = () => {
                 </p>
                 <p className="px-5 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-black cursor-pointer transition-colors duration-200">
                   Orders
+                </p>
+                <p className="px-5 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-black cursor-pointer transition-colors duration-200">
+                  Admin Panel
                 </p>
                 <div className="my-1 border-t border-gray-100"></div>{" "}
                 {/* Subtle Divider */}
@@ -99,7 +133,7 @@ const Navbar = () => {
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        <div className="flex flex-col text-gray-600 h-full">
+        <div className="flex flex-col text-gray-600  h-full">
           <div
             onClick={() => setIsOpen(false)}
             className="flex items-center gap-2 p-3 cursor-pointer"
@@ -108,35 +142,59 @@ const Navbar = () => {
             <p className="sm:text-lg">Back</p>
           </div>
 
-          <div className="flex flex-col ml-4  text-lg sm:ml-6 sm:text-xl font-medium">
-            <NavLink
-              onClick={() => setIsOpen(false)}
-              className="py-3 pl-6 border-b"
-              to="/"
-            >
-              Home
-            </NavLink>
-            <NavLink
-              onClick={() => setIsOpen(false)}
-              className="py-3 pl-6 border-b"
-              to="/collection"
-            >
-              Collection
-            </NavLink>
-            <NavLink
-              onClick={() => setIsOpen(false)}
-              className="py-3 pl-6 border-b"
-              to="/about"
-            >
-              About
-            </NavLink>
-            <NavLink
-              onClick={() => setIsOpen(false)}
-              className="py-3 pl-6 border-b"
-              to="/contact"
-            >
-              Contact
-            </NavLink>
+          <div className="flex flex-col ml-4 text-lg sm:ml-6 sm:text-lg font-medium">
+            {navLinks.map((link) => {
+              if (link.label === "WINTERS") {
+                return (
+                  <div key={link.label} className="flex flex-col border-b">
+                    <div
+                      onClick={() => setIsWinterOpen(!isWinterOpen)}
+                      className="py-3 pl-6 flex justify-between items-center pr-6 cursor-pointer hover:text-black"
+                    >
+                      <span>{link.label}</span>
+                      <img
+                        src={assets.dropdownIcon}
+                        className={`h-3 transition-transform ${isWinterOpen ? "-rotate-90" : "rotate-0"}`}
+                      />
+                    </div>
+
+                    <div
+                      className={`overflow-hidden transition-all duration-300 bg-gray-50 ${isWinterOpen ? "max-h-40" : "max-h-0"}`}
+                    >
+                      <NavLink
+                        to="/collections/winter-collection/men"
+                        onClick={() => {
+                          setIsOpen(false);
+                        }}
+                        className="py-3 pl-12 block text-sm border-b hover:text-black"
+                      >
+                        Men
+                      </NavLink>
+                      <NavLink
+                        to="/collections/winter-collection/women"
+                        onClick={() => {
+                          setIsOpen(false);
+                        }}
+                        className="py-3 pl-12 block text-sm hover:text-black"
+                      >
+                        Women
+                      </NavLink>
+                    </div>
+                  </div>
+                );
+              }
+
+              return (
+                <NavLink
+                  key={link.label}
+                  onClick={() => setIsOpen(false)}
+                  className="py-3 pl-6 border-b hover:text-black"
+                  to={`/collections/${link.path}`}
+                >
+                  {link.label}
+                </NavLink>
+              );
+            })}
           </div>
         </div>
       </div>

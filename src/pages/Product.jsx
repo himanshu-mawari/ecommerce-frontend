@@ -5,6 +5,7 @@ import QuantitySelector from "../components/QuantitySelector.jsx";
 import DescriptionAccordion from "../components/DescriptionAccordion.jsx";
 import RelatedProduct from "../components/RelatedProduct.jsx";
 import Reviews from "../components/Reviews.jsx";
+import { FaStar } from "react-icons/fa";
 import { FiStar } from "react-icons/fi";
 
 const Product = () => {
@@ -12,7 +13,8 @@ const Product = () => {
   const [selectedSize, setSelectedSize] = useState("");
 
   const activeProduct = [...products].find((p) => p._id === id);
-  console.log(activeProduct);
+  const productReview = activeProduct.reviews;
+  const totalReview =  activeProduct.reviews.length;
   const formatPrice = (price) =>
     "Rs. " +
     new Intl.NumberFormat("en-IN", {
@@ -21,9 +23,12 @@ const Product = () => {
 
   const sizes = ["S", "M", "L", "XL", "XXL"];
 
+  const totalRating = productReview.reduce((acc, item) => acc + item.rating, 0) ;
+  const averageRating = Math.round(totalRating / totalReview);
+
   return (
-    <div className="px-3  w-full md:px-10">
-      <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-10 border-t border-gray-300">
+    <div className="border-t border-gray-200  px-3 w-full md:px-10">
+      <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-10">
         <div className="flex flex-col md:flex-row-reverse gap-4 items-start justify-start">
           <img
             src={activeProduct.image}
@@ -47,6 +52,8 @@ const Product = () => {
 
             <div className="flex items-center pt-2 gap-1">
               {[...Array(5)].map((_, i) => (
+                i < averageRating ?
+                <FaStar key={i} size={18} className="text-yellow-500" />:
                 <FiStar key={i} size={18} className="text-yellow-500" />
               ))}
               <p className="text-sm text-gray-500 ml-1">
@@ -88,7 +95,7 @@ const Product = () => {
           </div>
 
           <div className="pt-2 pb-8">
-            <button className="w-full md:w-md xl:w-full px-10 py-4 text-sm font-bold rounded-lg border text-black hover:bg-black hover:text-white active:scale-[0.98] transition-all uppercase tracking-widest">
+            <button className="w-full md:w-md xl:w-full px-10 py-4 text-sm font-bold rounded-lg border text-black hover:bg-black hover:text-white active:scale-[0.98] transition-all uppercase tracking-widest cursor-pointer">
               Add to Cart
             </button>
           </div>

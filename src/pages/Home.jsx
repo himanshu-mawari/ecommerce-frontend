@@ -33,7 +33,7 @@ const Home = () => {
           in fashion.
         </p>
 
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-5">
+        <div className="grid grid-cols-2 gap-6 sm:grid-cols-4 md:grid-cols-3 xl:grid-cols-4">
           {latestCollection.map((productData) => (
             <ProductCard key={productData._id} data={productData} />
           ))}
@@ -56,7 +56,7 @@ const Home = () => {
           Discover our top picks this season—designed to stay ahead of trends.
         </p>
 
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-5">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 md:grid-cols-3 xl:grid-cols-4">
           {bestSellers.map((productData) => (
             <ProductCard data={productData} />
           ))}
