@@ -9,9 +9,7 @@ const store = configureStore({
 
 export default store;
 
-store.subscribe(
-  () => {
-    const state = store.getState();
-    localStorage.setItem("cart" , JSON.stringify(state.cart.items))
-  }
-)
+store.subscribe(() => {
+  const state = store.getState();
+  localStorage.setItem("cart", JSON.stringify(state.cart.items));
+});

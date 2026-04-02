@@ -51,7 +51,7 @@ const Product = () => {
         <div className="flex flex-col md:flex-row-reverse gap-4 items-start justify-start">
           <img
             src={activeProduct.image}
-            className="w-full max-w-xs md:max-w-xl lg:max-w-lg xl:max-w-[480px] rounded-xl object-cover"
+            className="w-full max-w-xs md:max-w-xl lg:max-w-lg xl:max-w-120 rounded-xl object-cover"
           />
 
           <div className="flex md:flex-col gap-2">

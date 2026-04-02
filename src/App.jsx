@@ -4,7 +4,7 @@ import Home from "./pages/Home.jsx";
 import Footer from "./components/Footer.jsx";
 import Product from "./pages/Product.jsx";
 import Collection from "./pages/Collection.jsx";
-import Cart from "./pages/Cart.jsx";
+import Cart from "./pages/Checkout.jsx";
 
 const Layout = () => {
   return (
@@ -25,7 +25,7 @@ const router = createBrowserRouter([
       { path: "/product/:id", element: <Product /> },
       { path: "/collections/:category", element: <Collection /> },
       { path: "/collections/:category/:gender", element: <Collection /> },
-      { path: "/cart", element: <Cart /> },
+      { path: "/checkout", element: <Cart /> },
     ],
   },
 ]);

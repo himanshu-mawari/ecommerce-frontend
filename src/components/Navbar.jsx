@@ -114,7 +114,7 @@ const Navbar = () => {
           </div>
 
           <div className="relative cursor-pointer">
-            <Link to="/cart">
+            <Link to="/checkout">
               <img src={assets.cartIcon} className="w-5" />
             </Link>
             <p className="absolute -top-2 -right-2 w-4 h-4 flex items-center justify-center bg-black text-white text-[9px] rounded-full">
