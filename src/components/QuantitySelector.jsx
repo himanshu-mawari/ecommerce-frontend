@@ -1,8 +1,7 @@
-import {useState} from "react";
 
-const QuantitySelector = () => {
+const QuantitySelector = ({quantity , setQuantity}) => {
     
- const [quantity, setQuantity] = useState(1);
+ 
   return (
     <>
       <label className="font-semibold md:font-bold text-base  text-black ml-1">

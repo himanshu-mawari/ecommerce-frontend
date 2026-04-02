@@ -7,14 +7,19 @@ import RelatedProduct from "../components/RelatedProduct.jsx";
 import Reviews from "../components/Reviews.jsx";
 import { FaStar } from "react-icons/fa";
 import { FiStar } from "react-icons/fi";
+import { addProduct } from "../store/cartSlice.js";
+import { useDispatch } from "react-redux";
 
 const Product = () => {
   const { id } = useParams();
-  const [selectedSize, setSelectedSize] = useState("");
+  const [selectedSize, setSelectedSize] = useState(null);
+  const [quantity, setQuantity] = useState(1);
+  const [error , setError] = useState("")
+  const dispatch = useDispatch();
 
   const activeProduct = [...products].find((p) => p._id === id);
   const productReview = activeProduct.reviews;
-  const totalReview =  activeProduct.reviews.length;
+  const totalReview = activeProduct.reviews.length;
   const formatPrice = (price) =>
     "Rs. " +
     new Intl.NumberFormat("en-IN", {
@@ -23,8 +28,22 @@ const Product = () => {
 
   const sizes = ["S", "M", "L", "XL", "XXL"];
 
-  const totalRating = productReview.reduce((acc, item) => acc + item.rating, 0) ;
+  const totalRating = productReview.reduce((acc, item) => acc + item.rating, 0);
   const averageRating = Math.round(totalRating / totalReview);
+
+  const handleAddProduct = () => {
+   
+    if(!selectedSize){
+     return setError("Please select a size")
+    }
+
+    setError("")
+    dispatch(addProduct({
+      id : activeProduct._id,
+      size: selectedSize,
+      quantity
+    }))
+  };
 
   return (
     <div className="border-t border-gray-200  px-3 w-full md:px-10">
@@ -51,11 +70,13 @@ const Product = () => {
             </h1>
 
             <div className="flex items-center pt-2 gap-1">
-              {[...Array(5)].map((_, i) => (
-                i < averageRating ?
-                <FaStar key={i} size={18} className="text-yellow-500" />:
-                <FiStar key={i} size={18} className="text-yellow-500" />
-              ))}
+              {[...Array(5)].map((_, i) =>
+                i < averageRating ? (
+                  <FaStar key={i} size={18} className="text-yellow-500" />
+                ) : (
+                  <FiStar key={i} size={18} className="text-yellow-500" />
+                ),
+              )}
               <p className="text-sm text-gray-500 ml-1">
                 ({activeProduct.reviews ? activeProduct.reviews.length : 0})
               </p>
@@ -89,13 +110,17 @@ const Product = () => {
               ))}
             </div>
           </div>
+          {error && <p className="text-sm text-red-500 pt-2">{error}</p>}
 
           <div className="py-6">
-            <QuantitySelector />
+            <QuantitySelector quantity={quantity} setQuantity={setQuantity} />
           </div>
 
           <div className="pt-2 pb-8">
-            <button className="w-full md:w-md xl:w-full px-10 py-4 text-sm font-bold rounded-lg border text-black hover:bg-black hover:text-white active:scale-[0.98] transition-all uppercase tracking-widest cursor-pointer">
+            <button
+              className="w-full md:w-md xl:w-full px-10 py-4 text-sm font-bold rounded-lg border text-black hover:bg-black hover:text-white active:scale-[0.98] transition-all uppercase tracking-widest cursor-pointer"
+              onClick={() => handleAddProduct()}
+            >
               Add to Cart
             </button>
           </div>
