@@ -5,7 +5,7 @@ const EmptyState = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="col-span-full flex flex-col items-center justify-center py-24 px-20 text-center">
+    <div className="col-span-full flex flex-col items-center justify-center py-24 md:py-28 lg:py-44  px-20 text-center">
       <FiSearch size={50} className="text-gray-400 mb-4" />
 
       <h2 className="text-2xl font-semibold mb-2">No Results Found</h2>
