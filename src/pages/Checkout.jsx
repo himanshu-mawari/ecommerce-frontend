@@ -54,7 +54,7 @@ const Cart = () => {
           <div className="">
             <div className="bg-white">
               <div className="flex flex-col items-center md:items-start pt-8 pb-6 bg-white">
-                <h1 className="text-3xl lg:text-3xl font-semibold text-black mb-1">
+                <h1 className="text-3xl  font-semibold text-black mb-1">
                   Bag
                 </h1>
                 <div className="flex items-center text-gray-500">

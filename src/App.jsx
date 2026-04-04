@@ -10,7 +10,9 @@ import Address from "./pages/Address.jsx";
 import { useDispatch } from "react-redux";
 import { addUser } from "./store/userSlice.js";
 import { useEffect } from "react";
-import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import AuthGuard from "./components/AuthGuard.jsx";
+import Payment from "./pages/Payment.jsx";
+import PaymentGuard from "./components/PaymentGuard.jsx";
 
 const Layout = () => {
   return (
@@ -36,9 +38,20 @@ const router = createBrowserRouter([
       {
         path: "/address",
         element: (
-          <ProtectedRoute>
+          <AuthGuard>
             <Address />
-          </ProtectedRoute>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: "/payment",
+        element: (
+          <AuthGuard>
+            <PaymentGuard>
+
+            <Payment />
+            </PaymentGuard>
+          </AuthGuard>
         ),
       },
     ],
@@ -46,15 +59,15 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   const fakeUser = localStorage.getItem("user");
-  //   if (!fakeUser) {
-  //     const parseUserData = JSON.parse(fakeUser);
-  //     dispatch(addUser(parseUserData));
-  //   }
-  // }, [dispatch]);
+  useEffect(() => {
+    const fakeUser = localStorage.getItem("user");
+    if (!fakeUser) {
+      const parseUserData = JSON.parse(fakeUser);
+      dispatch(addUser(parseUserData));
+    }
+  }, [dispatch]);
 
   return <RouterProvider router={router} />;
 };

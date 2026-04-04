@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux"
 import { useLocation , Navigate} from "react-router-dom"
-const ProtectedRoute = ({children}) => {
+const AuthGuard = ({children}) => {
     const user = useSelector(store => store.user.user)
     const location = useLocation();
 
@@ -11,4 +11,4 @@ const ProtectedRoute = ({children}) => {
   return children
 }
 
-export default ProtectedRoute
+export default AuthGuard;

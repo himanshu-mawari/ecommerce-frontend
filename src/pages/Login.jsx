@@ -21,17 +21,16 @@ const Login = () => {
       return setError("please fill both field");
     }
 
-    const fakeUser = { id: Date.now().toString(), email }
-    console.log(fakeUser)
+    const fakeUser = { id: Date.now().toString(), email}
 
     dispatch(addUser(fakeUser));
-    // localStorage.setItem("user" ,JSON.stringify(fakeUser))
+    localStorage.setItem("user" ,JSON.stringify(fakeUser))
     navigate(redirect ? `/${redirect}` : "/");
   };
 
   return (
-    <div className="py-20 flex items-center justify-center bg-gray-50 px-4 ">
-      <div className="w-full max-w-md bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+    <div className="py-20 flex items-center justify-center bg-gray-50 px-4">
+      <div className="max-w-md w-full  bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
         <div className="pt-8 pb-4 px-6">
           <h1 className="text-2xl md:text-3xl font-bold text-center text-gray-900">
             Log in to your account
@@ -73,7 +72,7 @@ const Login = () => {
 
           <button
             type="submit"
-            className="mt-2 w-full bg-black text-white py-2.5 rounded-lg font-semibold hover:bg-gray-800 active:scale-[0.98] transition-all"
+            className="mt-2 w-full bg-black text-white py-2.5 rounded-lg font-semibold hover:bg-gray-800 active:scale-[0.98] transition-all cursor-pointer"
           >
             Sign in
           </button>
