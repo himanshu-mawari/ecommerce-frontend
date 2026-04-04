@@ -946,3 +946,8 @@ export const enrichedProducts = products.map(p => ({
   reviews: Math.floor(Math.random() * 200) + 20,
   inStock: Math.random() > 0.2,
 }));
+
+
+
+
+

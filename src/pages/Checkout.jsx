@@ -1,11 +1,14 @@
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch , } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { products } from "../assets/frontend_assets/assets";
 import { increaseQuantity, decreaseQuantity } from "../store/cartSlice.js";
 
 const Cart = () => {
   const items = useSelector((store) => store?.cart?.items);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const shippingCharges = 100;
+  const user = useSelector(store => store.user.user)
 
   const cartData = items
     .map((item) => {
@@ -39,6 +42,10 @@ const Cart = () => {
   const handleDecreaseQuantity = (id, size, quantity) => {
     return dispatch(decreaseQuantity({ id, size, quantity }));
   };
+
+  const handleCheckout = () => {
+    navigate(user ? "/address" : "/login?redirect=address")
+  }
 
   return (
     <div className="border-t border-gray-300">
@@ -98,10 +105,8 @@ const Cart = () => {
                         </div>
                       </div>
                     </div>
-
-                    <div className="flex items-center gap-3 mt-6 ">
-                      
-                      <div className="flex items-center justify-between border border-gray-200 rounded-full px-2  w-28 bg-white shadow-sm">
+                    <div className="flex items-center gap-3 mt-6">
+                      <div className="flex items-center justify-between border border-gray-200 rounded-full px-2 w-28 md:w-32 lg:w-36 bg-white shadow-sm transition-all">
                         <button
                           onClick={() =>
                             handleDecreaseQuantity(
@@ -110,45 +115,47 @@ const Cart = () => {
                               item.quantity,
                             )
                           }
-                          className="text-black active:scale-75 transition-transform p-1"
+                          className="text-black active:scale-75 transition-transform  flex items-center justify-center"
                         >
                           {item.quantity > 1 ? (
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
-                              className="w-4"
                               fill="none"
                               viewBox="0 0 24 24"
-                              stroke-width="1.5"
+                              strokeWidth="1.5"
                               stroke="currentColor"
-                              class="size-6"
+                              /* RESPONSIVE WIDTH: w-4 (mobile), w-5 (tablet), w-6 (desktop) */
+                              className="w-4 h-4 md:w-5 md:h-5  lg:h-6"
                             >
                               <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
                                 d="M5 12h14"
                               />
                             </svg>
                           ) : (
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
-                              className="w-4"
                               fill="none"
                               viewBox="0 0 24 24"
-                              stroke-width="1.5"
+                              strokeWidth="1.5"
                               stroke="currentColor"
-                              class="size-6"
+                              /* Same responsive sizing for the trash icon */
+                              className="w-4 h-4 md:w-5 md:h-5  lg:h-6"
                             >
                               <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
                                 d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
                               />
                             </svg>
                           )}
                         </button>
-                        <span className="text-base font-bold text-black">
+
+                        <span className="text-sm md:text-base lg:text-lg font-bold text-black">
                           {item.quantity}
                         </span>
+
                         <button
                           onClick={() =>
                             handleIncreaseQuantity(
@@ -157,24 +164,25 @@ const Cart = () => {
                               item.quantity,
                             )
                           }
-                          className="text-black text-xl mb-1 active:scale-75 transition-transform p-1"
+                          className="text-black text-lg md:text-xl lg:text-2xl mb-1 active:scale-75 transition-transform p-1"
                         >
                           +
                         </button>
                       </div>
-                      <button className="p-3 border border-gray-200 rounded-full active:bg-gray-100 shadow-sm">
+
+                      <button className="p-2 md:p-3 border border-gray-200 rounded-full active:bg-gray-100 shadow-sm flex items-center justify-center">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          className="w-4"
                           fill="none"
                           viewBox="0 0 24 24"
-                          stroke-width="1.5"
+                          strokeWidth="1.5"
                           stroke="currentColor"
-                          class="size-6"
+                          /* Heart icon responsive sizing */
+                          className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6"
                         >
                           <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
                             d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
                           />
                         </svg>
@@ -216,16 +224,16 @@ const Cart = () => {
               </div>
             </div>
 
-            <button className="hidden lg:block w-full bg-black text-white py-2 mt-8 rounded-full font-semibold text-lg hover:bg-gray-800 transition-all shadow-xl shadow-black/10">
+            <button className="hidden lg:block w-full bg-black text-white py-2 mt-8 rounded-full font-semibold text-lg hover:bg-gray-800 transition-all shadow-xl shadow-black/10"    onClick={() => handleCheckout()}>
               Proceed to Buy
             </button>
           </div>
         </div>
       </div>
 
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-gray-100 p-4 z-50 shadow-[0_-10px_20px_rgba(0,0,0,0.03)]">
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-gray-100 p-4 z-50 shadow-[0_-10px_20px_rgba(0,0,0,0.03)]"    onClick={() => handleCheckout()}>
         <div className="max-w-md md:max-w-full mx-auto">
-          <button className="w-full bg-black text-white py-4 rounded-full font-bold text-lg active:scale-[0.97] transition-all">
+          <button className="w-full bg-black text-white py-4 rounded-full font-bold text-md active:scale-[0.97] transition-all">
             Proceed to Buy
           </button>
         </div>
