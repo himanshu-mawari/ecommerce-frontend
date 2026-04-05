@@ -44,7 +44,7 @@ const Cart = () => {
   };
 
   const handleCheckout = () => {
-    navigate(user ? "/address" : "/login?redirect=address")
+    navigate(user ? "/address/saved" : "/login?redirect=address/saved")
   }
 
   return (

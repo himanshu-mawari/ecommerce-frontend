@@ -3,6 +3,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Saira+Stencil:ital,wght@0,100..900;1,100..900&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -17,28 +18,47 @@
   font-style: italic;
   font-optical-sizing: auto;
 }
+
 .playfair-display {
   font-family: "Playfair Display", serif;
   font-optical-sizing: auto;
 }
-.outfit{
-  font-family: "Outfit" , serif;
+
+.outfit {
+  font-family: "Outfit", serif;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
+
 .animate-fadeIn {
   animation: fadeIn 0.2s ease-out;
 }
+
 .poppins {
   font-family: "Poppins", sans-serif;
 }
 
 .inter {
   font-family: "Inter", sans-serif;
- 
+
 }
+
 .geist {
-  font-family: "Archivo", sans-serif;}
+  font-family: "Archivo", sans-serif;
+}
+
+
+.saira-stencil {
+  font-family: "Saira Stencil", sans-serif;
+
+}

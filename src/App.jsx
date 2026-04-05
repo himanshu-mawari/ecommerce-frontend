@@ -1,33 +1,24 @@
-import Navbar from "./components/Navbar.jsx";
-import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home.jsx";
-import Footer from "./components/Footer.jsx";
 import Product from "./pages/Product.jsx";
 import Collection from "./pages/Collection.jsx";
 import Cart from "./pages/Checkout.jsx";
 import Login from "./pages/Login.jsx";
-import Address from "./pages/Address.jsx";
+import AddressNew from "./pages/AddressNew.jsx";
+import AddressList from "./pages/AddressList.jsx";
 import { useDispatch } from "react-redux";
 import { addUser } from "./store/userSlice.js";
 import { useEffect } from "react";
 import AuthGuard from "./components/AuthGuard.jsx";
 import Payment from "./pages/Payment.jsx";
 import PaymentGuard from "./components/PaymentGuard.jsx";
-
-const Layout = () => {
-  return (
-    <>
-      <Navbar />
-      <Outlet />
-      <Footer />
-    </>
-  );
-};
+import MainLayout from "./Layouts/MainLayout.jsx";
+import CheckoutLayout from "./Layouts/CheckoutLayout.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
+    element: <MainLayout />,
     children: [
       { path: "/", element: <Home /> },
       { path: "/product/:id", element: <Product /> },
@@ -35,21 +26,28 @@ const router = createBrowserRouter([
       { path: "/collections/:category/:gender", element: <Collection /> },
       { path: "/checkout", element: <Cart /> },
       { path: "/login", element: <Login /> },
+    ],
+  },
+  {
+    path:"/",
+    element: <CheckoutLayout />,
+    children: [
       {
-        path: "/address",
+        path: "/address/saved",
         element: (
           <AuthGuard>
-            <Address />
+            <AddressList />
           </AuthGuard>
         ),
       },
+
+      { path: "address/new", element: <AuthGuard> <AddressNew /> </AuthGuard>},
       {
         path: "/payment",
         element: (
           <AuthGuard>
             <PaymentGuard>
-
-            <Payment />
+              <Payment />
             </PaymentGuard>
           </AuthGuard>
         ),
@@ -63,7 +61,7 @@ const App = () => {
 
   useEffect(() => {
     const fakeUser = localStorage.getItem("user");
-    if (!fakeUser) {
+    if (fakeUser) {
       const parseUserData = JSON.parse(fakeUser);
       dispatch(addUser(parseUserData));
     }

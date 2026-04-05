@@ -4,6 +4,7 @@ const AuthGuard = ({children}) => {
     const user = useSelector(store => store.user.user)
     const location = useLocation();
 
+    console.log(user)
     if(!user){
         return <Navigate to={`/login?redirect=${location.pathname}`} replace />
     }   
