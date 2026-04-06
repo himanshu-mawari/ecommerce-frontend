@@ -1,19 +1,30 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const loadAddresses = () => {
+  try {
+    const data = localStorage.getItem("shippingAddress");
+    const res = data ? JSON.parse(data) : [];
+    return res;
+  } catch {
+    return [];
+  }
+};
 const addressSlice = createSlice({
-    name : "address",
-    initialState:{
-        addresses:[]
+  name: "address",
+  initialState: {
+    addresses: loadAddresses(),
+    selectedAddressId: null,
+  },
+  reducers: {
+    addAddresses: (state, action) => {
+      
+      state.addresses = action.payload;
     },
-    reducers:{
-        addAddress : (state ,action) => {
-            state.address = action.payload;
-        }
-    }
-})
+    addSelectedAddressId: (state, action) => {
+      state.selectedAddressId = action.payload;
+    },
+  },
+});
 
-
-export const { addAddress
-    
- } = addressSlice.actions;
+export const { addAddresses, addSelectedAddressId } = addressSlice.actions;
 export default addressSlice.reducer;

@@ -24,7 +24,7 @@ const Login = () => {
     const fakeUser = { id: Date.now().toString(), email}
 
     dispatch(addUser(fakeUser));
-    // localStorage.setItem("user" ,JSON.stringify(fakeUser))
+    localStorage.setItem("user" ,JSON.stringify(fakeUser))
     navigate(redirect ? `/${redirect}` : "/");
   };
 

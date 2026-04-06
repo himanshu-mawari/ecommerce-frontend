@@ -14,6 +14,8 @@ import Payment from "./pages/Payment.jsx";
 import PaymentGuard from "./components/PaymentGuard.jsx";
 import MainLayout from "./Layouts/MainLayout.jsx";
 import CheckoutLayout from "./Layouts/CheckoutLayout.jsx";
+import { addAddresses } from "./store/addressSlice";
+
 
 const router = createBrowserRouter([
   {
@@ -41,7 +43,8 @@ const router = createBrowserRouter([
         ),
       },
 
-      { path: "address/new", element: <AuthGuard> <AddressNew /> </AuthGuard>},
+      { path: "/address/new", element: <AuthGuard> <AddressNew /> </AuthGuard>},
+      { path: "/address/edit/:id", element: <AuthGuard> <AddressNew /> </AuthGuard>},
       {
         path: "/payment",
         element: (
@@ -58,7 +61,7 @@ const router = createBrowserRouter([
 
 const App = () => {
   const dispatch = useDispatch();
-
+  
   useEffect(() => {
     const fakeUser = localStorage.getItem("user");
     if (fakeUser) {
@@ -67,6 +70,8 @@ const App = () => {
     }
   }, [dispatch]);
 
+  const saved = JSON.parse(localStorage.getItem("shippingAddress")) || [];
+  dispatch(addAddresses(saved));
   return <RouterProvider router={router} />;
 };
 
