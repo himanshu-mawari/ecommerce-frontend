@@ -1,103 +1,154 @@
 import { useSelector, useDispatch } from "react-redux";
-import { Link , useNavigate } from "react-router-dom";
-import { addSelectedAddressId } from "../store/addressSlice";
-
+import { Link, useNavigate } from "react-router-dom";
+import { selectAddress } from "../store/addressSlice";
+import { useState } from "react";
+import Toast from "../components/Toast.jsx"
 
 const AddressList = () => {
   const addresses = useSelector((store) => store.address.addresses);
   const selectedAddressId = useSelector(
     (store) => store.address.selectedAddressId,
   );
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleRadioChange = (id) => {
-    dispatch(addSelectedAddressId(id));
+  
+    dispatch(selectAddress(id));
   };
 
-  const handleEdit = (id) => {
-     navigate(`/address/edit/${id}`)
+  const handleEdit = (e, id) => {
+    e.stopPropagation();
+    navigate(`/address/edit/${id}`);
+  };
+
+ const handleShip = () => {
+  if (!selectedAddressId || selectedAddressId.length === 0) {
+    setToastMessage("Please select an address first");
+    setShowToast(true); 
+    return;
   }
+
+  navigate("/payment")
+  
+};
+
   return (
-    <div className="pt-4">
-      <div className="mb-4  ml-5 flex gap-4 items-center cursor-pointer">
-        <p>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="size-6"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
-            />
-          </svg>
-        </p>
+    <div className="pt-4 max-w-2xl mx-auto pb-8">
+      <div
+        className="mb-4 ml-5 flex gap-4 items-center cursor-pointer"
+        onClick={() => navigate(-1)}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-5 h-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="2"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
+          />
+        </svg>
         <h1 className="text-md font-semibold">Select Address</h1>
       </div>
-      <div className="border-t border-gray-300 px-5">
-        <div className="flex gap-3 items-center border-b border-gray-300 py-4">
+
+      <div className="border-t border-gray-200 px-5">
+        <div className="flex gap-4 items-center py-4">
           <Link to="/address/new">
-            <p>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="cursor-pointer"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="size-6"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M12 4.5v15m7.5-7.5h-15"
-                />
-              </svg>
-            </p>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="size-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="2.5"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 4.5v15m7.5-7.5h-15"
+              />
+            </svg>
           </Link>
-          <h1 className="text-lg font-semibold ">Add New Address</h1>
+          <h1 className="text-md font-semibold">Add New Address</h1>
         </div>
+
         {addresses.map((address) => (
-          <div className="flex justify-between py-5 cursor-pointer border-b border-gray-300 pb-6">
-            <div>
-              <h1 className="text-lg font-semibold mb-2">{address.name}</h1>
-              <div className="geist font-medium">
-                <p>
-                  {address.houseNo} {address.street}, {address.district}{" "}
+          <div
+          key={address.id}
+          onClick={() => handleRadioChange(address.id)}
+          className={` flex gap-8  py-6 border-t border-gray-300 cursor-pointer transition-all ${
+            address.id === selectedAddressId ? "bg-gray-50/50" : ""
+          }`}
+          >
+            <div className="flex-1">
+              <h1 className="text-lg font-semibold mb-1">{address.name}</h1>
+              <div className=" leading-5 text-sm font-medium geist  w-auto">
+                <p className="line-clamp-2">
+                  {address.houseNo}, {address.street}
                 </p>
                 <p>
-                  {address.state}-{address.pincode}
+                  {address.district},{" "}
+                  <span className="uppercase">{address.state}</span> -{" "}
+                  {address.pincode}
                 </p>
               </div>
-              <p className="text-gray-500 geist font-medium mb-4">
-                {address.phone}{" "}
-              </p>
-              <button className="border py-1 px-5 text-lg font-semibold rounded-4xl" onClick={() => handleEdit(address.id)}>
+              <p className="text-gray-500 mb-4 geist">{address.phone}</p>
+
+              <button
+                className="border border-gray-500 py-2 px-5 text-sm font-bold rounded-full hover:bg-black hover:text-white transition-all"
+                onClick={(e) => handleEdit(e, address.id)}
+              >
                 Edit
               </button>
             </div>
-            <input
-              type="radio"
-              checked={address.id === selectedAddressId}
-              onChange={() => handleRadioChange(address.id)}
-              className="relative appearance-none w-5 h-5 border border-gray-400 rounded-full bg-white checked:border-black checked:border-[5px]      transition-all cursor-pointer focus:outline-none"
-            />
+
+            <div className="flex items-start pt-1">
+              <input
+                type="radio"
+                name="address-selection"
+                checked={address.id === selectedAddressId}
+                onChange={() => handleRadioChange(address.id)}
+                className="
+                  appearance-none 
+                  w-6 h-6 
+                  border-2 border-gray-300 
+                  rounded-full 
+                  bg-white 
+                  checked:border-black 
+                  checked:border-[7px] 
+                  transition-all duration-200
+                  cursor-pointer 
+                  focus:outline-none
+                "
+              />
+            </div>
           </div>
         ))}
       </div>
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-gray-100 p-4 z-50 shadow-[0_-10px_20px_rgba(0,0,0,0.03)]">
-        <div className="max-w-md md:max-w-full flex justify-center py-1 ">
-          <button className="w-96 geist bg-black text-white py-3 rounded-full font-semibold text-md active:scale-[0.97] transition-all cursor-pointer">
-            Ship to this Address 
+
+      <div className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-lg border-t border-gray-200 p-4 z-50">
+        <div className="max-w-md mx-auto">
+          <button
+            className="w-full bg-black text-white py-3 rounded-full font-semibold  text-md geist active:scale-[0.98] transition-all shadow-lg"
+            onClick={() => handleShip()}
+          >
+            Ship to this Address
           </button>
         </div>
       </div>
+      <Toast 
+        message={toastMessage} 
+        isVisible={showToast} 
+        setIsVisible={setShowToast} 
+        duration={2500} 
+      />
     </div>
   );
 };

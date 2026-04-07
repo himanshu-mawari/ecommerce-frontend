@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { addAddresses } from "../store/addressSlice.js";
+import { addAddress, editAddress } from "../store/addressSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link, useParams } from "react-router-dom";
 import AddressForm from "../components/AddressForm.jsx";
@@ -51,13 +51,15 @@ const AddressNew = () => {
       console.error(err);
     }
   };
+
   useEffect(() => {
     if (form.pincode?.length === 6) {
       fetchRegion();
     }
   }, [form.pincode]);
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault()
     const errors = {};
     if (!form.name) errors.name = "Name is required";
     if (!/^[0-9]{10}$/.test(form.phone))
@@ -71,23 +73,11 @@ const AddressNew = () => {
       return;
     }
 
-    let updateAddress;
-
     if (isEdit) {
-      updateAddress = addresses.map((a) =>
-        a.id === Number(id) ? { ...form } : a,
-      );
+      dispatch(editAddress({ ...form, id: Number(id) }));
     } else {
-      const newAddress = {
-        id: Date.now(),
-        ...form,
-      };
-
-      updateAddress = [...addresses, newAddress];
+      dispatch(addAddress(form));
     }
-
-    localStorage.setItem("shippingAddress", JSON.stringify(updateAddress));
-    dispatch(addAddresses(updateAddress));
 
     navigate("/payment");
   };
@@ -115,13 +105,13 @@ const AddressNew = () => {
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              stroke-width="1.5"
+              strokeWidth="1.5"
               stroke="currentColor"
-              class="size-6"
+              className="size-6"
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
               />
             </svg>
@@ -160,6 +150,7 @@ const AddressNew = () => {
             handleChange={handleChange}
             error={error}
             onSubmit={handleSubmit}
+            isEdit={isEdit}
           />
         </div>
       </div>

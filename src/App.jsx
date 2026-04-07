@@ -6,15 +6,15 @@ import Cart from "./pages/Checkout.jsx";
 import Login from "./pages/Login.jsx";
 import AddressNew from "./pages/AddressNew.jsx";
 import AddressList from "./pages/AddressList.jsx";
-import { useDispatch } from "react-redux";
+import { useDispatch , useSelector } from "react-redux";
 import { addUser } from "./store/userSlice.js";
+import { selectAddress } from "./store/addressSlice.js";
 import { useEffect } from "react";
 import AuthGuard from "./components/AuthGuard.jsx";
 import Payment from "./pages/Payment.jsx";
 import PaymentGuard from "./components/PaymentGuard.jsx";
 import MainLayout from "./Layouts/MainLayout.jsx";
 import CheckoutLayout from "./Layouts/CheckoutLayout.jsx";
-import { addAddresses } from "./store/addressSlice";
 
 
 const router = createBrowserRouter([
@@ -60,6 +60,7 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
+  const addresses = useSelector(store => store.address.addresses);
   const dispatch = useDispatch();
   
   useEffect(() => {
@@ -69,9 +70,11 @@ const App = () => {
       dispatch(addUser(parseUserData));
     }
   }, [dispatch]);
+  
+  
 
-  const saved = JSON.parse(localStorage.getItem("shippingAddress")) || [];
-  dispatch(addAddresses(saved));
+ 
+
   return <RouterProvider router={router} />;
 };
 
