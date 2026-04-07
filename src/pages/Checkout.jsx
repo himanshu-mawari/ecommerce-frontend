@@ -33,7 +33,6 @@ const Cart = () => {
     new Intl.NumberFormat("en-IN", {
       maximumFractionDigits: 0,
     }).format(price);
-  console.log(cartData);
 
   const handleIncreaseQuantity = (id, size, quantity) => {
     return dispatch(increaseQuantity({ id, size, quantity }));

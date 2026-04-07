@@ -5,14 +5,16 @@ import { useNavigate, Link, useParams } from "react-router-dom";
 import AddressForm from "../components/AddressForm.jsx";
 
 const AddressNew = () => {
+  const user = useSelector((store) => store.user.user);
+
   const [form, setForm] = useState({
     pincode: "",
     houseNo: "",
     street: "",
-    name: "",
-    phone: "",
     district: "",
     state: "",
+    name: user?.name || "",
+    phone: user?.phone || "",
   });
   const [error, setErrors] = useState({});
 
@@ -32,8 +34,6 @@ const AddressNew = () => {
 
   const fetchRegion = async () => {
     try {
-      console.log(form.pincode.length);
-
       const res = await fetch(
         `https://api.postalpincode.in/pincode/${form.pincode}`,
       );
@@ -59,7 +59,7 @@ const AddressNew = () => {
   }, [form.pincode]);
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     const errors = {};
     if (!form.name) errors.name = "Name is required";
     if (!/^[0-9]{10}$/.test(form.phone))
@@ -97,8 +97,8 @@ const AddressNew = () => {
   };
 
   return (
-    <div className="py-4 pb-10 ">
-      <div className="mb-4  ml-5 flex gap-4 items-center ">
+    <div className="py-2 pb-12 relative">
+      <div className="sticky top-0 z-10 bg-white border-b border-gray-300 mb-4 py-4 ml-0 px-5 md:px-10 flex gap-4 items-center">
         <Link to="/address/saved">
           <p className="cursor-pointer">
             <svg
@@ -107,7 +107,7 @@ const AddressNew = () => {
               viewBox="0 0 24 24"
               strokeWidth="1.5"
               stroke="currentColor"
-              className="size-6"
+              className="size-5 md:size-6"
             >
               <path
                 strokeLinecap="round"
@@ -117,27 +117,28 @@ const AddressNew = () => {
             </svg>
           </p>
         </Link>
-        <h1 className="text-lg font-semibold">
+        <h1 className="text-lg md:text-xl font-semibold">
           {isEdit ? "Edit Address" : "Add New Address"}
         </h1>
       </div>
-      <div className="px-4 py-5 pb-16 border-t border-gray-300">
+
+      <div className="px-5 md:px-8 py-3">
         <div className="bg-[#f3f4f6] rounded-xl py-3 px-6 mb-6">
           {form.state === "" && form.district === "" ? (
             <>
-              <h3 className="text-lg tracking-tighter font-medium text-gray-900 ">
+              <h3 className="text-lg md:text-xl tracking-tighter font-medium text-gray-900 ">
                 Enter your pincode below
               </h3>
-              <p className="text-md text-gray-500 inter tracking-tighter">
+              <p className="text-md md:text-lg text-gray-500 inter tracking-tighter">
                 We'll detect your city and state
               </p>{" "}
             </>
           ) : (
             <>
-              <h3 className="text-lg  font-medium text-gray-900 ">
+              <h3 className="text-lg md:text-xl font-medium text-gray-900 ">
                 {form.state}, {form.district}
               </h3>
-              <p className="text-md text-gray-500 inter tracking-tighter">
+              <p className="text-md md:text-lg text-gray-500 inter tracking-tighter">
                 Location auto-detected
               </p>
             </>

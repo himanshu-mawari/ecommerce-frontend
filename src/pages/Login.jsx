@@ -6,13 +6,14 @@ import { useNavigate , useLocation } from "react-router-dom";
 const Login = () => {
   const [email, setEmail] = useState("himanshumawari2006@gmail.com");
   const [password, setPassword] = useState("Himanshu@123");
+  const [phone , setPhone] = useState("9873490596");
+  const [name , setName] = useState("")
   const [error, setError] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const redirect = new URLSearchParams(location.search).get("redirect");
 
-  console.log(location)
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -21,7 +22,7 @@ const Login = () => {
       return setError("please fill both field");
     }
 
-    const fakeUser = { id: Date.now().toString(), email}
+    const fakeUser = { id: Date.now().toString(), email , phone , name}
 
     dispatch(addUser(fakeUser));
     localStorage.setItem("user" ,JSON.stringify(fakeUser))
@@ -41,6 +42,19 @@ const Login = () => {
         </div>
 
         <form className="p-6 flex flex-col gap-4" onSubmit={handleSubmit}>
+          <div className="flex flex-col gap-1.5">
+            <input
+              type="text"
+              placeholder="full name"
+              value={name}
+              onChange={(e) => {
+                setName(e.target.value);
+                setError("");
+              }}
+              className="w-full px-4 py-2.5 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 
+                     focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+            />
+          </div>
           <div className="flex flex-col gap-1.5">
             <input
               type="email"
@@ -64,6 +78,20 @@ const Login = () => {
                 setError("");
               }}
               value={password}
+              className="w-full px-4 py-2.5 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 
+                     focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+            />
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <input
+              type="number"
+              placeholder="Phone number"
+              onChange={(e) => {
+                setPhone(e.target.value);
+                setError("");
+              }}
+              value={phone}
               className="w-full px-4 py-2.5 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 
                      focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
             />

@@ -11,7 +11,7 @@ const AddressForm = ({ form, handleChange, error, onSubmit, isEdit }) => {
     navigate("/address/saved");
   };
   return (
-    <form onSubmit={onSubmit} className="flex flex-col gap-5">
+    <form onSubmit={onSubmit} className="flex flex-col gap-5 md:gap-7">
       {[
         { label: "Pincode", name: "pincode", type: "number" },
         { label: "House/ Flat/ Office No.", name: "houseNo", type: "text" },
@@ -26,7 +26,7 @@ const AddressForm = ({ form, handleChange, error, onSubmit, isEdit }) => {
         <div key={field.name}>
           {field.name === "name" && (
             <div className="mt-2 mb-2">
-              <p className="text-gray-500 text-sm mb-4">
+              <p className="text-gray-500 text-sm md:text-md mb-4">
                 This will be saved as your primary address.
               </p>
               <hr className="border-gray-300 mb-6" />
@@ -41,7 +41,7 @@ const AddressForm = ({ form, handleChange, error, onSubmit, isEdit }) => {
                 onChange={handleChange}
                 placeholder=" "
                 rows={4}
-                className="peer w-full px-4 py-2.5 border border-gray-500 rounded-lg"
+                className="peer w-full px-4 py-2.5 md:py-3 border border-gray-500 rounded-lg"
               />
             ) : (
               <input
@@ -50,16 +50,16 @@ const AddressForm = ({ form, handleChange, error, onSubmit, isEdit }) => {
                 value={form[field.name]}
                 onChange={handleChange}
                 placeholder=" "
-                className="peer w-full px-4 py-3.5 border border-gray-500 rounded-lg"
+                className="peer w-full px-4 py-3.5 md:py-4 border border-gray-500 rounded-lg"
               />
             )}
 
-            <label
+            <label 
               className="absolute left-4 top-3.5 text-gray-500 transition-all cursor-text
                 peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base 
                 peer-focus:-top-2.5 peer-focus:left-3 peer-focus:text-sm peer-focus:bg-white peer-focus:px-1
                 /* This part keeps the label up if there is text in the field */
-                peer-[:not(:placeholder-shown)]:-top-2.5 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:text-sm peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-1"
+                peer-[:not(:placeholder-shown)]:-top-2.5 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:text-sm peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-1 md:font-semibold"
             >
               {field.label}
             </label>
@@ -74,7 +74,7 @@ const AddressForm = ({ form, handleChange, error, onSubmit, isEdit }) => {
       ))}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-gray-300 p-4 z-50 shadow-[0_-10px_20px_rgba(0,0,0,0.03)]">
         <div className="max-w-md md:max-w-full flex justify-center py-1 ">
-          <button className="w-96 geist bg-black text-white py-3 rounded-full font-semibold text-md active:scale-[0.97] transition-all cursor-pointer" type="submit">
+          <button className="w-96 md:w-full geist bg-black text-white py-3 rounded-full font-semibold text-md active:scale-[0.97] transition-all cursor-pointer" type="submit">
             Save Address & Pay
           </button>
         </div>
