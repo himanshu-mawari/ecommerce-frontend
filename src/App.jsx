@@ -8,7 +8,6 @@ import AddressNew from "./pages/AddressNew.jsx";
 import AddressList from "./pages/AddressList.jsx";
 import { useDispatch , useSelector } from "react-redux";
 import { addUser } from "./store/userSlice.js";
-import { selectAddress } from "./store/addressSlice.js";
 import { useEffect } from "react";
 import AuthGuard from "./components/AuthGuard.jsx";
 import Payment from "./pages/Payment.jsx";

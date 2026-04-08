@@ -98,7 +98,7 @@ const AddressNew = () => {
 
   return (
     <div className="py-2 pb-12 relative">
-      <div className="sticky top-0 z-10 bg-white border-b border-gray-300 mb-4 py-4 ml-0 px-5 md:px-10 flex gap-4 items-center">
+      <div className="sticky top-0 z-10 bg-white border-b border-gray-300 mb-4 py-4 ml-0 px-5 md:px-10 lg:px-14 xl:px-24 flex gap-4 items-center">
         <Link to="/address/saved">
           <p className="cursor-pointer">
             <svg
@@ -122,8 +122,8 @@ const AddressNew = () => {
         </h1>
       </div>
 
-      <div className="px-5 md:px-8 py-3">
-        <div className="bg-[#f3f4f6] rounded-xl py-3 px-6 mb-6">
+      <div className="px-5 md:px-8 xl:px-24 py-3">
+        <div className="bg-[#f3f4f6] rounded-xl py-3 lg:py-5 lg:px-8  px-6 mb-6">
           {form.state === "" && form.district === "" ? (
             <>
               <h3 className="text-lg md:text-xl tracking-tighter font-medium text-gray-900 ">
