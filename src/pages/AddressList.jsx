@@ -92,7 +92,7 @@ const AddressList = () => {
          
             <Link
               to="/address/new"
-              className="flex gap-3 items-center 
+              className="flex gap-3 items-center py-3
                lg:border lg:border-dashed lg:border-gray-300 
                lg:rounded-xl lg:flex-col lg:justify-center 
                lg:py-6 cursor-pointer hover:bg-gray-50 transition"
