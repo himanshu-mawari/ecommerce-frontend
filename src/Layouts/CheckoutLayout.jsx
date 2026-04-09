@@ -7,7 +7,7 @@ const CheckoutLayout = () => {
       </main>
 
       <footer className="pb-32 lg:pb-8 pt-4  border-t border-gray-300">
-        <p className="text-gray-500 px-4 text-center text-sm md:text-lg">
+        <p className="text-gray-500 px-4 text-center text-sm md:text-lg lg:text-sm">
           © 2026 Forever Buy • Secure checkout
         </p>
       </footer>

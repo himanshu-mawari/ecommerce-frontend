@@ -223,7 +223,7 @@ const Cart = () => {
               </div>
             </div>
 
-            <button className="hidden lg:block w-full bg-black text-white py-2 mt-8 rounded-full font-semibold text-lg hover:bg-gray-800 transition-all shadow-xl shadow-black/10"    onClick={() => handleCheckout()}>
+            <button className="hidden lg:block w-full bg-black text-white py-3 mt-8 rounded-full font-semibold text-lg cursor-pointer transition-all shadow-xl "    onClick={() => handleCheckout()}>
               Proceed to Buy
             </button>
           </div>

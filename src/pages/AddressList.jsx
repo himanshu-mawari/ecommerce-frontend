@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { selectAddress } from "../store/addressSlice";
 import { useState } from "react";
 import Toast from "../components/Toast.jsx";
+import { products } from "../assets/frontend_assets/assets";
 
 const AddressList = () => {
   const addresses = useSelector((store) => store.address.addresses);
@@ -10,9 +11,10 @@ const AddressList = () => {
   const selectedAddressId = useSelector(
     (store) => store.address.selectedAddressId,
   );
-  const [isOpen , setIsOpen] = useState(false)
   const [showToast, setShowToast] = useState(false);
+  const [isBagOpen, setIsBagOpen] = useState(false); // Default to open
   const [toastMessage, setToastMessage] = useState("");
+  const [isPriceOpen, setIsPriceOpen] = useState(false); // Price details usually start closed or open based on preference
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -35,11 +37,38 @@ const AddressList = () => {
     navigate("/payment");
   };
 
+  const formatPrice = (price) =>
+    new Intl.NumberFormat("en-IN", {
+      maximumFractionDigits: 0,
+    }).format(price);
+
+  console.log(cart);
+
+  const cartData = cart.map((item) => {
+    const product = products.find((p) => p._id === item.id);
+
+    if (!product) {
+      return null;
+    }
+
+    return product
+      ? { ...product, quantity: item.quantity, size: item.size }
+      : null;
+  });
+
+  const subTotal = cartData.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0,
+  );
+  const total = subTotal + 100;
+  console.log(subTotal);
   return (
     <div className="max-w-2xl md:max-w-full mx-auto pb-8">
-      <div className="sticky top-0 z-10 bg-white border-b border-gray-300 py-4 ml-0 px-5  md:px-8 flex gap-4 items-center">
+      <div className="sticky top-0 z-10 bg-white border-b border-gray-300 py-4 ml-0 px-5  md:px-8 lg:px-12 xl:px-24 flex gap-4 items-center">
         <Link to="/address/saved">
+          {" "}
           <p className="cursor-pointer">
+            {" "}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -58,13 +87,20 @@ const AddressList = () => {
         </Link>
         <h1 className="text-lg md:text-xl font-semibold">Select Address </h1>
       </div>
-      <div className="lg:flex">
-        <div className="lg:flex-9/12 px-5 md:px-8  lg:grid lg:grid-cols-2 lg:gap-5 lg:py-10">
-          <div className="flex gap-3 items-center py-4 lg:border lg:border-dashed lg:border-gray-300 lg:rounded-xl lg:flex-col lg:justify-center ">
-            <Link to="/address/new">
+      <div className="lg:grid lg:grid-cols-12 gap-6 xl:px-16">
+        <div className="lg:col-span-8 px-5 md:px-8 lg:grid lg:grid-cols-2 lg:py-10 lg:gap-x-8 lg:gap-y-5">
+         
+            <Link
+              to="/address/new"
+              className="flex gap-3 items-center 
+               lg:border lg:border-dashed lg:border-gray-300 
+               lg:rounded-xl lg:flex-col lg:justify-center 
+               lg:py-6 cursor-pointer hover:bg-gray-50 transition"
+               
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="size-5"
+                className="size-5 lg:size-6"
                 fill="none"
                 viewBox="0 0 24 24"
                 strokeWidth="2.5"
@@ -76,26 +112,26 @@ const AddressList = () => {
                   d="M12 4.5v15m7.5-7.5h-15"
                 />
               </svg>
+
+              <h1 className="text-md md:text-lg font-semibold">
+                Add New Address
+              </h1>
             </Link>
-            <h1 className="text-md md:text-lg  font-semibold">
-              Add New Address
-            </h1>
-          </div>
+          
 
           {addresses.map((address) => (
             <div
               key={address.id}
-              onClick={() => handleRadioChange(address.id)}
-              className={` flex gap-8 lg:px-6 lg:gap-8   py-6 lg:border border-t border-gray-300 cursor-pointer lg:rounded-xl transition-all ${
+              className={` flex gap-8 lg:gap-4 lg:px-8    py-6 lg:border border-t border-gray-300 cursor-pointer lg:rounded-xl transition-all ${
                 address.id === selectedAddressId ? "bg-gray-50/50" : ""
               }`}
             >
               <div className="flex-1">
-                <h1 className="text-lg md:text-xl font-semibold mb-1">
+                <h1 className="text-lg lg:text-xl md:text-xl font-semibold mb-1">
                   {address.name}
                 </h1>
-                <div className=" leading-5 md:leading-6 text-sm md:text-lg font-medium geist  w-auto">
-                  <p className="line-clamp-2">
+                <div className=" leading-5 md:leading-6 text-sm md:text-lg  font-semibold giest text-gray-500 w-auto">
+                  <p className="line-clamp-2 lg:line-clamp-3">
                     {address.houseNo}, {address.street}
                   </p>
                   <p>
@@ -104,19 +140,25 @@ const AddressList = () => {
                     {address.pincode}
                   </p>
                 </div>
-                <p className="text-gray-500 mb-4 md:mt-1 geist">
+                <p className="text-gray-500 mb-4 lg:mb-4 md:mt-1 geist">
                   {address.phone}
                 </p>
 
                 <button
-                  className="border border-gray-500 py-2 px-5 text-sm md:text-lg   font-bold rounded-full hover:bg-black hover:text-white transition-all"
+                  className="border border-gray-500 py-2 px-5 text-sm md:text-lg geist  active:scale-95  font-medium rounded-full cursor-pointer transition-all"
                   onClick={(e) => handleEdit(e, address.id)}
                 >
                   Edit
                 </button>
+                <button
+                  className="hidden lg:inline ml-2 border border-gray-500 py-2 px-5 text-sm md:text-lg geist  active:scale-95   font-medium rounded-full bg-black cursor-pointer text-white transition-all"
+                  onClick={() => navigate("/payment")}
+                >
+                  Deliver here
+                </button>
               </div>
 
-              <div className="flex items-start pt-1">
+              <div className="lg:hidden flex items-start pt-1">
                 <input
                   type="radio"
                   name="address-selection"
@@ -139,20 +181,24 @@ const AddressList = () => {
             </div>
           ))}
         </div>
-        <div className="border lg:flex-3/12">
-          <div>
-            <div className="flex justify-between px-4">
-              <h1>Bag</h1>
-              <div className="flex gap-2">
-                <p>{cart.length} Items</p>
-                <p onClick={setIsOpen(!isOpen)}>
+        <div className="hidden lg:grid lg:col-span-4 pt-7 h-fit sticky top-20 right-7">
+          <div className="border border-gray-300 rounded-2xl bg-white overflow-hidden ">
+            {/* --- BAG SECTION --- */}
+            <div
+              className="bg-white z-10 cursor-pointer border-b border-gray-200"
+              onClick={() => setIsBagOpen(!isBagOpen)}
+            >
+              <div className="flex justify-between items-center px-5 py-4">
+                <h1 className="text-xl inter font-medium">Bag</h1>
+                <div className="flex gap-2 text-lg text-gray-500 font-medium items-center">
+                  <p>{cart.length} Items</p>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
-                    className="size-6"
+                    className={`size-5 transition-transform duration-300 ${isBagOpen ? "" : "rotate-180"}`}
                   >
                     <path
                       strokeLinecap="round"
@@ -160,14 +206,88 @@ const AddressList = () => {
                       d="m19.5 8.25-7.5 7.5-7.5-7.5"
                     />
                   </svg>
-                </p>
-                {<div></div>}
+                </div>
               </div>
             </div>
+
+            {isBagOpen && (
+              <div className="max-h-[40vh] overflow-y-auto custom-scrollbar bg-gray-50/30">
+                {cart.map((items) => {
+                  const product = products.find((p) => p._id === items.id);
+                  return (
+                    <div
+                      key={items.id}
+                      className="py-5 px-5 inter border-b border-gray-200 last:border-b-0"
+                    >
+                      <div className="flex gap-4 pb-2">
+                        <img
+                          src={product.image[0]}
+                          className="w-16 h-20 object-cover rounded-lg"
+                        />
+                        <div className="pt-1 text-sm">
+                          <h1 className="font-medium">{product.name}</h1>
+                          <p className="text-gray-500">Size {items.size}</p>
+                          <p className="font-semibold mt-1">
+                            Rs {formatPrice(product.price * items.quantity)}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            {/* --- PRICE DETAILS SECTION --- */}
+            <div
+              className="bg-white z-10 cursor-pointer"
+              onClick={() => setIsPriceOpen(!isPriceOpen)}
+            >
+              <div className="flex justify-between items-center px-5 py-4">
+                <h1 className="text-xl inter font-medium">Price Details</h1>
+                <div className="flex gap-2 text-lg font-semibold items-center">
+                  <p className="text-gray-500 font-medium">Rs {total}</p>{" "}
+                  {/* Calculate total price in your component */}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className={`size-5 transition-transform duration-300 ${isPriceOpen ? "" : "rotate-180"}`}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+            {isPriceOpen && (
+              <div className="px-5 py-4 bg-gray-50/50 space-y-3 border-t border-gray-200">
+                <div className="flex justify-between text-gray-600">
+                  <p>Bag Total</p>
+                  <p>Rs {subTotal} </p>
+                </div>
+                <div className="flex justify-between text-gray-600">
+                  <p>Shipping fee</p>
+                  <p className=" font-medium">+ 100</p>
+                </div>
+
+                <hr className="border-gray-300" />
+                <div className="flex justify-between text-lg font-bold">
+                  <p>Order Total</p>
+                  <p>Rs {total}</p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
-      <div className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-lg border-t border-gray-200 p-4 z-50">
+
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-lg border-t border-gray-200 p-4 z-50">
         <div className="max-w-md md:max-w-full   mx-auto">
           <button
             className="w-full bg-black text-white py-3 rounded-full font-semibold  text-md geist active:scale-[0.98] transition-all shadow-lg"
