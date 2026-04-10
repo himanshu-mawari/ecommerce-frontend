@@ -21,47 +21,53 @@ const AddressList = () => {
   const handleRadioChange = (id) => {
     dispatch(selectAddress(id));
   };
-
+  
   const handleEdit = (e, id) => {
     e.stopPropagation();
     navigate(`/address/edit/${id}`);
   };
-
+  
   const handleShip = () => {
     if (!selectedAddressId || selectedAddressId.length === 0) {
       setToastMessage("Please select an address first");
       setShowToast(true);
       return;
     }
-
+    
     navigate("/payment");
   };
-
+  
   const formatPrice = (price) =>
     new Intl.NumberFormat("en-IN", {
       maximumFractionDigits: 0,
     }).format(price);
-
-  console.log(cart);
-
-  const cartData = cart.map((item) => {
+    
+    console.log(cart);
+    
+    const cartData = cart.map((item) => {
     const product = products.find((p) => p._id === item.id);
-
+    
     if (!product) {
       return null;
     }
-
+    
     return product
-      ? { ...product, quantity: item.quantity, size: item.size }
-      : null;
+    ? { ...product, quantity: item.quantity, size: item.size }
+    : null;
   });
-
+  
   const subTotal = cartData.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0,
   );
   const total = subTotal + 100;
-  console.log(subTotal);
+  
+  const handleSelectedAddress = (id) => {
+    
+    dispatch(selectAddress(id));
+    navigate("/payment")
+  }
+
   return (
     <div className="max-w-2xl md:max-w-full mx-auto pb-8">
       <div className="sticky top-0 z-10 bg-white border-b border-gray-300 py-4 ml-0 px-5  md:px-8 lg:px-12 xl:px-24 flex gap-4 items-center">
@@ -89,35 +95,32 @@ const AddressList = () => {
       </div>
       <div className="lg:grid lg:grid-cols-12 gap-6 xl:px-16">
         <div className="lg:col-span-8 px-5 md:px-8 lg:grid lg:grid-cols-2 lg:py-10 lg:gap-x-8 lg:gap-y-5">
-         
-            <Link
-              to="/address/new"
-              className="flex gap-3 items-center py-3
+          <Link
+            to="/address/new"
+            className="flex gap-3 items-center py-3
                lg:border lg:border-dashed lg:border-gray-300 
                lg:rounded-xl lg:flex-col lg:justify-center 
                lg:py-6 cursor-pointer hover:bg-gray-50 transition"
-               
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="size-5 lg:size-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="2.5"
+              stroke="currentColor"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="size-5 lg:size-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="2.5"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 4.5v15m7.5-7.5h-15"
-                />
-              </svg>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 4.5v15m7.5-7.5h-15"
+              />
+            </svg>
 
-              <h1 className="text-md md:text-lg font-semibold">
-                Add New Address
-              </h1>
-            </Link>
-          
+            <h1 className="text-md md:text-lg font-semibold">
+              Add New Address
+            </h1>
+          </Link>
 
           {addresses.map((address) => (
             <div
@@ -152,7 +155,7 @@ const AddressList = () => {
                 </button>
                 <button
                   className="hidden lg:inline ml-2 border border-gray-500 py-2 px-5 text-sm md:text-lg geist  active:scale-95   font-medium rounded-full bg-black cursor-pointer text-white transition-all"
-                  onClick={() => navigate("/payment")}
+                  onClick={() => handleSelectedAddress(address.id)}
                 >
                   Deliver here
                 </button>
