@@ -54,7 +54,7 @@ const DescriptionAccordion = ({ description }) => {
                   exchange page.
                 </li>
                 <li>
-                  For further assistance, email <b>help.allstag@gmail.com</b> or
+                  For further assistance, email <b>help.foreverbuy@gmail.com</b> or
                   Whatsapp <b>+917777019901</b>.
                 </li>
                 <li className="  italic text-gray-700">

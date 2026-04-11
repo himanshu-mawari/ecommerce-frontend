@@ -7,8 +7,8 @@ const Footer = () => {
 
   return (
     <div>
-      <div className="pt-28 pb-6 px-7 md:px-24 lg:px-28">
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-8">
+      <div className="pt-20 pb-10  px-7 md:px-24 lg:px-28 bg-gray-100">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-8 xl:pb-10">
           <div>
             <img src={assets.logo} className="w-32 mb-4" alt="Logo" />
             <p className="text-sm text-gray-600">
@@ -71,7 +71,7 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="border-t border-gray-200 mt-10 mb-5">
+      <div className="border-t border-gray-200 bg-gray-100 pb-5">
         <div className="max-w-7xl mx-auto px-4 sm:px-12 lg:px-28 pt-5 flex flex-col sm:flex-row items-center justify-between gap-3">
           {/* Left */}
           <div className="text-xs sm:text-sm text-gray-500 text-center sm:text-left">

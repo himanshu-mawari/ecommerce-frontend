@@ -88,31 +88,7 @@ const Home = () => {
         </div>
       </div>
 
-      {/*  UI implemented. Subscription logic pending backend API integration. */}
-      <div className="pt-5 pb-6 flex flex-col">
-        <h1 className="text-2xl font-semibold text-center">
-          Subscribe now & get 20% off
-        </h1>
-        <p className="text-center text-sm pt-2 pb-6 text-gray-400 ">
-          Be the first to get exclusive deals and updates
-        </p>
-        <div className="flex justify-center w-full px-4">
-          <div className="flex w-full max-w-md sm:max-w-lg md:max-w-xl">
-            <input
-              type="email"
-              disabled
-              placeholder="Enter your email"
-              className="border border-gray-300 py-3 px-5 text-sm flex-1 cursor-not-allowed bg-gray-100"
-            />
-            <button className="bg-black text-white text-sm py-3 px-6 cursor-not-allowed opacity-60">
-              SUBSCRIBE
-            </button>
-          </div>
-        </div>
-        <p className="text-center text-xs text-gray-400 mt-3">
-          Subscription feature coming soon
-        </p>
-      </div>
+      
     </div>
   );
 };

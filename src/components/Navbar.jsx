@@ -89,10 +89,10 @@ const Navbar = () => {
           ))}
         </ul>
 
-        <div className="flex items-center gap-6 ">
-          <img src={assets.searchIcon} className="w-5 cursor-pointer" />
+        <div className="flex items-center gap-6  ">
+          <img src={assets.searchIcon} className="w-5 cursor-pointer active:scale-95" />
 
-          <div className="relative group cursor-pointer">
+          <div className="relative group cursor-pointer active:scale-95">
             <img src={assets.profileIcon} className="w-5" />
 
             <div className="absolute top-full left-0 pt-4 hidden group-hover:block transition-all">
@@ -115,7 +115,7 @@ const Navbar = () => {
             </div>
           </div>
 
-          <div className="relative cursor-pointer">
+          <div className="relative cursor-pointer active:scale-95">
             <Link to="/checkout">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -132,8 +132,8 @@ const Navbar = () => {
                 />
               </svg>
             </Link>
-            <div className="absolute text-white rounded-full  bg-black -right-2 bottom-3">
-              <p className=" w-4 h-4 flex justify-center text-xs ">{cart.length}</p>
+            <div className={`absolute text-white rounded-full ${cart.length ?  "bg-black" : ""} -right-2 bottom-3`}>
+              <p className=" w-4 h-4 flex justify-center text-xs ">{cart.length ? cart.length : ""}</p>
             </div>
           </div>
 

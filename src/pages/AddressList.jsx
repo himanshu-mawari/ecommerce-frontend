@@ -12,8 +12,8 @@ const AddressList = () => {
     (store) => store.address.selectedAddressId,
   );
   const [showToast, setShowToast] = useState(false);
-  const [isBagOpen, setIsBagOpen] = useState(false); // Default to open
   const [toastMessage, setToastMessage] = useState("");
+  const [isBagOpen, setIsBagOpen] = useState(false); // Default to open
   const [isPriceOpen, setIsPriceOpen] = useState(false); // Price details usually start closed or open based on preference
   const dispatch = useDispatch();
   const navigate = useNavigate();

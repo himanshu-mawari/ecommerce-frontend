@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { products } from "../assets/frontend_assets/assets";
 import { addOrder } from "../store/orderSlice";
-import {clearCart} from "../store/cartSlice"
+
+import Toast from "../components/Toast";
 
 const Payment = () => {
   const addresses = useSelector((store) => store.address.addresses);
@@ -12,6 +13,7 @@ const Payment = () => {
   );
   const user = useSelector((store) => store.user.user);
   const cart = useSelector((store) => store.cart.items);
+  
 
 
   const selectedAddress = addresses.find(
@@ -20,7 +22,8 @@ const Payment = () => {
   const [isBagOpen, setIsBagOpen] = useState(false);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [method, setMethod] = useState();
-  const [error, setError] = useState(null);
+    const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userId = user.id;
@@ -53,12 +56,14 @@ const Payment = () => {
  const handlePlaceOrder = () => {
   console.log("handlePlaceOrder is execute")
   if (!selectedAddress) {
-    setError("Select address");
+    setToastMessage("Select address");
+    setShowToast(true)
     return;
   }
-
+  
   if (!method) {
-    setError("Select a payment method");
+    setToastMessage("Select a payment method");
+    setShowToast(true)
     return;
   }
 
@@ -75,11 +80,11 @@ const Payment = () => {
 
   if (method === "COD") {
     dispatch(addOrder(orderData));
-    dispatch(clearCart())
-    navigation("/order-sucess")
   } else {
     console.log("Online payment flow");
   }
+  navigate("/order-success")
+ 
 };
 
   return (
@@ -186,6 +191,7 @@ const Payment = () => {
                 </div>
               </div>
             </section>
+          
           </div>
 
           <aside className="lg:w-95 xl:w-105 w-full mt-10 lg:mt-0 lg:sticky lg:top-28">
@@ -298,13 +304,11 @@ const Payment = () => {
                 </div>
               </div>
             </div>
-            <p className="text-sm mt-3 ml-2 text-red-500">
-              {error ? error : ""}
-            </p>
+           
 
             <div className="hidden lg:block mt-8">
               <button
-                className="bg-black text-white py-4 w-full rounded-full font-semibold geist text-lg cursor-pointer flex items-center justify-center gap-3 active:scale-95 transition-all duration-400 shadow-xl hover:bg-gray-900 whitespace-nowrap px-6"
+                className="bg-black text-white py-4 w-full rounded-full font-semibold geist text-lg cursor-pointer flex items-center justify-center gap-3 active:scale-95 transition-all duration-400 shadow-xl  whitespace-nowrap px-6"
                 onClick={() => handlePlaceOrder()}
               >
                 <span>
@@ -346,6 +350,12 @@ const Payment = () => {
           </button>
         </div>
       </div>
+      <Toast
+        message={toastMessage}
+        isVisible={showToast}
+        setIsVisible={setShowToast}
+        duration={2500}
+      />
     </div>
   );
 };

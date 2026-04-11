@@ -14,6 +14,7 @@ import Payment from "./pages/Payment.jsx";
 import PaymentGuard from "./components/PaymentGuard.jsx";
 import MainLayout from "./Layouts/MainLayout.jsx";
 import CheckoutLayout from "./Layouts/CheckoutLayout.jsx";
+import OrderSuccess from "./pages/OrderSuccess.jsx"
 
 
 const router = createBrowserRouter([
@@ -27,6 +28,7 @@ const router = createBrowserRouter([
       { path: "/collections/:category/:gender", element: <Collection /> },
       { path: "/checkout", element: <Cart /> },
       { path: "/login", element: <Login /> },
+      { path: "/order-success", element: <OrderSuccess /> },
     ],
   },
   {

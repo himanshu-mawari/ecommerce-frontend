@@ -1,14 +1,29 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+
+const loadOrder = () => {
+  try {
+    const data = localStorage.getItem("orderDetails");
+    return data ? JSON.parse(data) : [];
+  } catch {
+    return [];
+  }
+};
+
+
+const saveOrder = (order) => {
+  localStorage.setItem("orderDetails", JSON.stringify(order));
+};
+
 const orderSlice = createSlice({
   name: "order",
   initialState: {
-    order: [],
+    order: loadOrder(),
   },
   reducers: {
     addOrder: (state, action) => {
-        console.log("addOrder is execute")
-      state.order.push(action.payload);
+      state.order.unshift(action.payload);
+            saveOrder(state.order);
     },
   },
 });

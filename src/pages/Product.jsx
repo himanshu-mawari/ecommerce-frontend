@@ -43,6 +43,7 @@ const Product = () => {
       size: selectedSize,
       quantity
     }))
+    setSelectedSize(null)
   };
 
   return (

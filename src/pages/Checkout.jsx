@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { products } from "../assets/frontend_assets/assets";
 import { increaseQuantity, decreaseQuantity } from "../store/cartSlice.js";
+import EmptyCart from "../components/EmptyCart.jsx";
 
 const Cart = () => {
   const items = useSelector((store) => store?.cart?.items);
@@ -54,6 +55,10 @@ const Cart = () => {
       navigate("/payment");
     }
   };
+
+  if (!items.length) {
+    return <EmptyCart />;
+  }
 
   return (
     <div className="border-t border-gray-300">
