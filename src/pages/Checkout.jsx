@@ -1,4 +1,4 @@
-import { useSelector, useDispatch , } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { products } from "../assets/frontend_assets/assets";
 import { increaseQuantity, decreaseQuantity } from "../store/cartSlice.js";
@@ -8,7 +8,8 @@ const Cart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const shippingCharges = 100;
-  const user = useSelector(store => store.user.user)
+  const user = useSelector((store) => store.user.user);
+  const address = useSelector((store) => store.address.addresses);
 
   const cartData = items
     .map((item) => {
@@ -43,8 +44,16 @@ const Cart = () => {
   };
 
   const handleCheckout = () => {
-    navigate(user ? "/address/saved" : "/login?redirect=address/saved")
-  }
+    if (!user) {
+      return navigate("/login?redirect=address/saved");
+    }
+
+    if (!address.length) {
+      return navigate("/address/new?redirect=payment");
+    } else {
+      navigate("/payment");
+    }
+  };
 
   return (
     <div className="border-t border-gray-300">
@@ -53,9 +62,7 @@ const Cart = () => {
           <div className="">
             <div className="bg-white">
               <div className="flex flex-col items-center md:items-start pt-8 pb-6 bg-white">
-                <h1 className="text-3xl  font-semibold text-black mb-1">
-                  Bag
-                </h1>
+                <h1 className="text-3xl  font-semibold text-black mb-1">Bag</h1>
                 <div className="flex items-center text-gray-500">
                   <span className="font-medium text-lg lg:text-sm">
                     {cartData.length} {cartData.length === 1 ? "item" : "items"}
@@ -223,14 +230,20 @@ const Cart = () => {
               </div>
             </div>
 
-            <button className="hidden lg:block w-full bg-black text-white py-3 mt-8 rounded-full font-semibold text-lg cursor-pointer transition-all shadow-xl "    onClick={() => handleCheckout()}>
+            <button
+              className="hidden lg:block w-full bg-black text-white py-3 mt-8 rounded-full font-semibold text-lg cursor-pointer transition-all shadow-xl "
+              onClick={() => handleCheckout()}
+            >
               Proceed to Buy
             </button>
           </div>
         </div>
       </div>
 
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-gray-100 p-4 z-50 shadow-[0_-10px_20px_rgba(0,0,0,0.03)]"    onClick={() => handleCheckout()}>
+      <div
+        className="lg:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-gray-100 p-4 z-50 shadow-[0_-10px_20px_rgba(0,0,0,0.03)]"
+        onClick={() => handleCheckout()}
+      >
         <div className="max-w-md md:max-w-full mx-auto">
           <button className="w-full bg-black text-white py-4 rounded-full font-bold text-md active:scale-[0.97] transition-all">
             Proceed to Buy

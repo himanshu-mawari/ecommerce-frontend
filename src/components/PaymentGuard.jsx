@@ -5,7 +5,7 @@ const PaymentGuard = ({ children }) => {
   const cart = useSelector((store) => store.cart.items);
 
   if (!userAddress || userAddress.length === 0) {
-    return <Navigate to={"/address/new"} replace />;
+    return <Navigate to={"/address/new?redirect=payment"} replace />;
   }
   if (!cart || cart.length === 0) {
     return <Navigate to={"/checkout"} replace />;

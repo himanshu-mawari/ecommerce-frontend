@@ -1,11 +1,19 @@
 import { useState, useEffect } from "react";
 import { addAddress, editAddress } from "../store/addressSlice.js";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, Link, useParams } from "react-router-dom";
+import {
+  useNavigate,
+  Link,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import AddressForm from "../components/AddressForm.jsx";
 
 const AddressNew = () => {
   const user = useSelector((store) => store.user.user);
+
+  const addresses = useSelector((store) => store.address.addresses);
+  const address = addresses.find((a) => a.id === Number(id));
 
   const [form, setForm] = useState({
     pincode: "",
@@ -20,11 +28,11 @@ const AddressNew = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const addresses = useSelector((store) => store.address.addresses);
+  const [searchParams] = useSearchParams();
   const { id } = useParams();
   const isEdit = Boolean(id);
 
-  const address = addresses.find((a) => a.id === Number(id));
+  const redirect = searchParams.get("redirect");
 
   useEffect(() => {
     if (isEdit && address) {
@@ -79,7 +87,7 @@ const AddressNew = () => {
       dispatch(addAddress(form));
     }
 
-    navigate("/payment");
+    navigate(redirect || "payment");
   };
 
   const handleChange = (e) => {
