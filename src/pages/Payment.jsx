@@ -13,8 +13,6 @@ const Payment = () => {
   );
   const user = useSelector((store) => store.user.user);
   const cart = useSelector((store) => store.cart.items);
-  
-
 
   const selectedAddress = addresses.find(
     (addr) => addr.id === selectedAddressId,
@@ -22,7 +20,7 @@ const Payment = () => {
   const [isBagOpen, setIsBagOpen] = useState(false);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [method, setMethod] = useState();
-    const [showToast, setShowToast] = useState(false);
+  const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -53,39 +51,37 @@ const Payment = () => {
     navigate("/address/saved");
   };
 
- const handlePlaceOrder = () => {
-  console.log("handlePlaceOrder is execute")
-  if (!selectedAddress) {
-    setToastMessage("Select address");
-    setShowToast(true)
-    return;
-  }
-  
-  if (!method) {
-    setToastMessage("Select a payment method");
-    setShowToast(true)
-    return;
-  }
+  const handlePlaceOrder = () => {
+    if (!selectedAddress) {
+      setToastMessage("Select address");
+      setShowToast(true);
+      return;
+    }
 
-  const orderData = {
-    userId,
-    items: cartData,
-    shippingAddress: selectedAddress,
-    subTotal,
-    shippingFee,
-    totalAmount: total,
-    status: "pending",
-    paymentDetails: { status: "pending", method },
+    if (!method) {
+      setToastMessage("Select a payment method");
+      setShowToast(true);
+      return;
+    }
+
+    const orderData = {
+      userId,
+      items: cartData,
+      shippingAddress: selectedAddress,
+      subTotal,
+      shippingFee,
+      totalAmount: total,
+      status: "pending",
+      paymentDetails: { status: "pending", method },
+    };
+
+    if (method === "COD") {
+      dispatch(addOrder(orderData));
+    } else {
+      console.log("Online payment flow");
+    }
+    navigate("/order-success");
   };
-
-  if (method === "COD") {
-    dispatch(addOrder(orderData));
-  } else {
-    console.log("Online payment flow");
-  }
-  navigate("/order-success")
- 
-};
 
   return (
     <div className="min-h-screen bg-gray-50/50">
@@ -154,7 +150,6 @@ const Payment = () => {
                       checked={method === "COD"}
                       onChange={(e) => {
                         setMethod(e.target.value);
-                        setError("");
                       }}
                       className="w-5 h-5 accent-black cursor-pointer"
                     />
@@ -175,7 +170,6 @@ const Payment = () => {
                       checked={method === "ONLINE"}
                       onChange={(e) => {
                         setMethod(e.target.value);
-                        setError("");
                       }}
                       className="w-5 h-5 accent-black cursor-pointer"
                     />
@@ -191,7 +185,6 @@ const Payment = () => {
                 </div>
               </div>
             </section>
-          
           </div>
 
           <aside className="lg:w-95 xl:w-105 w-full mt-10 lg:mt-0 lg:sticky lg:top-28">
@@ -304,7 +297,6 @@ const Payment = () => {
                 </div>
               </div>
             </div>
-           
 
             <div className="hidden lg:block mt-8">
               <button
@@ -345,7 +337,7 @@ const Payment = () => {
               ₹{formatPrice(total)}
             </span>
           </div>
-          <button className="flex-1 bg-black text-white py-4 px-6 rounded-full font-semibold geist   text-md active:scale-95 transition-all shadow-lg whitespace-nowrap">
+          <button className="flex-1 bg-black text-white py-4 px-6 rounded-full font-semibold geist   text-md active:scale-95 transition-all shadow-lg whitespace-nowrap" onClick={() => handlePlaceOrder()}>
             Confirm & {method === "COD" ? "Order" : "Pay"}
           </button>
         </div>

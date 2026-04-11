@@ -100,9 +100,11 @@ const Navbar = () => {
                 <p className="px-5 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-black cursor-pointer transition-colors duration-200">
                   My Profile
                 </p>
+                <Link to="/orders">
                 <p className="px-5 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-black cursor-pointer transition-colors duration-200">
                   Orders
                 </p>
+                </Link>
                 <p className="px-5 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-black cursor-pointer transition-colors duration-200">
                   Admin Panel
                 </p>

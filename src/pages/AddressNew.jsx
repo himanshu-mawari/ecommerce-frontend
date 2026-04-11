@@ -11,6 +11,7 @@ import AddressForm from "../components/AddressForm.jsx";
 
 const AddressNew = () => {
   const user = useSelector((store) => store.user.user);
+  const { id } = useParams();
 
   const addresses = useSelector((store) => store.address.addresses);
   const address = addresses.find((a) => a.id === Number(id));
@@ -29,7 +30,6 @@ const AddressNew = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { id } = useParams();
   const isEdit = Boolean(id);
 
   const redirect = searchParams.get("redirect");
@@ -87,7 +87,7 @@ const AddressNew = () => {
       dispatch(addAddress(form));
     }
 
-    navigate(redirect || "payment");
+    navigate(redirect || "/payment");
   };
 
   const handleChange = (e) => {
