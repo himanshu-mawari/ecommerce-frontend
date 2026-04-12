@@ -1,5 +1,5 @@
-import { Box, ChevronRight } from "lucide-react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const OrderCard = () => {
   const orderData = useSelector((store) => store.order.order);
@@ -9,83 +9,63 @@ const OrderCard = () => {
       maximumFractionDigits: 0,
     }).format(price);
 
-  console.log(orderData[0].items[0].image[0]);
+  const statusStyles = {
+    delivered: "bg-green-100 text-green-700",
+    shipped: "bg-blue-100 text-blue-700",
+    pending: "bg-yellow-100 text-yellow-600",
+    cancelled: "bg-red-100 text-red-700",
+  };
+
+  const extraItems = orderData.length - 1;
+
   return (
     <div className="w-full min-h-screen border-t border-gray-300 py-8 p-4 md:p-10 font-sans flex flex-col gap-6 lg:gap-8">
+      <h1 className="text-5xl font-semibold mb-4 tracking-tight">My Orders</h1>
       {orderData.map((order, index) => (
-        /* Card Container - added key and removed mx-auto if you want them centered via parent, 
-       but keeping mx-auto is safe for max-width constraints */
         <div
-          key={order._id || index}
-          className="w-full md:max-w-xl lg:max-w-2xl mx-auto bg-white rounded-3xl border border-gray-300 overflow-hidden transition-all "
+          className="bg-white border border-gray-200 rounded-xl p-5 mb-4"
+          key={index}
         >
-          {/* Header */}
-          <div className="px-5 py-5 md:p-8 flex justify-between items-start">
-            <div>
-              <h3 className="text-slate-900 font-bold text-lg md:text-xl tracking-tight">
-                Order #{order.orderId || "102913320"}
-              </h3>
-              <p className="text-slate-500 text-sm md:text-base mt-1">
-                {order.date || "11 Apr 2026"}
-              </p>
-            </div>
-            <div className="flex flex-col items-end gap-1">
-              <span className="px-3 py-1 shadow-sm text-[10px] md:text-xs font-bold rounded-full uppercase tracking-widest">
-                {order.status || "Shipped"}
-              </span>
-              <span className="text-xs mr-2 md:text-sm text-slate-400 font-medium">
-                Paid
-              </span>
-            </div>
-          </div>
-
-          {/* Item Info */}
-          <div className="px-6 md:px-8 pb-4">
-            <div className="flex items-center gap-4 md:gap-6 border-t pt-4 border-gray-100">
-              <div className="h-20 w-20 md:h-24 md:w-24 bg-[#F8FAFC] rounded-2xl flex items-center justify-center border border-slate-50 shrink-0">
-                {order.items[0]?.image[0] ? (
-                  <img
-                    src={order.items[0].image[0]}
-                    alt="product"
-                    className="w-16 object-contain"
-                  />
-                ) : (
-                  <Box
-                    className="text-slate-300 w-10 h-10 md:w-12 md:h-12"
-                    strokeWidth={1.5}
-                  />
-                )}
-              </div>
-
-              <div className="flex-1 min-w-0">
-                <h4 className="text-slate-900 font-bold text-sm md:text-lg truncate">
-                  {order.items[0]?.name}
-                </h4>
-                <p className="text-slate-400 text-xs md:text-sm mt-0.5">
-                  {order.items.length > 1
-                    ? `+${order.items.length - 1} more item`
-                    : "1 item total"}
-                </p>
-              </div>
-
-              <div className="text-right shrink-0">
-                <p className="text-slate-900 font-bold text-xl md:text-2xl tracking-tight">
-                  ₹{formatPrice(order.totalAmount)}
-                </p>
-                <p className=" text-[11px] md:text-xs font-bold mt-1">
-                  Est: 17 Apr 2026
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Action Footer */}
-          <button className="w-full py-5 md:py-6 bg-slate-50/50 hover:bg-slate-100 border-t border-gray-100 flex items-center justify-center gap-2 transition-colors group">
-            <span className="text-slate-600 font-semibold text-sm md:text-base">
-              View Details
+          <div className="flex justify-between items-start mb-4">
+            <span className="text-gray-400 text-sm geist font-medium">
+              {order.orderId}
             </span>
-            <ChevronRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform" />
-          </button>
+            <span
+              className={`px-3 py-1 rounded-full text-xs font-semibold ${statusStyles[order.status]}`}
+            >
+              {order.status}
+            </span>
+          </div>
+
+          <div className="flex justify-between items-end">
+            <div>
+              <div className="flex  gap-4">
+                <img src={order.items[0].image[0]} className="w-16 rounded-xl" alt="" />
+                <h3 className="text-gray-900 font-bold geist text-md  ">
+                  {order.items[0].name}
+                  {extraItems > 0 && (
+                    <span className="text-gray-400 ml-2 text-sm font-normal">
+                      {" "}
+                      +{extraItems} more
+                    </span>
+                  )}
+                </h3>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3 mt-4">
+                  <span className="text-gray-900 font-bold text-lg">
+                    ₹{formatPrice(order.totalAmount)}
+                  </span>
+                  <span className="text-gray-400 text-sm ml-2">5-april-2026</span>
+                </div>
+                <Link to={`/orders/${order.orderId}`}>
+                  <button className="px-4 py-2 border mt-2 border-gray-200 text-gray-700 cursor-pointer rounded-lg text-md geist font-medium  hover:bg-gray-100 transition-colors">
+                    View Details
+                  </button>
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
       ))}
     </div>

@@ -46,7 +46,7 @@ const Payment = () => {
   );
   const shippingFee = 100;
   const total = subTotal + shippingFee;
-
+  
   const handleChangeAddress = () => {
     navigate("/address/saved");
   };
@@ -64,7 +64,9 @@ const Payment = () => {
       return;
     }
 
+
     const orderData = {
+      orderId: crypto.randomUUID(),
       userId,
       items: cartData,
       shippingAddress: selectedAddress,
@@ -77,10 +79,10 @@ const Payment = () => {
 
     if (method === "COD") {
       dispatch(addOrder(orderData));
+      navigate("/order-success");
     } else {
       console.log("Online payment flow");
     }
-    navigate("/order-success");
   };
 
   return (
