@@ -58,7 +58,7 @@ const Home = () => {
 
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 md:grid-cols-3 xl:grid-cols-4">
           {bestSellers.map((productData) => (
-            <ProductCard data={productData} />
+            <ProductCard data={productData} key={productData._id} />
           ))}
         </div>
       </div>

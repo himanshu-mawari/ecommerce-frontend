@@ -3,7 +3,7 @@ import {Link} from "react-router-dom"
 const EmptyCart = () => {
   
   return (
-    <div className="flex flex-col items-center  py-48 xl:py-52 border-t border-gray-300">
+    <div className="flex flex-col items-center  py-48 xl:py-64 border-t border-gray-300">
         <div>
             
         <h1 className="text-center text-2xl md:text-3xl geist font-semibold ">Your bag is empty</h1>

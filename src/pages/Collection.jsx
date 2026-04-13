@@ -10,7 +10,7 @@ const Collection = () => {
     men: ["Men"],
     women: ["Women"],
     kids: ["Kids"],
-    "shop-all": ["Shop All"],
+    "shop-all": ["All Products"],
     "winter-collection": ["Winter", " Collection"],
   };
 
@@ -40,7 +40,7 @@ const heading =
     <div className="px-4 md:px-8 lg:px-14 xl:px-24   border-t border-gray-300">
       <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl xl:tracking-tight  font-semibold pt-8 pb-8 md:pb-10 poppins flex flex-col md:flex-row ">
         {heading.map((word, i) => (
-          <div key={i} className="pb-3 md:pr-2">
+          <div key={i} className="pb-3 md:pr-2 uppercase">
             {word}
           </div>
         ))}
