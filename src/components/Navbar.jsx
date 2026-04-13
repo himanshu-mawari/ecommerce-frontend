@@ -113,7 +113,7 @@ const Navbar = () => {
                 setIsDropDown(!isDropDowm);
               }}
               onMouseEnter={() =>
-                window.innerWidth > 768 && setIsDropDown(true)
+                window.innerWidth > 768 && setIsDropDown(!isDropDowm)
               }
             />
 

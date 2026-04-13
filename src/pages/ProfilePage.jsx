@@ -48,149 +48,166 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white min-h-screen font-sans px-4 text-black pb-20 py-4 border-t border-gray-300">
-      <h1 className="text-5xl font-semibold  pt-6 uppercase  pb-4">
+    <div className="max-w-7xl lg:max-w-full mx-auto bg-white min-h-screen font-sans px-4 md:px-12 lg:px-24 text-black pb-20 py-4 border-t border-gray-300">
+      {/* Header: Centered or Left Aligned */}
+      <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold pt-6 uppercase pb-8">
         My Profile
       </h1>
-      {/* 1. USER INFORMATION */}
-      <section className=" py-8 border-b border-gray-100">
-        <h2 className="text-xl geist pb-7 font-semibold">User Information</h2>
-        <div className="flex justify-between items-start mb-6">
-          <div>
-            <h1 className="text-md tracking-wide  font-semibold  ">
-              {user.name}
-            </h1>
-            <div className="mt-2 space-y-1">
-              <div className="flex items-center gap-2 text-gray-600">
-                <Mail size={16} />
-                <span className="text-sm">{user.email}</span>
-              </div>
-              <div className="flex items-center gap-2 text-gray-600">
-                <Phone size={16} />
-                <span className="text-sm">+91 {user.phone}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <button
-          className="w-full py-3 border cursor-pointer     border-black font-medium text-md rounded-full active:scale-95 transition-transform"
-          onClick={() => setIsEditOpen(!isEditOpen)}
-        >
-          Edit Profile
-        </button>
-      </section>
-      {isEditOpen && (
-        <div>
-          <form
-            className="space-y-6 max-w-md mx-auto p-4"
-            onSubmit={handleSubmit}
-          >
-            {profileFields.map((field) => (
-              <InputField
-                key={field.name}
-                field={field}
-                value={formData[field.name]}
-                onChange={handleChange}
-                className="w-full"
-              />
-            ))}
-            <div className="w-full flex justify-evenly">
-              <button
-                className=" py-3 px-6 bg-black text-white rounded-lg font-medium"
-                type="submit"
-              >
-                Save changes
-              </button>
-              <button className=" py-3 px-6 bg-black text-white rounded-lg font-medium">
-                Cancel
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
 
-      {/* 2. ADDRESS MANAGEMENT */}
-      <section className=" py-8 border-b border-gray-100">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl geist  font-semibold ">Shipping Addresses</h2>
+      {/* Main Content Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 xl:gap-18 items-start">
+        {/* Left Column (User & Address) - Takes 2/3 space on large screens */}
+        <div className="lg:col-span-2 space-y-12">
+          {/* 1. USER INFORMATION */}
+          <section className="pb-8 border-b border-gray-200">
+            <h2 className="text-xl font-semibold mb-6">User Information</h2>
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+              <div className="space-y-3">
+                <h3 className="text-lg font-semibold tracking-wide">
+                  {user.name}
+                </h3>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2 text-gray-600">
+                    <Mail size={18} />
+                    <span className="text-base">{user.email}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-gray-600">
+                    <Phone size={18} />
+                    <span className="text-base">+91 {user.phone}</span>
+                  </div>
+                </div>
+              </div>
+
+              {!isEditOpen && (
+                <button
+                  className="w-full md:w-auto px-10 py-3 border border-black font-medium text-md rounded-full hover:bg-black hover:text-white transition-all active:scale-95"
+                  onClick={() => setIsEditOpen(true)}
+                >
+                  Edit Profile
+                </button>
+              )}
+            </div>
+
+            {/* Edit Form (Full width within this section) */}
+            {isEditOpen && (
+              <div className="mt-8 p-6 bg-gray-50 rounded-2xl border border-gray-100">
+                <form className="space-y-6" onSubmit={handleSubmit}>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {profileFields.map((field) => (
+                      <InputField
+                        key={field.name}
+                        field={field}
+                        value={formData[field.name]}
+                        onChange={handleChange}
+                      />
+                    ))}
+                  </div>
+                  <div className="flex gap-4 pt-4">
+                    <button
+                      type="submit"
+                      className="flex-1 md:flex-none px-8 py-3 bg-black text-white rounded-full font-medium"
+                    >
+                      Save changes
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setIsEditOpen(false)}
+                      className="flex-1 md:flex-none px-8 py-3 border border-gray-300 rounded-full font-medium"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              </div>
+            )}
+          </section>
+
+          {/* 2. ADDRESS MANAGEMENT */}
+          <section className="pb-8 border-b border-gray-100">
+            <h2 className="text-xl font-semibold mb-6">Shipping Addresses</h2>
+            <div className="grid grid-cols-1  gap-4">
+              <div className="p-6 border border-gray-200 rounded-2xl flex flex-col justify-between hover:shadow-md transition-shadow">
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <MapPin size={20} className="text-black" />
+                    <span className="font-semibold uppercase text-xs tracking-widest text-gray-500">
+                      Default Address
+                    </span>
+                  </div>
+                  <h3 className="font-bold text-lg mb-1">
+                    {activeAddress.state}
+                  </h3>
+                  <p className="text-gray-500 text-sm leading-relaxed mb-4">
+                    {activeAddress.street} <br />
+                    Phone: {activeAddress.phone}
+                  </p>
+                </div>
+                <Link to="/address/saved" className="inline-block">
+                  <button className="text-black font-semibold border-b border-black text-sm pb-1 hover:text-gray-500 hover:border-gray-500 transition-all cursor-pointer">
+                    Manage all addresses
+                  </button>
+                </Link>
+              </div>
+            </div>
+          </section>
         </div>
 
-        <div className="space-y-4">
-          <div className="p-5 border border-gray-200 rounded-xl relative group">
-            <div className="flex items-center gap-2 mb-2">
-              <MapPin size={18} className="text-gray-400" />
-              <span className="font-semibold text-sm ">
-                {activeAddress.state}
-              </span>
+        {/* Right Column (Recent Orders) - Sticky on Desktop */}
+        <div className="lg:col-span-1 lg:sticky lg:top-8">
+          <section className="p-6 bg-gray-50 rounded-3xl">
+            <h2 className="text-xl font-semibold mb-6">Recent Orders</h2>
+            <div className="space-y-4">
+              {orders.slice(0, 2).map((order) => (
+                <div
+                  key={order.id}
+                  className="flex items-center justify-between p-4 bg-white rounded-2xl border border-gray-100 hover:border-gray-300 transition-all"
+                >
+                  <div className="flex items-center gap-4">
+                    <Link to={`/orders/${order.orderId}`} className="flex items-center justify-center gap-3">
+                      <div className="w-16 h-16 bg-gray-100 rounded-xl overflow-hidden ">
+                        {order.items[0]?.image[0] ? (
+                          <img
+                            src={order.items[0].image[0]}
+                            alt="product"
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <Package size={20} />
+                        )}
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold line-clamp-1 md:w-auto">
+                          {order.orderId}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          ₹ {order.totalAmount}
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                  <ChevronRight size={18} className="text-gray-400" />
+                </div>
+              ))}
             </div>
-            <p className="text-sm text-gray-500 leading-relaxed pb-3 ">
-              {activeAddress.street} <br />
-              Phone: {activeAddress.phone}
-            </p>
-            <Link to="/address/saved">
-              <button className="text-gray-600 bg-gray-200 hover:bg-gray-300 mt-2 px-4 py-1 active:scale-95 rounded-xl transition-all duration-300 cursor-pointer hover:border-gray-500 hover:pb-1">
-                Manage address
+            <Link to="/orders">
+              <button className="w-full mt-6 py-4 bg-white border border-gray-200 rounded-2xl font-semibold hover:bg-gray-100 transition-all">
+                View All Orders
               </button>
             </Link>
+          </section>
+
+          {/* 4. ACCOUNT ACTIONS */}
+          <div className="mt-8 px-6">
+            <button className="flex items-center gap-2 text-red-600 font-semibold py-2 group hover:opacity-70 transition-all">
+              <LogOut
+                size={20}
+                className="group-hover:-translate-x-1 transition-transform"
+              />
+              <span>Logout</span>
+            </button>
           </div>
         </div>
-      </section>
-
-      {/* 3. RECENT ORDERS */}
-      <section className=" py-8">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl geist font-semibold">Recent Orders</h2>
-        </div>
-
-        <div className="space-y-4">
-          {orders.slice(0,2).map((order) => (
-            <div
-              key={order.id}
-              className="flex items-center justify-between p-4 bg-gray-50 rounded-lg active:bg-gray-100 cursor-pointer transition-colors"
-            >
-              <div className="flex items-center gap-4">
-                <div className=" p-2 rounded-md ">
-                  {<img src={order.items[0].image[0]} className="w-20" /> || (
-                    <Package size={20} />
-                  )}
-                </div>
-                <div>
-                  <p className="text-sm font-semibold pb-1  tracking-tight">
-                    {order.orderId}
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    13-april-2026 • ₹ {order.totalAmount}
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <span
-                  className={`text-[10px] font-bold uppercase ${order.color}`}
-                >
-                  {order.status}
-                </span>
-                <ChevronRight size={16} className="text-gray-400" />
-              </div>
-            </div>
-          ))}
-        </div>
-<Link to="/orders">
-        <button className="w-full mt-6 py-4 flex items-center justify-center gap-2 text-md cursor-pointer font-medium border-b border-gray-200   hover:bg-gray-50">
-          View All Orders
-        </button>
-</Link>
-      </section>
-
-      {/* 4. ACCOUNT ACTIONS */}
-      <section className=" mt-4">
-        <button className="flex items-center gap-2 text-red-600 font-semibold   py-4 group cursor-pointer">
-          <LogOut
-            size={20}
-            className="group-hover:translate-x-1 transition-transform"
-          />
-          <span>Logout</span>
-        </button>
-      </section>
+      </div>
     </div>
   );
 };
