@@ -2,18 +2,27 @@ import { useState } from "react";
 import { assets } from "../assets/assets.js";
 import { NavLink, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import {
+  ChevronRight,
+  HelpCircle,
+  ShoppingBag,
+  Heart,
+  Package,
+  LogOut,
+  X
+} from "lucide-react";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isWinterOpen, setIsWinterOpen] = useState(false);
-  const cart = useSelector(store => store.cart.items)
+  const cart = useSelector((store) => store.cart.items);
 
   const navLinks = [
-    { label: "MEN", path: "/men" },
-    { label: "WOMEN", path: "/women" },
-    { label: "KIDS", path: "/kids" },
-    { label: "WINTERS", path: "/winter-collection" },
-    { label: "SHOP All", path: "/shop-all" },
+    { label: "Men", path: "/men" },
+    { label: "Women", path: "/women" },
+    { label: "Kids", path: "/kids" },
+    { label: "Winters", path: "/winter-collection" },
+    { label: "Shop all", path: "/shop-all" },
   ];
 
   return (
@@ -90,20 +99,25 @@ const Navbar = () => {
         </ul>
 
         <div className="flex items-center gap-6  ">
-          <img src={assets.searchIcon} className="w-5 cursor-pointer active:scale-95" />
+          <img
+            src={assets.searchIcon}
+            className="w-5 cursor-pointer active:scale-95"
+          />
 
           <div className="relative group cursor-pointer active:scale-95">
             <img src={assets.profileIcon} className="w-5" />
 
             <div className="absolute top-full left-0 pt-4 hidden group-hover:block transition-all">
               <div className="flex flex-col gap-1 w-40 py-3 px-0 bg-white shadow-[0px_15px_50px_rgba(0,0,0,0.1)] rounded-lg border border-gray-100 overflow-hidden animate-fadeIn">
+                <Link to="/profile-page">
                 <p className="px-5 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-black cursor-pointer transition-colors duration-200">
                   My Profile
                 </p>
+                </Link>
                 <Link to="/orders">
-                <p className="px-5 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-black cursor-pointer transition-colors duration-200">
-                  Orders
-                </p>
+                  <p className="px-5 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-black cursor-pointer transition-colors duration-200">
+                    Orders
+                  </p>
                 </Link>
                 <p className="px-5 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-black cursor-pointer transition-colors duration-200">
                   Admin Panel
@@ -134,8 +148,12 @@ const Navbar = () => {
                 />
               </svg>
             </Link>
-            <div className={`absolute text-white rounded-full ${cart.length ?  "bg-black" : ""} -right-2 bottom-3`}>
-              <p className=" w-4 h-4 flex justify-center text-xs ">{cart.length ? cart.length : ""}</p>
+            <div
+              className={`absolute text-white rounded-full ${cart.length ? "bg-black" : ""} -right-2 bottom-3`}
+            >
+              <p className=" w-4 h-4 flex justify-center text-xs ">
+                {cart.length ? cart.length : ""}
+              </p>
             </div>
           </div>
 
@@ -148,72 +166,141 @@ const Navbar = () => {
         </div>
       </div>
       <div
-        className={`fixed top-0 right-0 h-full  w-full sm:w-1/3 bg-white z-50 transform transition-transform duration-300 ${
+        className={`fixed top-0 right-0 h-full w-10/12  sm:w-5/12 bg-white z-50 transform transition-transform duration-300 overflow-auto ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        <div className="flex flex-col text-gray-600  h-full">
+        <div className="flex flex-col  h-full">
           <div
             onClick={() => setIsOpen(false)}
-            className="flex items-center gap-2 p-3 cursor-pointer"
+            className="flex justify-end gap-2 px-8 pt-8 cursor-pointer"
           >
-            <img src={assets.dropdownIcon} className="h-4 rotate-180" />
-            <p className="sm:text-lg">Back</p>
+            <X className="size-7"/>
           </div>
 
-          <div className="flex flex-col ml-4 text-lg sm:ml-6 sm:text-lg font-medium">
+          <div className="flex flex-col bg-white min-h-screen text-black font-sans pt-20 ">
             {navLinks.map((link) => {
               if (link.label === "WINTERS") {
                 return (
-                  <div key={link.label} className="flex flex-col border-b">
+                  <div key={link.label} className="flex flex-col">
+                    {/* Main Link Row */}
                     <div
                       onClick={() => setIsWinterOpen(!isWinterOpen)}
-                      className="py-3 pl-6 flex justify-between items-center pr-6 cursor-pointer hover:text-black"
+                      className="flex items-center justify-between px-8 py-2 cursor-pointer hover:bg-gray-50 transition-colors"
                     >
-                      <span>{link.label}</span>
-                      <img
-                        src={assets.dropdownIcon}
-                        className={`h-3 transition-transform ${isWinterOpen ? "-rotate-90" : "rotate-0"}`}
+                      <span className="text-2xl font-medium tracking-tight">
+                        {link.label}
+                      </span>
+                      <ChevronRight
+                        className={`w-7 h-7 transition-transform duration-300  ${
+                          isWinterOpen ? "rotate-90" : ""
+                        }`}
                       />
                     </div>
 
+                    {/* Collapsible Sub-menu */}
                     <div
-                      className={`overflow-hidden transition-all duration-300 bg-gray-50 ${isWinterOpen ? "max-h-40" : "max-h-0"}`}
+                      className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                        isWinterOpen
+                          ? "max-h-40 opacity-100"
+                          : "max-h-0 opacity-0"
+                      }`}
                     >
-                      <NavLink
-                        to="/collections/winter-collection/men"
-                        onClick={() => {
-                          setIsOpen(false);
-                        }}
-                        className="py-3 pl-12 block text-sm border-b hover:text-black"
-                      >
-                        Men
-                      </NavLink>
-                      <NavLink
-                        to="/collections/winter-collection/women"
-                        onClick={() => {
-                          setIsOpen(false);
-                        }}
-                        className="py-3 pl-12 block text-sm hover:text-black"
-                      >
-                        Women
-                      </NavLink>
+                      <div className="flex flex-col pb-2">
+                        <NavLink
+                          to="/collections/winter-collection/men"
+                          onClick={() => setIsOpen(false)}
+                          className="py-3 pl-10 text-lg text-gray-600 hover:text-black transition-colors"
+                        >
+                          Men
+                        </NavLink>
+                        <NavLink
+                          to="/collections/winter-collection/women"
+                          onClick={() => setIsOpen(false)}
+                          className="py-3 pl-10 text-lg text-gray-600 hover:text-black transition-colors"
+                        >
+                          Women
+                        </NavLink>
+                      </div>
                     </div>
                   </div>
                 );
               }
 
+              // Default styling for other links
               return (
                 <NavLink
                   key={link.label}
+                  to={link.path}
+                  className="flex items-center justify-between px-8 py-2  text-2xl inter  font-medium tracking-tight hover:bg-gray-50 transition-colors"
                   onClick={() => setIsOpen(false)}
-                  className="py-3 pl-6 border-b hover:text-black"
-                  to={`/collections/${link.path}`}
                 >
-                  {link.label}
+                  <span>{link.label}</span>
+                  <ChevronRight className="w-7 h-7 " />
                 </NavLink>
               );
             })}
+            <div className="mt-auto px-8 py-8 flex flex-col pt-20 gap-6">
+              <div className="flex flex-col gap-6">
+                <NavLink
+                  to="/help"
+                  className="flex items-center gap-4 text-xl font-medium"
+                >
+                  <HelpCircle className="w-6 h-6 text-gray-500" />
+                  <span>Help</span>
+                </NavLink>
+
+                <NavLink
+                  to="/cart"
+                  className="flex items-center gap-4 text-xl font-medium "
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    className="size-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
+                    />
+                  </svg>
+                  <p className="fixed bg-black text-[9px] flex justify-center text-white rounded-full w-3 h-3 left-12 bottom-52">1</p>
+                  <span>Bag</span>
+                </NavLink>
+
+                <NavLink
+                  to="/favourites"
+                  className="flex items-center gap-4 text-xl font-medium"
+                >
+                  <Heart className="w-6 h-6 text-gray-500" />
+                  <span>Favourites</span>
+                </NavLink>
+
+                <NavLink
+                  to="/orders"
+                  className="flex items-center gap-4 text-xl font-medium"
+                >
+                  <Package className="w-6 h-6 text-gray-500" />
+                  <span>Orders</span>
+                </NavLink>
+
+                <button className="flex items-center gap-4 text-xl font-medium mt-2">
+                  <LogOut className="w-6 h-6 text-gray-500" />
+                  <span>Logout</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Footer-style link (like 'Download Nike App') */}
+            <div className="mt-4 px-8 py-4">
+              <button className="text-xl font-medium hover:underline">
+                Download App
+              </button>
+            </div>
           </div>
         </div>
       </div>

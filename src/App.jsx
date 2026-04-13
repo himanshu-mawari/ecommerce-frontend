@@ -17,6 +17,7 @@ import CheckoutLayout from "./Layouts/CheckoutLayout.jsx";
 import OrderSuccess from "./pages/OrderSuccess.jsx"
 import Order from "./pages/Order.jsx"
 import OrderDetail from "./pages/OrderDetail.jsx"
+import ProfilePage from "./pages/ProfilePage.jsx";
 
 
 const router = createBrowserRouter([
@@ -28,6 +29,7 @@ const router = createBrowserRouter([
       { path: "/product/:id", element: <Product /> },
       { path: "/collections/:category", element: <Collection /> },
       { path: "/collections/:category/:gender", element: <Collection /> },
+      {path : "/profile-page" , element: <ProfilePage />},
       { path: "/checkout", element: <Cart /> },
       { path: "/login", element: <Login /> },
       { path: "/order-success", element: <OrderSuccess /> },
