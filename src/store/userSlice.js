@@ -9,6 +9,10 @@ const loadUser = () => {
   }
 };
 
+const savedUser = (user) => {
+  localStorage.setItem("user" , JSON.stringify(user))
+}
+
 const userSlice = createSlice({
   name: "user",
   initialState: {
@@ -18,11 +22,15 @@ const userSlice = createSlice({
     addUser: (state, action) => {
       state.user = action.payload;
     },
+    editUser: (state, action) => {
+      state.user = action.payload;
+      savedUser(action.payload)
+    },
     removeUser: () => {
       return null;
     },
   },
 });
 
-export const { addUser, removeUser } = userSlice.actions;
+export const { addUser, removeUser , editUser } = userSlice.actions;
 export default userSlice.reducer;
