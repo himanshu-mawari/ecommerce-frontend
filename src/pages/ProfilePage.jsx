@@ -1,7 +1,6 @@
 import {
   MapPin,
   Package,
-  Plus,
   ChevronRight,
   LogOut,
   Phone,
@@ -12,11 +11,15 @@ import { useDispatch, useSelector } from "react-redux";
 import InputField from "../components/InputField";
 import { editUser } from "../store/userSlice";
 import { Link } from "react-router-dom";
+import Toast from "../components/Toast.jsx";
 
 const ProfilePage = () => {
-  const user = useSelector((store) => store.user.user);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
 
+  const user = useSelector((store) => store.user.user);
   const address = useSelector((store) => store.address.addresses);
+
   const selectedAddressId = useSelector(
     (store) => store.address.selectedAddressId,
   );
@@ -45,6 +48,8 @@ const ProfilePage = () => {
 
   const handleSubmit = () => {
     dispatch(editUser(formData));
+    setToastMessage("Profile update successfully")
+    setShowToast(true)
   };
 
   return (
@@ -163,7 +168,10 @@ const ProfilePage = () => {
                   className="flex items-center justify-between p-4 bg-white rounded-2xl border border-gray-100 hover:border-gray-300 transition-all"
                 >
                   <div className="flex items-center gap-4">
-                    <Link to={`/orders/${order.orderId}`} className="flex items-center justify-center gap-3">
+                    <Link
+                      to={`/orders/${order.orderId}`}
+                      className="flex items-center justify-center gap-3"
+                    >
                       <div className="w-16 h-16 bg-gray-100 rounded-xl overflow-hidden ">
                         {order.items[0]?.image[0] ? (
                           <img
@@ -208,6 +216,12 @@ const ProfilePage = () => {
           </div>
         </div>
       </div>
+      <Toast
+        message={toastMessage}
+        isVisible={showToast}
+        setIsVisible={setShowToast}
+        duration={2500}
+      />
     </div>
   );
 };

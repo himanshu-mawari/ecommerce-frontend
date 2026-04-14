@@ -9,8 +9,11 @@ import { FaStar } from "react-icons/fa";
 import { FiStar } from "react-icons/fi";
 import { addProduct } from "../store/cartSlice.js";
 import { useDispatch } from "react-redux";
+import Toast from "../components/Toast.jsx";
 
 const Product = () => {
+    const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
   const { id } = useParams();
   const [selectedSize, setSelectedSize] = useState(null);
   const [quantity, setQuantity] = useState(1);
@@ -36,7 +39,7 @@ const Product = () => {
     if(!selectedSize){
      return setError("Please select a size")
     }
-
+    
     setError("")
     dispatch(addProduct({
       id : activeProduct._id,
@@ -44,7 +47,9 @@ const Product = () => {
       quantity
     }))
     setSelectedSize(null)
-  };
+    setToastMessage("Item added to cart")
+  setShowToast(true)
+  }
 
   return (
     <div className="border-t border-gray-200  px-3 w-full md:px-10">
@@ -137,6 +142,12 @@ const Product = () => {
       <div className="max-w-7xl mx-auto px-4 py-10">
         <Reviews productReview={activeProduct.reviews} />
       </div>
+       <Toast
+        message={toastMessage}
+        isVisible={showToast}
+        setIsVisible={setShowToast}
+        duration={2500}
+      />
     </div>
   );
 };

@@ -29,7 +29,7 @@ const router = createBrowserRouter([
       { path: "/product/:id", element: <Product /> },
       { path: "/collections/:category", element: <Collection /> },
       { path: "/collections/:category/:gender", element: <Collection /> },
-      {path : "/profile-page" , element: <ProfilePage />},
+      {path : "/profile-page" , element: <AuthGuard><ProfilePage /></AuthGuard>},
       { path: "/checkout", element: <Cart /> },
       { path: "/login", element: <Login /> },
       { path: "/order-success", element: <OrderSuccess /> },

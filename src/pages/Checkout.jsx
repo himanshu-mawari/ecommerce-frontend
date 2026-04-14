@@ -5,12 +5,14 @@ import { increaseQuantity, decreaseQuantity } from "../store/cartSlice.js";
 import EmptyCart from "../components/EmptyCart.jsx";
 
 const Cart = () => {
-  const items = useSelector((store) => store?.cart?.items);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const shippingCharges = 100;
+
+  const items = useSelector((store) => store?.cart?.items);
   const user = useSelector((store) => store.user.user);
   const address = useSelector((store) => store.address.addresses);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const cartData = items
     .map((item) => {

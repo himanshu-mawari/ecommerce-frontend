@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { products } from "../assets/frontend_assets/assets";
 import { addOrder } from "../store/orderSlice";
-
 import Toast from "../components/Toast";
 
 const Payment = () => {

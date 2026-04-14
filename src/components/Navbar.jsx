@@ -36,7 +36,7 @@ const Navbar = () => {
 
         <ul className="hidden lg:flex items-center gap-6">
           {navLinks.map((link) => (
-            <li key={link.label} className="relative group">
+            <li key={link.label} className="relative group uppercase">
               <NavLink
                 to={`/collections/${link.path}`}
                 className={({ isActive }) =>
@@ -118,7 +118,7 @@ const Navbar = () => {
             />
 
             <div
-              className={`absolute top-full -right-24 pt-4 ${isDropDowm ? "block" : "hidden"}   transition-all`}
+              className={`absolute top-full -right-24 pt-4 z-50 ${isDropDowm ? "block" : "hidden"}   transition-all`}
             >
               <div className="flex flex-col gap-1 w-32 py-3 px-0 bg-white shadow-[0px_15px_50px_rgba(0,0,0,0.1)] rounded-lg border border-gray-100 overflow-hidden animate-fadeIn">
                 <Link to="/profile-page">
