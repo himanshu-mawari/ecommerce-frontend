@@ -23,14 +23,3 @@ const Toast = ({ message, isVisible, setIsVisible, duration = 3000 }) => {
 };
 
 export default Toast;
-
-/**import Toast from "../components/Toast.jsx";
- *   const [showToast, setShowToast] = useState(false);
-   const [toastMessage, setToastMessage] = useState("");
-    <Toast
-        message={toastMessage}
-        isVisible={showToast}
-        setIsVisible={setShowToast}
-        duration={2500}
-      />
- */
