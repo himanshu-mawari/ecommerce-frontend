@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { assets } from "../assets/assets.js";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
   ChevronRight,
@@ -15,7 +15,11 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isWinterOpen, setIsWinterOpen] = useState(false);
   const [isDropDowm, setIsDropDown] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState(false);
   const cart = useSelector((store) => store.cart.items);
+
+  const navigate = useNavigate();
 
   const navLinks = [
     { label: "Men", path: "/men" },
@@ -24,6 +28,10 @@ const Navbar = () => {
     { label: "Winters", path: "/winter-collection" },
     { label: "Shop all", path: "/shop-all" },
   ];
+
+  const handleSearch = (searchTerm) => {
+    navigate(`/collections/shop-all?search=${searchTerm}`);
+  };
 
   return (
     <>
@@ -101,7 +109,9 @@ const Navbar = () => {
         <div className="flex items-center gap-6  ">
           <img
             src={assets.searchIcon}
-            className="w-5 cursor-pointer active:scale-95"
+            className="w-5 cursor-pointer active:scale-95  transition-transform"
+            onClick={() => setIsSearchOpen(!isSearchOpen)}
+            alt="search toggle"
           />
 
           <div className="relative  cursor-pointer active:scale-95">
@@ -113,6 +123,9 @@ const Navbar = () => {
                 setIsDropDown(!isDropDowm);
               }}
               onMouseEnter={() =>
+                window.innerWidth > 768 && setIsDropDown(!isDropDowm)
+              }
+              onMouseLeave={() =>
                 window.innerWidth > 768 && setIsDropDown(!isDropDowm)
               }
             />
@@ -177,6 +190,40 @@ const Navbar = () => {
           </div>
         </div>
       </div>
+      {isSearchOpen && (
+        <div
+          className={`overflow-hidden transition-all duration-300 ease-in-out bg-white border-b border-gray-100 ${isSearchOpen ? "max-h-24 opacity-100" : "max-h-0 opacity-0"}`}
+        >
+          <div className="max-w-4xl mx-auto px-4 py-4 flex items-center gap-4">
+            <div className="relative flex-1">
+              <input
+                type="text"
+                placeholder="Search for products..."
+                className="w-full bg-gray-50 border border-gray-200 rounded-full py-2.5 px-10 focus:outline-none focus:border-black transition-all text-sm"
+                autoFocus
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleSearch(searchTerm);
+                  }
+                }}
+              />
+              <img
+                src={assets.searchIcon}
+                className="w-4 absolute left-4 top-1/2 -translate-y-1/2 opacity-50"
+                alt="search"
+              />
+            </div>
+
+            <button
+              onClick={() => setIsSearchOpen(false)}
+              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            >
+              <X className="size-5 text-gray-500" />
+            </button>
+          </div>
+        </div>
+      )}
       <div
         className={`fixed top-0 right-0 h-full w-10/12  sm:w-5/12 bg-white z-50 transform transition-transform duration-300 overflow-auto ${
           isOpen ? "translate-x-0" : "translate-x-full"

@@ -2,10 +2,15 @@ import { useParams } from "react-router-dom";
 import { products } from "../assets/frontend_assets/assets.js";
 import ProductCard from "../components/ProductCard";
 import Empty from "../components/Empty.jsx";
+import { useLocation } from "react-router-dom";
 
 const Collection = () => {
   const { category, gender } = useParams();
+  const location = useLocation();
 
+  const categoryKey = category || "shop-all";
+  const search = new URLSearchParams(location.search).get("search") || "";
+  const searchKey = search.toLowerCase();
   const displayNameMap = {
     men: ["Men"],
     women: ["Women"],
@@ -15,27 +20,35 @@ const Collection = () => {
   };
 
   const filteredProductData = products.filter((p) => {
-    if (category === "shop-all") return true;
+    const name = p.name?.toLowerCase() || "";
+    const category = p.category?.toLowerCase() || "";
+    const productCategory = p.category?.toLowerCase() || "";
+    const subCategory = p.subCategory?.toLowerCase() || "";
 
-    if (category === "winter-collection") {
-      if (!gender) return false;
-      return (
-        p.subCategory?.toLowerCase() === "winterwear" &&
-        p.category?.toLowerCase() === gender
-      );
-    }
+    const matchesSearch = searchKey === "" || name.includes(searchKey) || category.includes(searchKey) ;
 
-    return p.category?.toLowerCase() === category;
+    const matchesShopAll = categoryKey === "shop-all";
+
+    const matchesWinter =
+      categoryKey !== "winter-collection"
+        ? true
+        : gender && subCategory === "winterwear" && productCategory === gender;
+
+    const matchesCategory = productCategory === categoryKey;
+
+    return (
+      matchesSearch && (matchesShopAll || matchesWinter || matchesCategory)
+    );
   });
 
   if (!filteredProductData || filteredProductData.length === 0) {
     return <Empty />;
   }
 
-const heading =
-  category === "winter-collection" && gender
-    ? displayNameMap[category]
-    : displayNameMap[category] || [category];
+  const heading =
+    category === "winter-collection" && gender
+      ? displayNameMap[category]
+      : displayNameMap[category] || [category];
   return (
     <div className="px-4 md:px-8 lg:px-14 xl:px-24   border-t border-gray-300">
       <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl xl:tracking-tight  font-semibold pt-8 pb-8 md:pb-10 poppins flex flex-col md:flex-row ">
