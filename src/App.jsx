@@ -24,60 +24,45 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
-    errorElement: <Error />, // ✅ global error handling
     children: [
-      { index: true, element: <Home /> },
-
-      // Product & collections
-      { path: "product/:id", element: <Product /> },
-      { path: "collections/:category", element: <Collection /> },
-      { path: "collections/:category/:gender", element: <Collection /> },
-
-      // Auth / profile
+      { path: "/", element: <Home /> },
+      { path: "/product/:id", element: <Product /> },
+      { path: "/collections/:category", element: <Collection /> },
+      { path: "/collections/:category/:gender", element: <Collection /> },
+      {path : "/profile-page" , element: <ProfilePage />},
+      {path : "/profile-page" , element: <AuthGuard><ProfilePage /></AuthGuard>},
+      { path: "/checkout", element: <Cart /> },
+      { path: "/login", element: <Login /> },
+      { path: "/order-success", element: <OrderSuccess /> },
+      {path: "/orders" , element: <Order />},
+      {path: "/orders/:id" , element: <OrderDetail />}
+    ],
+  },
+  {
+    path:"/",
+    element: <CheckoutLayout />,
+    children: [
       {
-        path: "profile-page",
+        path: "/address/saved",
         element: (
           <AuthGuard>
-            <ProfilePage />
+            <AddressList />
           </AuthGuard>
         ),
       },
-      { path: "login", element: <Login /> },
 
-      // Cart & orders
-      { path: "checkout", element: <Cart /> },
-      { path: "order-success", element: <OrderSuccess /> },
-      { path: "orders", element: <Order /> },
-      { path: "orders/:id", element: <OrderDetail /> },
-
-      // ✅ Nested checkout flow (separate layout)
+      { path: "/address/new", element: <AuthGuard> <AddressNew /> </AuthGuard>},
+      { path: "/address/edit/:id", element: <AuthGuard> <AddressNew /> </AuthGuard>},
       {
-        path: "address",
-        element: (
-          <AuthGuard>
-            <CheckoutLayout />
-          </AuthGuard>
-        ),
-        children: [
-          { path: "saved", element: <AddressList /> },
-          { path: "new", element: <AddressNew /> },
-          { path: "edit/:id", element: <AddressNew /> },
-        ],
-      },
-      {
-        path: "payment",
+        path: "/payment",
         element: (
           <AuthGuard>
             <PaymentGuard>
-              <CheckoutLayout />
+              <Payment />
             </PaymentGuard>
           </AuthGuard>
         ),
-        children: [{ index: true, element: <Payment /> }],
       },
-
-      // ✅ 404 fallback
-      {path:"*" , element: <Error/>}
     ],
   },
 ]);

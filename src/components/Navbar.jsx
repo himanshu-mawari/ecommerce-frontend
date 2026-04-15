@@ -50,7 +50,7 @@ const Navbar = () => {
                 {link.label}
               </NavLink>
               <div>
-                {link.label === "WINTERS" ? (
+                {link.label.toUpperCase() === "WINTERS" ? (
                   <div className="absolute top-full left-0 pt-2 hidden group-hover:block transition-all duration-300 z-50">
                     <div className="flex flex-col w-44 bg-white shadow-[0px_15px_50px_rgba(0,0,0,0.15)] rounded-xl border border-gray-100 overflow-hidden animate-fadeIn">
                       <NavLink
@@ -192,7 +192,7 @@ const Navbar = () => {
 
           <div className="flex flex-col bg-white min-h-screen text-black font-sans pt-20 ">
             {navLinks.map((link) => {
-              if (link.label === "WINTERS") {
+              if (link.label.toUpperCase() === "WINTERS") {
                 return (
                   <div key={link.label} className="flex flex-col">
                     {/* Main Link Row */}
@@ -264,28 +264,33 @@ const Navbar = () => {
 
                 <NavLink
                   to="/cart"
-                  className="flex items-center gap-4 text-xl font-medium "
+                  className="flex items-center gap-4 text-xl font-medium"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    className="size-6"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
-                    />
-                  </svg>
-                  <p className="fixed bg-black text-[9px] flex justify-center text-white rounded-full w-3 h-3 left-12 bottom-52">
-                    1
-                  </p>
+                  {/* Wrap the SVG in a relative div so the badge stays inside it */}
+                  <div className="relative">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                      className="size-7" // Increased size slightly for the mobile menu look
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
+                      />
+                    </svg>
+
+                    {/* Use absolute instead of fixed */}
+                    <p className="absolute -top-1 -right-1 bg-black text-[9px] flex items-center justify-center text-white rounded-full w-4 h-4">
+                      1
+                    </p>
+                  </div>
+
                   <span>Bag</span>
                 </NavLink>
-
                 <NavLink
                   to="/favourites"
                   className="flex items-center gap-4 text-xl font-medium"
@@ -307,13 +312,6 @@ const Navbar = () => {
                   <span>Logout</span>
                 </button>
               </div>
-            </div>
-
-            {/* Footer-style link (like 'Download Nike App') */}
-            <div className="mt-4 px-8 py-4">
-              <button className="text-xl font-medium hover:underline">
-                Download App
-              </button>
             </div>
           </div>
         </div>

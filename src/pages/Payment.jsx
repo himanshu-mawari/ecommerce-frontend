@@ -86,7 +86,7 @@ const Payment = () => {
 
   return (
     <div className="min-h-screen bg-gray-50/50">
-      <div className="sticky top-0 z-20 bg-white border-b border-gray-300 py-3 md:py-4 px-5 md:px-11 xl:px-24 flex gap-4 items-center">
+      <div className="lg:hidden lg:border-t lg:border-gray-200 sticky top-0 z-20 bg-white border-b border-gray-300 py-3 md:py-4 px-5 md:px-11 xl:px-24 flex gap-4 items-center">
         <Link to="/address/saved">
           <div className="cursor-pointer hover:bg-gray-100 p-2 rounded-full transition-colors">
             <svg
@@ -129,7 +129,7 @@ const Payment = () => {
                   <p>{selectedAddress?.phoneNumber || "+91-9873490461"}</p>
                 </div>
                 <button
-                  className="w-full md:w-auto px-8 rounded-full border border-gray-300 py-3 text-sm font-bold transition-all hover:bg-gray-50"
+                  className="w-full md:w-auto px-8 rounded-full border border-gray-300 py-3 text-sm font-bold transition-all hover:bg-gray-100 cursor-pointer"
                   onClick={() => handleChangeAddress()}
                 >
                   Change or Add Address

@@ -17,7 +17,7 @@ const EmptyState = () => {
       <div className="flex gap-3">
   
           <button
-            onClick={() => navigate("/collection/shop-all")}
+            onClick={() => navigate("/collections/shop-all")}
             className="px-5 py-2 bg-black text-white rounded-md"
           >
             Shop All
