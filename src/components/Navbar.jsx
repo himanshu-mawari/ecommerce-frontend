@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { assets } from "../assets/assets.js";
 import { NavLink, Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector , useDispatch} from "react-redux";
 import {
   ChevronRight,
   HelpCircle,
@@ -10,6 +10,7 @@ import {
   LogOut,
   X,
 } from "lucide-react";
+import {removeUser} from "../store/userSlice.js"
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,6 +21,7 @@ const Navbar = () => {
   const cart = useSelector((store) => store.cart.items);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const navLinks = [
     { label: "Men", path: "/men" },
@@ -32,6 +34,10 @@ const Navbar = () => {
   const handleSearch = (searchTerm) => {
     navigate(`/collections/shop-all?search=${searchTerm}`);
   };
+
+  const handleLogout = () => {
+    dispatch(removeUser())
+  }
 
   return (
     <>
@@ -149,7 +155,7 @@ const Navbar = () => {
                 </p>
                 <div className="my-1 border-t border-gray-100"></div>{" "}
                 {/* Subtle Divider */}
-                <p className="px-5 py-2 text-sm text-red-500 hover:bg-red-50 cursor-pointer transition-colors duration-200 font-medium">
+                <p className="px-5 py-2 text-sm text-red-500 hover:bg-red-50 cursor-pointer transition-colors duration-200 font-medium" onClick={handleLogout}>
                   Logout
                 </p>
               </div>

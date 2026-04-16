@@ -6,7 +6,7 @@ import Cart from "./pages/Checkout.jsx";
 import Login from "./pages/Login.jsx";
 import AddressNew from "./pages/AddressNew.jsx";
 import AddressList from "./pages/AddressList.jsx";
-import { useDispatch } from "react-redux";
+import { useDispatch , useSelector} from "react-redux";
 import { addUser } from "./store/userSlice.js";
 import { useEffect } from "react";
 import AuthGuard from "./components/AuthGuard.jsx";
@@ -20,6 +20,8 @@ import OrderDetail from "./pages/OrderDetail.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import Error from "./components/Error.jsx";
 import SignUp from "./pages/SignUp.jsx";
+import { hideToast } from "./store/toastSlice";
+import Toast from "./components/Toast.jsx"
 
 const router = createBrowserRouter([
   {
@@ -94,6 +96,8 @@ const router = createBrowserRouter([
 
 const App = () => {
   const dispatch = useDispatch();
+  const { message, isVisible } = useSelector((store) => store.toast);
+
 
   useEffect(() => {
     const fakeUser = localStorage.getItem("user");
@@ -103,7 +107,17 @@ const App = () => {
     }
   }, [dispatch]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <RouterProvider router={router} />{" "}
+      <Toast
+        message={message}
+        isVisible={isVisible}
+        setIsVisible={() => dispatch(hideToast())}
+        duration={2500}
+      />
+    </>
+  );
 };
 
 export default App;

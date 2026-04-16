@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addUser } from "../store/userSlice";
 import { useNavigate, useLocation, Link } from "react-router-dom";
-
+import { showToast } from "../store/toastSlice";
 
 const Login = () => {
   const [email, setEmail] = useState("himanshumawari2006@gmail.com");
@@ -13,22 +13,26 @@ const Login = () => {
   const location = useLocation();
   const redirect = new URLSearchParams(location.search).get("redirect");
 
+
+  
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    
     if (!email || !password) {
       return setError("please fill both field");
     }
-
+    
     const fakeUser = { id: Date.now().toString(), email, name };
-
+    
     dispatch(addUser(fakeUser));
     localStorage.setItem("user", JSON.stringify(fakeUser));
     navigate(redirect ? `/${redirect}` : "/");
+    dispatch(showToast("Login successful"));
   };
 
   return (
     <div className="py-20 flex items-center justify-center bg-gray-50 px-4 border-t border-gray-300">
+
       <div className="max-w-md w-full  bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
         <div className="pt-8 pb-4 px-6">
           <h1 className="text-2xl md:text-3xl font-bold text-center text-gray-900">
@@ -88,7 +92,7 @@ const Login = () => {
           
         </form>
       </div>
-    </div>
+     </div>
   );
 };
 

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addUser } from "../store/userSlice";
 import { useNavigate, useLocation, Link } from "react-router-dom";
+import { showToast } from "../store/toastSlice";
 
 const SignUp = () => {
   const [name, setName] = useState("Himanshu");
@@ -25,6 +26,7 @@ const SignUp = () => {
     dispatch(addUser(fakeUser));
     localStorage.setItem("user", JSON.stringify(fakeUser));
     navigate(redirect ? `/${redirect}` : "/");
+    dispatch(showToast("Signup successful. Complete your profile"));
   };
 
   return (

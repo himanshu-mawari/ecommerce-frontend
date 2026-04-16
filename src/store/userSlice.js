@@ -32,7 +32,13 @@ const userSlice = createSlice({
       savedUser(action.payload);
     },
     removeUser: () => {
-      return null;
+       const initialState = {
+    name: "",
+    phone: "",
+    email: "",
+  }
+      localStorage.removeItem("user")
+      return initialState;
     },
   },
 });
