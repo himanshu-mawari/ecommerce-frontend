@@ -16,9 +16,16 @@ import Toast from "../components/Toast.jsx";
 const ProfilePage = () => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+  const [isEditOpen, setIsEditOpen] = useState(false);
 
   const user = useSelector((store) => store.user.user);
   const address = useSelector((store) => store.address.addresses);
+
+  const [formData, setFormData] = useState({
+    name: user?.name || "",
+    phone: user?.phone || "",
+    email: user?.email || "",
+  });
 
   const selectedAddressId = useSelector(
     (store) => store.address.selectedAddressId,
@@ -27,12 +34,6 @@ const ProfilePage = () => {
 
   const activeAddress = address.find((addr) => addr.id === selectedAddressId);
   console.log(activeAddress);
-  const [isEditOpen, setIsEditOpen] = useState(false);
-  const [formData, setFormData] = useState({
-    name: user.name || "",
-    phone: user.phone || "",
-    email: user.email || "",
-  });
 
   const dispatch = useDispatch();
 
@@ -46,10 +47,12 @@ const ProfilePage = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     dispatch(editUser(formData));
-    setToastMessage("Profile update successfully")
-    setShowToast(true)
+    setToastMessage("Profile update successfully");
+    setShowToast(true);
+    setIsEditOpen(false);
   };
 
   return (
@@ -78,14 +81,16 @@ const ProfilePage = () => {
                   </div>
                   <div className="flex items-center gap-2 text-gray-600">
                     <Phone size={18} />
-                    <span className="text-base">+91 {user.phone}</span>
+                    <span className="text-base">
+                      {user?.phone ? `+91 ${user.phone}` : "Add phone number"}
+                    </span>
                   </div>
                 </div>
               </div>
 
               {!isEditOpen && (
                 <button
-                  className="w-full md:w-auto px-10 py-3 border border-black font-medium text-md rounded-full hover:bg-black hover:text-white transition-all active:scale-95"
+                  className="w-full md:w-auto px-10 py-3 border border-black font-medium text-md rounded-full hover:bg-black hover:text-white transition-all active:scale-95 duration-200 cursor-pointer"
                   onClick={() => setIsEditOpen(true)}
                 >
                   Edit Profile
@@ -100,9 +105,9 @@ const ProfilePage = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {profileFields.map((field) => (
                       <InputField
-                        key={field.name}
+                        key={field?.name}
                         field={field}
-                        value={formData[field.name]}
+                        value={formData[field?.name]}
                         onChange={handleChange}
                       />
                     ))}
@@ -110,14 +115,14 @@ const ProfilePage = () => {
                   <div className="flex gap-4 pt-4">
                     <button
                       type="submit"
-                      className="flex-1 md:flex-none px-8 py-3 bg-black text-white rounded-full font-medium"
+                      className="flex-1 md:flex-none px-8 py-3 bg-black text-white rounded-full font-medium cursor-pointer active:scale-95 duration-200"
                     >
                       Save changes
                     </button>
                     <button
                       type="button"
                       onClick={() => setIsEditOpen(false)}
-                      className="flex-1 md:flex-none px-8 py-3 border border-gray-300 rounded-full font-medium"
+                      className="flex-1 md:flex-none px-8 py-3 border border-gray-300 rounded-full font-medium cursor-pointer active:scale-95 duration-200"
                     >
                       Cancel
                     </button>
@@ -198,7 +203,7 @@ const ProfilePage = () => {
               ))}
             </div>
             <Link to="/orders">
-              <button className="w-full mt-6 py-4 bg-white border border-gray-200 rounded-2xl font-semibold hover:bg-gray-100 transition-all">
+              <button className="w-full mt-6 py-4 bg-white border border-gray-200 rounded-2xl cursor-pointer font-semibold hover:bg-gray-100 transition-all">
                 View All Orders
               </button>
             </Link>

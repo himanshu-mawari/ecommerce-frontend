@@ -114,7 +114,13 @@ const Navbar = () => {
             alt="search toggle"
           />
 
-          <div className="relative  cursor-pointer active:scale-95">
+          <div
+            className="relative  cursor-pointer active:scale-95"
+            onMouseEnter={() =>
+              window.innerWidth > 768 && setIsDropDown(!isDropDowm)
+            }
+            onMouseLeave={() => window.innerWidth > 768 && setIsDropDown(false)}
+          >
             <img
               src={assets.profileIcon}
               className="w-5"
@@ -122,12 +128,6 @@ const Navbar = () => {
                 e.stopPropagation();
                 setIsDropDown(!isDropDowm);
               }}
-              onMouseEnter={() =>
-                window.innerWidth > 768 && setIsDropDown(!isDropDowm)
-              }
-              onMouseLeave={() =>
-                window.innerWidth > 768 && setIsDropDown(!isDropDowm)
-              }
             />
 
             <div

@@ -11,7 +11,7 @@ const EmptyState = () => {
       <h2 className="text-2xl font-semibold mb-2">No Results Found</h2>
 
       <p className="text-gray-500 mb-6 max-w-md">
-        sorry, we couldn't find any products matching your filters
+        sorry, we couldn't find any products 
       </p>
 
       <div className="flex gap-3">

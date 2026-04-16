@@ -19,6 +19,7 @@ import Order from "./pages/Order.jsx";
 import OrderDetail from "./pages/OrderDetail.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import Error from "./components/Error.jsx";
+import SignUp from "./pages/SignUp.jsx";
 
 const router = createBrowserRouter([
   {
@@ -29,17 +30,25 @@ const router = createBrowserRouter([
       { path: "/product/:id", element: <Product /> },
       { path: "/collections/:category", element: <Collection /> },
       { path: "/collections/:category/:gender", element: <Collection /> },
-      {path : "/profile-page" , element: <ProfilePage />},
-      {path : "/profile-page" , element: <AuthGuard><ProfilePage /></AuthGuard>},
+      {
+        path: "/profile-page",
+        element: (
+          <AuthGuard>
+            <ProfilePage />
+          </AuthGuard>
+        ),
+      },
       { path: "/checkout", element: <Cart /> },
       { path: "/login", element: <Login /> },
+      { path: "/signup", element: <SignUp /> },
       { path: "/order-success", element: <OrderSuccess /> },
-      {path: "/orders" , element: <Order />},
-      {path: "/orders/:id" , element: <OrderDetail />}
+      { path: "/orders", element: <Order /> },
+      { path: "/orders/:id", element: <OrderDetail /> },
+      { path: "*", element: <Error /> },
     ],
   },
   {
-    path:"/",
+    path: "/",
     element: <CheckoutLayout />,
     children: [
       {
@@ -51,8 +60,24 @@ const router = createBrowserRouter([
         ),
       },
 
-      { path: "/address/new", element: <AuthGuard> <AddressNew /> </AuthGuard>},
-      { path: "/address/edit/:id", element: <AuthGuard> <AddressNew /> </AuthGuard>},
+      {
+        path: "/address/new",
+        element: (
+          <AuthGuard>
+            {" "}
+            <AddressNew />{" "}
+          </AuthGuard>
+        ),
+      },
+      {
+        path: "/address/edit/:id",
+        element: (
+          <AuthGuard>
+            {" "}
+            <AddressNew />{" "}
+          </AuthGuard>
+        ),
+      },
       {
         path: "/payment",
         element: (

@@ -86,7 +86,7 @@ const Payment = () => {
 
   return (
     <div className="min-h-screen bg-gray-50/50">
-      <div className="lg:hidden lg:border-t lg:border-gray-200 sticky top-0 z-20 bg-white border-b border-gray-300 py-3 md:py-4 px-5 md:px-11 xl:px-24 flex gap-4 items-center">
+      <div className=" lg:border-t lg:border-gray-200 sticky top-0 z-20 bg-white border-b border-gray-300 py-3 md:py-4 px-5 md:px-11 xl:px-24 flex gap-4 items-center">
         <Link to="/address/saved">
           <div className="cursor-pointer hover:bg-gray-100 p-2 rounded-full transition-colors">
             <svg
