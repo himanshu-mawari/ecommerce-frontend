@@ -26,6 +26,7 @@ const userSlice = createSlice({
   reducers: {
     addUser: (state, action) => {
       state.user = action.payload;
+      savedUser(action.payload)
     },
     editUser: (state, action) => {
       state.user = action.payload;

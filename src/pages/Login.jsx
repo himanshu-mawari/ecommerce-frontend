@@ -3,9 +3,10 @@ import { useDispatch } from "react-redux";
 import { addUser } from "../store/userSlice";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { showToast } from "../store/toastSlice";
+import {login} from "../services/authService.js"
 
 const Login = () => {
-  const [email, setEmail] = useState("himanshumawari2006@gmail.com");
+  const [email, setEmail] = useState("himanshumawari@gmail.com");
   const [password, setPassword] = useState("Himanshu@123");
   const [error, setError] = useState("");
   const dispatch = useDispatch();
@@ -15,17 +16,17 @@ const Login = () => {
 
 
   
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     if (!email || !password) {
       return setError("please fill both field");
     }
+    const user = await login(email , password);
     
-    const fakeUser = { id: Date.now().toString(), email, name };
     
-    dispatch(addUser(fakeUser));
-    localStorage.setItem("user", JSON.stringify(fakeUser));
+    dispatch(addUser(user?.data?.data));
+    localStorage.setItem("user", JSON.stringify(user?.data?.data));
     navigate(redirect ? `/${redirect}` : "/");
     dispatch(showToast("Login successful"));
   };
