@@ -6,7 +6,7 @@ import { showToast } from "../store/toastSlice";
 import {login} from "../services/authService.js"
 
 const Login = () => {
-  const [email, setEmail] = useState("himanshumawari@gmail.com");
+  const [email, setEmail] = useState("himanshumawari2006@gmail.com");
   const [password, setPassword] = useState("Himanshu@123");
   const [error, setError] = useState("");
   const dispatch = useDispatch();

@@ -12,11 +12,15 @@ import InputField from "../components/InputField";
 import { editUser } from "../store/userSlice";
 import { Link } from "react-router-dom";
 import Toast from "../components/Toast.jsx";
+import { logout } from "../services/authService.js";
+import { removeUser } from "../store/userSlice.js";
+import { useNavigate } from "react-router-dom";
 
 const ProfilePage = () => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [isEditOpen, setIsEditOpen] = useState(false);
+  const navigate = useNavigate();
 
   const user = useSelector((store) => store.user.user);
   const address = useSelector((store) => store.address.addresses);
@@ -55,18 +59,22 @@ const ProfilePage = () => {
     setIsEditOpen(false);
   };
 
+  const handleLogout = async () => {
+    await logout();
+    dispatch(removeUser());
+    navigate("/");
+    dispatch(showToast("Logout successful"));
+  };
+
   return (
     <div className="max-w-7xl lg:max-w-full mx-auto bg-white min-h-screen font-sans px-4 md:px-12 lg:px-24 text-black pb-20 py-4 border-t border-gray-300">
-      {/* Header: Centered or Left Aligned */}
       <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold pt-6 uppercase pb-8">
         My Profile
       </h1>
 
       {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 xl:gap-18 items-start">
-        {/* Left Column (User & Address) - Takes 2/3 space on large screens */}
         <div className="lg:col-span-2 space-y-12">
-          {/* 1. USER INFORMATION */}
           <section className="pb-8 border-b border-gray-200">
             <h2 className="text-xl font-semibold mb-6">User Information</h2>
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -98,7 +106,6 @@ const ProfilePage = () => {
               )}
             </div>
 
-            {/* Edit Form (Full width within this section) */}
             {isEditOpen && (
               <div className="mt-8 p-6 bg-gray-50 rounded-2xl border border-gray-100">
                 <form className="space-y-6" onSubmit={handleSubmit}>
@@ -132,7 +139,6 @@ const ProfilePage = () => {
             )}
           </section>
 
-          {/* 2. ADDRESS MANAGEMENT */}
           <section className="pb-8 border-b border-gray-100">
             <h2 className="text-xl font-semibold mb-6">Shipping Addresses</h2>
             <div className="grid grid-cols-1  gap-4">
@@ -162,7 +168,6 @@ const ProfilePage = () => {
           </section>
         </div>
 
-        {/* Right Column (Recent Orders) - Sticky on Desktop */}
         <div className="lg:col-span-1 lg:sticky lg:top-8">
           <section className="p-6 bg-gray-50 rounded-3xl">
             <h2 className="text-xl font-semibold mb-6">Recent Orders</h2>
@@ -209,9 +214,11 @@ const ProfilePage = () => {
             </Link>
           </section>
 
-          {/* 4. ACCOUNT ACTIONS */}
           <div className="mt-8 px-6">
-            <button className="flex items-center gap-2 text-red-600 font-semibold py-2 group hover:opacity-70 transition-all">
+            <button
+              className="flex items-center gap-2 text-red-600 font-semibold py-2 group hover:opacity-70 transition-all cursor-pointer"
+              onClick={handleLogout}
+            >
               <LogOut
                 size={20}
                 className="group-hover:-translate-x-1 transition-transform"

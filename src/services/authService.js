@@ -12,6 +12,10 @@ export const login = (email, password) => {
   );
 };
 
+export const signup = (name , email , password) => {
+  return axios.post(BASE_URL + "api/user/signup" , {name , email , password} , {withCredentials:true})
+}
+
 export const logout = () => {
   return axios.post(BASE_URL + "api/user/logout" , {} , {withCredentials : true});
 };

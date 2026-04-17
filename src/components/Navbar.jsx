@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { assets } from "../assets/assets.js";
 import { NavLink, Link, useNavigate } from "react-router-dom";
-import { useSelector , useDispatch} from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   ChevronRight,
   HelpCircle,
@@ -10,15 +10,16 @@ import {
   LogOut,
   X,
 } from "lucide-react";
-import {removeUser} from "../store/userSlice.js"
-import {logout} from "../services/authService.js";
+import { removeUser } from "../store/userSlice.js";
+import { logout } from "../services/authService.js";
+import { showToast } from "../store/toastSlice";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isWinterOpen, setIsWinterOpen] = useState(false);
   const [isDropDowm, setIsDropDown] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   const cart = useSelector((store) => store.cart.items);
 
   const navigate = useNavigate();
@@ -38,9 +39,10 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     await logout();
-    dispatch(removeUser())
-    navigate("/" , {replace: true})
-  }
+    dispatch(removeUser());
+    navigate("/");
+    dispatch(showToast("Logout successful"));
+  };
 
   return (
     <>
@@ -158,7 +160,10 @@ const Navbar = () => {
                 </p>
                 <div className="my-1 border-t border-gray-100"></div>{" "}
                 {/* Subtle Divider */}
-                <p className="px-5 py-2 text-sm text-red-500 hover:bg-red-50 cursor-pointer transition-colors duration-200 font-medium" onClick={handleLogout}>
+                <p
+                  className="px-5 py-2 text-sm text-red-500 hover:bg-red-50 cursor-pointer transition-colors duration-200 font-medium"
+                  onClick={handleLogout}
+                >
                   Logout
                 </p>
               </div>
@@ -363,7 +368,10 @@ const Navbar = () => {
                   <span>Orders</span>
                 </NavLink>
 
-                <button className="flex items-center gap-4 text-xl font-medium mt-2" onClick={handleLogout}>
+                <button
+                  className="flex items-center gap-4 text-xl font-medium mt-2"
+                  onClick={handleLogout}
+                >
                   <LogOut className="w-6 h-6 text-gray-500" />
                   <span>Logout</span>
                 </button>
