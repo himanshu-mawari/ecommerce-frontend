@@ -1,16 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const loadUser = () => {
-  const initialState = {
-    name: "",
-    phone: "",
-    email: "",
-  }
+  
   try {
     const data = localStorage.getItem("user");
-    return data ? JSON.parse(data) : initialState;
+    return data ? JSON.parse(data) : null;
   } catch {
-    return initialState;
+    return null;
   }
 };
 
@@ -33,13 +29,9 @@ const userSlice = createSlice({
       savedUser(action.payload);
     },
     removeUser: () => {
-       const initialState = {
-    name: "",
-    phone: "",
-    email: "",
-  }
+      
       localStorage.removeItem("user")
-      return initialState;
+      return {user:null};
     },
   },
 });

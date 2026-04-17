@@ -11,6 +11,7 @@ import {
   X,
 } from "lucide-react";
 import {removeUser} from "../store/userSlice.js"
+import {logout} from "../services/authService.js";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -35,8 +36,10 @@ const Navbar = () => {
     navigate(`/collections/shop-all?search=${searchTerm}`);
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await logout();
     dispatch(removeUser())
+    navigate("/" , {replace: true})
   }
 
   return (
@@ -360,7 +363,7 @@ const Navbar = () => {
                   <span>Orders</span>
                 </NavLink>
 
-                <button className="flex items-center gap-4 text-xl font-medium mt-2">
+                <button className="flex items-center gap-4 text-xl font-medium mt-2" onClick={handleLogout}>
                   <LogOut className="w-6 h-6 text-gray-500" />
                   <span>Logout</span>
                 </button>
