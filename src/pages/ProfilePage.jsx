@@ -15,6 +15,7 @@ import Toast from "../components/Toast.jsx";
 import { logout } from "../services/authService.js";
 import { removeUser } from "../store/userSlice.js";
 import { useNavigate } from "react-router-dom";
+import {userUpdateProfile} from "../services/userService.js";
 
 const ProfilePage = () => {
   const [showToast, setShowToast] = useState(false);
@@ -51,8 +52,11 @@ const ProfilePage = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  console.log(formData.phone)
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    await userUpdateProfile(formData.name , formData.phone , formData.email)
     dispatch(editUser(formData));
     setToastMessage("Profile update successfully");
     setShowToast(true);
