@@ -281,14 +281,14 @@ const Navbar = () => {
                     >
                       <div className="flex flex-col pb-2">
                         <NavLink
-                          to="/collections/winter-collection/men"
+                          to="/collections/winter-collection"
                           onClick={() => setIsOpen(false)}
                           className="py-3 pl-10 text-lg text-gray-600 hover:text-black transition-colors"
                         >
                           Men
                         </NavLink>
                         <NavLink
-                          to="/collections/winter-collection/women"
+                          to="/collections/winter-collection"
                           onClick={() => setIsOpen(false)}
                           className="py-3 pl-10 text-lg text-gray-600 hover:text-black transition-colors"
                         >

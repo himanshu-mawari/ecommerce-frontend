@@ -15,7 +15,7 @@ const ProductCard = ({ data }) => {
     <NavLink to={`/product/${data._id}`}>
       <div className="pb-5">
         <img
-          src={data.image[0]}
+          src={data.images[0].url }
           className="w-full h-auto object-cover transition-transform duration-300 hover:scale-105 rounded-lg"
         />
         <p className="text-sm pt-4 outfit text-gray-700 line-clamp-1 sm:line-clamp-2">
