@@ -12,48 +12,55 @@ import InputField from "../components/InputField";
 import { editUser } from "../store/userSlice";
 import { Link } from "react-router-dom";
 import Toast from "../components/Toast.jsx";
-import { logout } from "../services/authService.js";
 import { removeUser } from "../store/userSlice.js";
 import { useNavigate } from "react-router-dom";
-import {userUpdateProfile} from "../services/userService.js";
+import { useGetUserProfileQuery } from "../services/userService.js";
 
 const ProfilePage = () => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [isEditOpen, setIsEditOpen] = useState(false);
   const navigate = useNavigate();
+  
+  const {
+    data,
+    isLoading,
+    isError
+  } = useGetUserProfileQuery();
 
-  const user = useSelector((store) => store.user.user);
+  
+  const user = data?.user;
+  
   const address = useSelector((store) => store.address.addresses);
-
+  
   const [formData, setFormData] = useState({
     name: user?.name || "",
     phone: user?.phone || "",
     email: user?.email || "",
   });
-
+  
   const selectedAddressId = useSelector(
     (store) => store.address.selectedAddressId,
   );
   const orders = useSelector((store) => store.order.order);
-
+  
   const activeAddress = address.find((addr) => addr.id === selectedAddressId);
   console.log(activeAddress);
-
+  
   const dispatch = useDispatch();
-
+  
   const profileFields = [
     { name: "name", label: "Full Name", type: "text" },
     { name: "phone", label: "Phone Number", type: "tel" },
     { name: "email", label: "Email Address", type: "email" },
   ];
-
+  
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
+  
   console.log(formData.phone)
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     await userUpdateProfile(formData.name , formData.phone , formData.email)
@@ -62,14 +69,15 @@ const ProfilePage = () => {
     setShowToast(true);
     setIsEditOpen(false);
   };
-
+  
   const handleLogout = async () => {
     await logout();
     dispatch(removeUser());
     navigate("/");
     dispatch(showToast("Logout successful"));
   };
-
+  
+  if(isLoading) return <div>Loading....</div>
   return (
     <div className="max-w-7xl lg:max-w-full mx-auto bg-white min-h-screen font-sans px-4 md:px-12 lg:px-24 text-black pb-20 py-4 border-t border-gray-300">
       <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold pt-6 uppercase pb-8">

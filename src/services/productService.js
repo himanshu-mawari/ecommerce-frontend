@@ -20,6 +20,11 @@ export const singleProduct = (productId) => {
     withCredentials: true,
   });
 };
+export const homeProduct = () => {
+  return axios.get(BASE_URL + `api/products/home`, {
+    withCredentials: true,
+  });
+};
 export const listProduct = (filters) => {
   return axios.get(`${BASE_URL}api/products/list`, {
     params: filters,

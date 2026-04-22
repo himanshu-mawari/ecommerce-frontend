@@ -11,7 +11,6 @@ import {
   X,
 } from "lucide-react";
 import { removeUser } from "../store/userSlice.js";
-import { logout } from "../services/authService.js";
 import { showToast } from "../store/toastSlice";
 
 const Navbar = () => {
@@ -38,7 +37,6 @@ const Navbar = () => {
   };
 
   const handleLogout = async () => {
-    await logout();
     dispatch(removeUser());
     navigate("/");
     dispatch(showToast("Logout successful"));

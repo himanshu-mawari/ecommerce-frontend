@@ -1,18 +1,29 @@
-import axios from "axios";
-import { BASE_URL } from "../helpers/constant";
+import { baseApi } from "./baseApi.js";
 
-export const userProfile = () => {
-  return axios.get(
-    BASE_URL + "api/user/profile",
+export const userApi = baseApi.injectEndpoints({
+  endpoints: (builder) => ({
 
-    { withCredentials: true },
-  );
-};
+    getUserProfile: builder.query({
+      query: () => ({
+        url: "api/user/profile",
+        method: "GET",
+        credentials: "include",
+      }),
+    }),
 
-export const userUpdateProfile = (name, phone,email) => {
-  return axios.patch(
-    BASE_URL + "api/user/profile/update",
-    { name, phone, email },
-    { withCredentials: true },
-  );
-};
+    updateUserProfile: builder.mutation({
+      query: (data) => ({
+        url: "api/user/profile/update",
+        method: "PATCH",
+        body: data,
+        credentials: "include",
+      }),
+    }),
+
+  }),
+});
+
+export const {
+  useGetUserProfileQuery,
+  useUpdateUserProfileMutation,
+} = userApi;

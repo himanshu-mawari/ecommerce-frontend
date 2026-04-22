@@ -1,28 +1,14 @@
-import { useEffect } from "react";
 import Hero from "../components/Hero.jsx";
-import { products } from "../assets/frontend_assets/assets.js";
 import ProductCard from "../components/ProductCard.jsx";
 import { assets } from "../assets/assets.js";
-import { userProfile } from "../services/userService.js";
-import { addUser } from "../store/userSlice.js";
+import { useGetUserProfileQuery  } from "../services/userService.js";
 import { useDispatch } from "react-redux";
 
 const Home = () => {
-  const latestProducts = [...products].sort((a, b) => b.date - a.date);
-  const latestCollection = latestProducts.slice(0, 10);
+  const { data: userData } = useGetUserProfileQuery();
+  
 
-  const bestSellers = [...products].filter((p) => p.bestseller);
-
-  const dispatch = useDispatch();
-
-  const fetchUserData = async () => {
-    const userData = await userProfile();
-    dispatch(addUser(userData?.data?.user));
-  };
-
-  useEffect(() => {
-    fetchUserData();
-  }, []);
+ console.log(userData)
 
   return (
     <div className="px-4  sm:px-12 lg:px-28 ">

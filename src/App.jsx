@@ -7,8 +7,6 @@ import Login from "./pages/Login.jsx";
 import AddressNew from "./pages/AddressNew.jsx";
 import AddressList from "./pages/AddressList.jsx";
 import { useDispatch, useSelector } from "react-redux";
-import { addUser } from "./store/userSlice.js";
-import { useEffect } from "react";
 import AuthGuard from "./components/AuthGuard.jsx";
 import Payment from "./pages/Payment.jsx";
 import PaymentGuard from "./components/PaymentGuard.jsx";
@@ -22,6 +20,9 @@ import Error from "./components/Error.jsx";
 import SignUp from "./pages/SignUp.jsx";
 import { hideToast } from "./store/toastSlice";
 import Toast from "./components/Toast.jsx";
+import { useGetUserProfileQuery } from "./services/userService";
+
+
 
 const router = createBrowserRouter([
   {
@@ -93,18 +94,11 @@ const router = createBrowserRouter([
   },
 ]);
 
-const App = () => {
+const App =  () => {
   const dispatch = useDispatch();
   const { message, isVisible } = useSelector((store) => store.toast);
-
-  useEffect(() => {
-    const fakeUser = localStorage.getItem("user");
-    if (fakeUser) {
-      const parseUserData = JSON.parse(fakeUser);
-      dispatch(addUser(parseUserData));
-    }
-  }, [dispatch]);
-
+  useGetUserProfileQuery();
+ 
   return (
     <>
       <RouterProvider router={router} />{" "}

@@ -3,7 +3,6 @@ import { useDispatch } from "react-redux";
 import { addUser } from "../store/userSlice";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { showToast } from "../store/toastSlice";
-import {signup} from "../services/authService.js";
 
 const SignUp = () => {
   const [name, setName] = useState("Himanshu");
@@ -22,10 +21,10 @@ const SignUp = () => {
       return setError("please fill both field");
     }
    
-    const user = await signup(name , email , password);
+    // const user = await signup(name , email , password);
 
-    dispatch(addUser(user?.data?.data));
-    localStorage.setItem("user", JSON.stringify(user?.data?.data));
+    // dispatch(addUser(user?.data?.data));
+    // localStorage.setItem("user", JSON.stringify(user?.data?.data));
     navigate(redirect ? `/${redirect}` : "/");
     dispatch(showToast("Signup successful. Complete your profile"));
   };

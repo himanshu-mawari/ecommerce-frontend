@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import ProductCard from "../components/ProductCard";
-import { listProduct } from "../services/productService.js";
+import { listProduct , homeProduct } from "../services/productService.js";
 import { useParams } from "react-router-dom";
 
 const Collection = () => {
@@ -21,11 +21,13 @@ const Collection = () => {
     }
 
     const res = await listProduct(filters);
+   
     setProduct(res?.data?.data || []);
   };
 
   useEffect(() => {
     fetchCollectionProduct();
+    
   }, [category]);
   console.log(product);
 
