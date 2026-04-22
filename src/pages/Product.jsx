@@ -10,6 +10,7 @@ import { FiStar } from "react-icons/fi";
 import { addProduct } from "../store/cartSlice.js";
 import { useDispatch } from "react-redux";
 import Toast from "../components/Toast.jsx";
+import { useGetProductByIdQuery } from "../services/productService.js";
 
 const Product = () => {
     const [showToast, setShowToast] = useState(false);
@@ -20,7 +21,15 @@ const Product = () => {
   const [error , setError] = useState("")
   const dispatch = useDispatch();
 
-  const activeProduct = [...products].find((p) => p._id === id);
+const { data, isLoading, isError } =
+  useGetProductByIdQuery(id);
+
+  if(isLoading) return <div>Loading....</div>
+
+  const activeProduct = data?.data;
+  console.log(activeProduct)
+
+  // const activeProduct = [...products].find((p) => p._id === id);
   // const productReview = activeProduct.reviews;
   // const totalReview = activeProduct.reviews.length;
   const formatPrice = (price) =>
@@ -56,13 +65,13 @@ const Product = () => {
       <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-10">
         <div className="flex flex-col md:flex-row-reverse gap-4 items-start justify-start">
           <img
-            src={activeProduct.image || "https://c.saavncdn.com/artists/Shah_Rukh_Khan_500x500.jpg"}
+            src={activeProduct.images[0].url}
             className="w-full max-w-xs md:max-w-xl lg:max-w-lg xl:max-w-120 rounded-xl object-cover"
           />
 
           <div className="flex md:flex-col gap-2">
             <img
-              src={activeProduct.image}
+              src={activeProduct.images[0].url}
               alt="Thumbnail"
               className="w-16 md:w-20 rounded-lg border border-gray-200 cursor-pointer hover:border-black"
             />
