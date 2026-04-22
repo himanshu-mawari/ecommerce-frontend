@@ -1,14 +1,17 @@
 import Hero from "../components/Hero.jsx";
 import ProductCard from "../components/ProductCard.jsx";
 import { assets } from "../assets/assets.js";
-import { useGetUserProfileQuery  } from "../services/userService.js";
-import { useDispatch } from "react-redux";
+import { useGetUserProfileQuery } from "../services/userService.js";
+import { useGetHomeProductsQuery } from "../services/productService.js";
+import HomePageSkeleton from "../components/HomePageSkeleton.jsx";
 
 const Home = () => {
-  const { data: userData } = useGetUserProfileQuery();
-  
+   useGetUserProfileQuery();
 
- console.log(userData)
+  const { data: homeData, isLoading } = useGetHomeProductsQuery();
+
+  if (isLoading || !homeData?.data) return <HomePageSkeleton />;
+  const { latest, bestSeller } = homeData.data;
 
   return (
     <div className="px-4  sm:px-12 lg:px-28 ">
@@ -35,7 +38,7 @@ const Home = () => {
         </p>
 
         <div className="grid grid-cols-2 gap-6 sm:grid-cols-4 md:grid-cols-3 xl:grid-cols-4">
-          {latestCollection.map((productData) => (
+          {latest.map((productData) => (
             <ProductCard key={productData._id} data={productData} />
           ))}
         </div>
@@ -58,7 +61,7 @@ const Home = () => {
         </p>
 
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 md:grid-cols-3 xl:grid-cols-4">
-          {bestSellers.map((productData) => (
+          {bestSeller.map((productData) => (
             <ProductCard data={productData} key={productData._id} />
           ))}
         </div>

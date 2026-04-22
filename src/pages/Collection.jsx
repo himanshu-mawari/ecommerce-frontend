@@ -1,35 +1,27 @@
-import { useState, useEffect } from "react";
 import ProductCard from "../components/ProductCard";
-import { listProduct , homeProduct } from "../services/productService.js";
 import { useParams } from "react-router-dom";
+import { useGetProductsQuery } from "../services/productService.js";
 
 const Collection = () => {
-  const [product, setProduct] = useState([]);
-  const {category} = useParams();
+  const { category } = useParams();
 
-  const fetchCollectionProduct = async () => {
-    let filters = {};
+  let filters = {};
 
-    if(category === "shop-all"){
-      filters = {}
-    }
-    else if( ["men","women","kids"].includes(category)){
-      filters.category = category;
-    }
-    else{
-      filters.collectionType = category
-    }
+  if (category === "shop-all") {
+    filters = {};
+  } else if (["men", "women", "kids"].includes(category)) {
+    filters.category = category;
+  } else {
+    filters.collectionType = category;
+  }
 
-    const res = await listProduct(filters);
-   
-    setProduct(res?.data?.data || []);
-  };
+  const { data, isLoading, error } = useGetProductsQuery(filters);
+  console.log(data);
 
-  useEffect(() => {
-    fetchCollectionProduct();
-    
-  }, [category]);
-  console.log(product);
+  const products = data?.data || [];
+
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error...</p>;
 
   return (
     <div className="px-4 md:px-8 lg:px-14 xl:px-24 border-t border-gray-300">
@@ -38,7 +30,7 @@ const Collection = () => {
       </h1>
 
       <div className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-4 gap-6">
-        {product.map((p) => (
+        {products.map((p) => (
           <ProductCard key={p._id} data={p} />
         ))}
       </div>

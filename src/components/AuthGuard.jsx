@@ -7,7 +7,7 @@ const AuthGuard = ({ children }) => {
   const user  = data?.user;
 
   if(isLoading) return <div>Loading.....</div>
-  if (!user) {
+  if (!user || user === "undefined") {
     return <Navigate to={`/login?redirect=${location.pathname}`} replace />;
   }
 

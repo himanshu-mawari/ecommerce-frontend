@@ -1,14 +1,16 @@
+// tailwind.config.js
 export default {
   theme: {
     extend: {
       keyframes: {
-        slideDown: {
-          "0%": { opacity: "0", transform: "translate(-50%, -20px)" },
-          "100%": { opacity: "1", transform: "translate(-50%, 0)" },
+        shimmer: {
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(100%)" },
         },
       },
       animation: {
-        "slide-down": "slideDown 0.3s ease-out forwards",
+        // 1.5s is usually smoother than 1s for large areas like a Hero section
+        shimmer: "shimmer 2s infinite linear",
       },
     },
   },

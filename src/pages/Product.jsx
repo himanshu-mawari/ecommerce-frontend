@@ -21,8 +21,8 @@ const Product = () => {
   const dispatch = useDispatch();
 
   const activeProduct = [...products].find((p) => p._id === id);
-  const productReview = activeProduct.reviews;
-  const totalReview = activeProduct.reviews.length;
+  // const productReview = activeProduct.reviews;
+  // const totalReview = activeProduct.reviews.length;
   const formatPrice = (price) =>
     "Rs. " +
     new Intl.NumberFormat("en-IN", {
@@ -31,8 +31,8 @@ const Product = () => {
 
   const sizes = ["S", "M", "L", "XL", "XXL"];
 
-  const totalRating = productReview.reduce((acc, item) => acc + item.rating, 0);
-  const averageRating = Math.round(totalRating / totalReview);
+  // const totalRating = productReview.reduce((acc, item) => acc + item.rating, 0);
+  // const averageRating = Math.round(totalRating / totalReview);
 
   const handleAddProduct = () => {
    
@@ -56,7 +56,7 @@ const Product = () => {
       <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-10">
         <div className="flex flex-col md:flex-row-reverse gap-4 items-start justify-start">
           <img
-            src={activeProduct.image}
+            src={activeProduct.image || "https://c.saavncdn.com/artists/Shah_Rukh_Khan_500x500.jpg"}
             className="w-full max-w-xs md:max-w-xl lg:max-w-lg xl:max-w-120 rounded-xl object-cover"
           />
 
@@ -77,7 +77,7 @@ const Product = () => {
 
             <div className="flex items-center pt-2 gap-1">
               {[...Array(5)].map((_, i) =>
-                i < averageRating ? (
+                i < 1 ? (
                   <FaStar key={i} size={18} className="text-yellow-500" />
                 ) : (
                   <FiStar key={i} size={18} className="text-yellow-500" />

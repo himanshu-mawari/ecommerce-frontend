@@ -7,8 +7,8 @@ export const userApi = baseApi.injectEndpoints({
       query: () => ({
         url: "api/user/profile",
         method: "GET",
-        credentials: "include",
       }),
+      providesTags: ["User"],
     }),
 
     updateUserProfile: builder.mutation({
@@ -16,8 +16,8 @@ export const userApi = baseApi.injectEndpoints({
         url: "api/user/profile/update",
         method: "PATCH",
         body: data,
-        credentials: "include",
       }),
+      invalidatesTags: ["User"],
     }),
 
   }),

@@ -4,6 +4,7 @@ import { products } from "../assets/frontend_assets/assets";
 import { increaseQuantity, decreaseQuantity } from "../store/cartSlice.js";
 import EmptyCart from "../components/EmptyCart.jsx";
 
+
 const Cart = () => {
   const shippingCharges = 100;
 
