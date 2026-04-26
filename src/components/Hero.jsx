@@ -1,5 +1,3 @@
-import { assets } from "../assets/assets.js";
-
 const Hero = () => {
   return (
     <div className="flex flex-col sm:flex-row border border-gray-400">
@@ -27,7 +25,7 @@ const Hero = () => {
 
       <img
         className="w-full sm:w-1/2 object-cover"
-        src={assets.heroImage}
+        src="https://plus.unsplash.com/premium_photo-1706806943506-ab5ab9f6b45a?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8bWVuJTIwc3RyZWV0d2VhcnxlbnwwfHwwfHx8MA%3D%3D"
         alt="Hero"
       />
     </div>

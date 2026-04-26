@@ -1,13 +1,13 @@
-import { enrichedProducts } from "../assets/frontend_assets/assets.js";
 import ProductCard from "../components/ProductCard.jsx";
+import {
+  useGetRelatedProductQuery,
+} from "../services/productService.js";
 
-const RelatedProduct = ({ currentProduct }) => {
-  const similiar = enrichedProducts.filter(
-    (p) =>
-      p._id !== currentProduct._id &&
-      p.category === currentProduct.category &&
-      p.subCategory === currentProduct.subCategory,
-  );
+
+const RelatedProduct = ({ productId }) => {
+  
+    const {data:relatedProduct} = useGetRelatedProductQuery(productId);
+
 
   return (
     <>
@@ -18,7 +18,7 @@ const RelatedProduct = ({ currentProduct }) => {
       </h1>
     </div>
       <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-5 gap-4">
-        {similiar.map((p) => (
+        {relatedProduct?.data.map((p) => (
           <ProductCard key={p._id} data={p} />
         ))}
       </div>

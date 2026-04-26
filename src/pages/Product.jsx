@@ -1,5 +1,4 @@
 import { useParams } from "react-router-dom";
-import { products } from "../assets/frontend_assets/assets";
 import { useState } from "react";
 import QuantitySelector from "../components/QuantitySelector.jsx";
 import DescriptionAccordion from "../components/DescriptionAccordion.jsx";
@@ -10,28 +9,25 @@ import { FiStar } from "react-icons/fi";
 import { addProduct } from "../store/cartSlice.js";
 import { useDispatch } from "react-redux";
 import Toast from "../components/Toast.jsx";
-import { useGetProductByIdQuery } from "../services/productService.js";
+import {
+  useGetProductByIdQuery,
+} from "../services/productService.js";
 
 const Product = () => {
-    const [showToast, setShowToast] = useState(false);
+  const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const { id } = useParams();
   const [selectedSize, setSelectedSize] = useState(null);
   const [quantity, setQuantity] = useState(1);
-  const [error , setError] = useState("")
+  const [error, setError] = useState("");
   const dispatch = useDispatch();
 
-const { data, isLoading, isError } =
-  useGetProductByIdQuery(id);
+  const { data, isLoading } = useGetProductByIdQuery(id);
 
-  if(isLoading) return <div>Loading....</div>
+  
+  if (isLoading) return <div>Loading....</div>;
 
   const activeProduct = data?.data;
-  console.log(activeProduct)
-
-  // const activeProduct = [...products].find((p) => p._id === id);
-  // const productReview = activeProduct.reviews;
-  // const totalReview = activeProduct.reviews.length;
   const formatPrice = (price) =>
     "Rs. " +
     new Intl.NumberFormat("en-IN", {
@@ -40,26 +36,23 @@ const { data, isLoading, isError } =
 
   const sizes = ["S", "M", "L", "XL", "XXL"];
 
-  // const totalRating = productReview.reduce((acc, item) => acc + item.rating, 0);
-  // const averageRating = Math.round(totalRating / totalReview);
-
   const handleAddProduct = () => {
-   
-    if(!selectedSize){
-     return setError("Please select a size")
+    if (!selectedSize) {
+      return setError("Please select a size");
     }
-    
-    setError("")
-    dispatch(addProduct({
-      id : activeProduct._id,
-      size: selectedSize,
-      quantity
-    }))
-    setSelectedSize(null)
-    setToastMessage("Item added to cart")
-  setShowToast(true)
-  }
 
+    setError("");
+    dispatch(
+      addProduct({
+        id: activeProduct._id,
+        size: selectedSize,
+        quantity,
+      }),
+    );
+    setSelectedSize(null);
+    setToastMessage("Item added to cart");
+    setShowToast(true);
+  };
   return (
     <div className="border-t border-gray-200  px-3 w-full md:px-10">
       <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-10">
@@ -146,12 +139,12 @@ const { data, isLoading, isError } =
         </div>
       </div>
       <div className="max-w-7xl mx-auto px-4 pt-20">
-        <RelatedProduct currentProduct={activeProduct} />
+        <RelatedProduct productId={id} />
       </div>
       <div className="max-w-7xl mx-auto px-4 py-10">
         <Reviews productReview={activeProduct.reviews} />
       </div>
-       <Toast
+      <Toast
         message={toastMessage}
         isVisible={showToast}
         setIsVisible={setShowToast}
