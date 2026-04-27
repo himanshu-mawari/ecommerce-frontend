@@ -6,12 +6,10 @@ import RelatedProduct from "../components/RelatedProduct.jsx";
 import Reviews from "../components/Reviews.jsx";
 import { FaStar } from "react-icons/fa";
 import { FiStar } from "react-icons/fi";
-import { addProduct } from "../store/cartSlice.js";
 import { useDispatch } from "react-redux";
 import Toast from "../components/Toast.jsx";
-import {
-  useGetProductByIdQuery,
-} from "../services/productService.js";
+import { useGetProductByIdQuery } from "../services/productService.js";
+import { useAddToCartMutation } from "../services/cartService.js";
 
 const Product = () => {
   const [showToast, setShowToast] = useState(false);
@@ -20,11 +18,10 @@ const Product = () => {
   const [selectedSize, setSelectedSize] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [error, setError] = useState("");
-  const dispatch = useDispatch();
 
   const { data, isLoading } = useGetProductByIdQuery(id);
+  const [addToCart] = useAddToCartMutation();
 
-  
   if (isLoading) return <div>Loading....</div>;
 
   const activeProduct = data?.data;
@@ -36,19 +33,19 @@ const Product = () => {
 
   const sizes = ["S", "M", "L", "XL", "XXL"];
 
-  const handleAddProduct = () => {
+  const handleAddProduct = async () => {
     if (!selectedSize) {
       return setError("Please select a size");
     }
 
     setError("");
-    dispatch(
-      addProduct({
-        id: activeProduct._id,
-        size: selectedSize,
-        quantity,
-      }),
-    );
+
+    await addToCart({
+      productId: activeProduct._id,
+      size: selectedSize,
+      quantity,
+    });
+
     setSelectedSize(null);
     setToastMessage("Item added to cart");
     setShowToast(true);
