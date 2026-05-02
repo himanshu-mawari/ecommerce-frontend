@@ -4,69 +4,75 @@ import { selectAddress } from "../store/addressSlice";
 import { useState } from "react";
 import Toast from "../components/Toast.jsx";
 import { products } from "../assets/frontend_assets/assets";
+import { useGetAllAddressesQuery } from "../services/AddressService.js";
 
 const AddressList = () => {
-  const addresses = useSelector((store) => store.address.addresses);
+  
+    const [showToast, setShowToast] = useState(false);
+    const [toastMessage, setToastMessage] = useState("");
+    const [isBagOpen, setIsBagOpen] = useState(false);
+    const [isPriceOpen, setIsPriceOpen] = useState(false);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+  // const addresses = useSelector((store) => store.address.addresses);
   const cart = useSelector((store) => store.cart.items);
   const selectedAddressId = useSelector(
     (store) => store.address.selectedAddressId,
   );
-  const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
-  const [isBagOpen, setIsBagOpen] = useState(false); // Default to open
-  const [isPriceOpen, setIsPriceOpen] = useState(false); // Price details usually start closed or open based on preference
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+
+  const { data: addresses , isLoading } = useGetAllAddressesQuery();
+  // console.log(data)
+
+  if(isLoading) return <div>Loading</div>
 
   const handleRadioChange = (id) => {
     dispatch(selectAddress(id));
   };
-  
+
   const handleEdit = (e, id) => {
     e.stopPropagation();
     navigate(`/address/edit/${id}`);
   };
-  
+
   const handleShip = () => {
     if (!selectedAddressId || selectedAddressId.length === 0) {
       setToastMessage("Please select an address first");
       setShowToast(true);
       return;
     }
-    
+
     navigate("/payment");
   };
-  
+
   const formatPrice = (price) =>
     new Intl.NumberFormat("en-IN", {
       maximumFractionDigits: 0,
     }).format(price);
-    
-    console.log(cart);
-    
-    const cartData = cart.map((item) => {
+
+  console.log(cart);
+
+  const cartData = cart.map((item) => {
     const product = products.find((p) => p._id === item.id);
-    
+
     if (!product) {
       return null;
     }
-    
+
     return product
-    ? { ...product, quantity: item.quantity, size: item.size }
-    : null;
+      ? { ...product, quantity: item.quantity, size: item.size }
+      : null;
   });
-  
+
   const subTotal = cartData.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0,
   );
   const total = subTotal + 100;
-  
+
   const handleSelectedAddress = (id) => {
-    
     dispatch(selectAddress(id));
-    navigate("/payment")
-  }
+    navigate("/payment");
+  };
 
   return (
     <div className="max-w-2xl md:max-w-full mx-auto pb-8">
@@ -124,17 +130,20 @@ const AddressList = () => {
 
           {addresses.map((address) => (
             <div
-              key={address.id}
+              key={address._id}
               className={` flex gap-8 lg:gap-4 lg:px-8    py-6 lg:border border-t border-gray-300 cursor-pointer lg:rounded-xl transition-all ${
                 address.id === selectedAddressId ? "bg-gray-50/50" : ""
               }`}
             >
-              <div className="flex-1">
-                <h1 className="text-lg lg:text-xl md:text-xl font-semibold mb-1">
-                  {address.name}
-                </h1>
-                <div className=" leading-5 md:leading-6 text-sm md:text-lg  font-semibold giest text-gray-500 w-auto">
-                  <p className="line-clamp-2 lg:line-clamp-3">
+              <div className="flex-1 space-y-3">
+                <div className="flex items-center justify-between">
+                  <h1 className="text-lg font-bold text-gray-900 tracking-tight">
+                    {address.name}
+                  </h1>
+                </div>
+
+                <div className="text-sm md:text-base text-gray-600 leading-relaxed font-medium">
+                  <p className="line-clamp-2">
                     {address.houseNo}, {address.street}
                   </p>
                   <p>
@@ -142,25 +151,28 @@ const AddressList = () => {
                     <span className="uppercase">{address.state}</span> -{" "}
                     {address.pincode}
                   </p>
+
+                  <div className="mt-2 text-gray-500 font-normal">
+                    {address.phone}
+                  </div>
                 </div>
-                <p className="text-gray-500 mb-4 lg:mb-4 md:mt-1 geist">
-                  {address.phone}
-                </p>
 
-                <button
-                  className="border border-gray-500 py-2 px-5 text-sm md:text-lg geist  active:scale-95  font-medium rounded-full cursor-pointer transition-all"
-                  onClick={(e) => handleEdit(e, address.id)}
-                >
-                  Edit
-                </button>
-                <button
-                  className="hidden lg:inline ml-2 border border-gray-500 py-2 px-5 text-sm md:text-lg geist  active:scale-95   font-medium rounded-full bg-black cursor-pointer text-white transition-all"
-                  onClick={() => handleSelectedAddress(address.id)}
-                >
-                  Deliver here
-                </button>
+                <div className="flex items-center gap-2 pt-2">
+                  <button
+                    className="px-6 py-2 text-sm font-semibold rounded-full border border-gray-300 hover:border-black active:scale-95 transition-all"
+                    onClick={(e) => handleEdit(e, address._id)}
+                  >
+                    Edit
+                  </button>
+
+                  <button
+                    className="hidden lg:block px-7 py-2 text-sm font-semibold rounded-full bg-black text-white hover:bg-zinc-800 active:scale-95 transition-all"
+                    onClick={() => handleSelectedAddress(address._id)}
+                  >
+                    Deliver here
+                  </button>
+                </div>
               </div>
-
               <div className="lg:hidden flex items-start pt-1">
                 <input
                   type="radio"

@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { removeUser } from "../store/userSlice.js";
 import { showToast } from "../store/toastSlice";
+import { useGetCartQuery } from "../services/cartService.js";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,6 +21,8 @@ const Navbar = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const cart = useSelector((store) => store.cart.items);
+
+  const { data: cartData = [] } = useGetCartQuery();
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -47,10 +50,12 @@ const Navbar = () => {
       <div className="max-w-8xl mx-auto px-4 md:px-12 lg:px-14 xl:px-24 h-20 flex items-center justify-between">
         <div className="cursor-pointer">
           <NavLink to={"/"}>
-            <img src={assets.logo} className="w-36" />
+            <h1 className="monteserrat tracking-tighter font-medium text-4xl flex items-end">
+              FOREVER
+              <span className="mb-2 ml-1 h-2 w-2 rounded-full bg-indigo-300"></span>
+            </h1>
           </NavLink>
         </div>
-
         <ul className="hidden lg:flex items-center gap-6">
           {navLinks.map((link) => (
             <li key={link.label} className="relative group uppercase">
@@ -86,10 +91,8 @@ const Navbar = () => {
                         </span>
                       </NavLink>
 
-                      {/* Elegant Divider */}
                       <div className="h-1px w-[85%] bg-gray-100 mx-auto"></div>
 
-                      {/* Women Link */}
                       <NavLink
                         to="/collections/winter-collection/women"
                         onClick={() => {
@@ -186,10 +189,10 @@ const Navbar = () => {
               </svg>
             </Link>
             <div
-              className={`absolute text-white rounded-full ${cart.length ? "bg-black" : ""} -right-2 bottom-3`}
+              className={`absolute text-white rounded-full ${cartData.length ? "bg-black" : ""} -right-2 bottom-3`}
             >
               <p className=" w-4 h-4 flex justify-center text-xs ">
-                {cart.length ? cart.length : ""}
+                {cartData.length ? cartData.length : ""}
               </p>
             </div>
           </div>
@@ -269,7 +272,6 @@ const Navbar = () => {
                       />
                     </div>
 
-                    {/* Collapsible Sub-menu */}
                     <div
                       className={`overflow-hidden transition-all duration-300 ease-in-out ${
                         isWinterOpen
@@ -298,7 +300,6 @@ const Navbar = () => {
                 );
               }
 
-              // Default styling for other links
               return (
                 <NavLink
                   key={link.label}
@@ -325,7 +326,6 @@ const Navbar = () => {
                   to="/cart"
                   className="flex items-center gap-4 text-xl font-medium"
                 >
-                  {/* Wrap the SVG in a relative div so the badge stays inside it */}
                   <div className="relative">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -342,7 +342,6 @@ const Navbar = () => {
                       />
                     </svg>
 
-                    {/* Use absolute instead of fixed */}
                     <p className="absolute -top-1 -right-1 bg-black text-[9px] flex items-center justify-center text-white rounded-full w-4 h-4">
                       1
                     </p>

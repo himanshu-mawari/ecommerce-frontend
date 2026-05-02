@@ -23,13 +23,12 @@ const ProfilePage = () => {
   const navigate = useNavigate();
   
   const {
-    data,
+    data:user,
     isLoading,
     isError
   } = useGetUserProfileQuery();
 
   
-  const user = data?.user;
   
   const address = useSelector((store) => store.address.addresses);
   
@@ -163,11 +162,11 @@ const ProfilePage = () => {
                     </span>
                   </div>
                   <h3 className="font-bold text-lg mb-1">
-                    {activeAddress.state}
+                    {activeAddress?.state}
                   </h3>
                   <p className="text-gray-500 text-sm leading-relaxed mb-4">
-                    {activeAddress.street} <br />
-                    Phone: {activeAddress.phone}
+                    {activeAddress?.street} <br />
+                    Phone: {activeAddress?.phone}
                   </p>
                 </div>
                 <Link to="/address/saved" className="inline-block">

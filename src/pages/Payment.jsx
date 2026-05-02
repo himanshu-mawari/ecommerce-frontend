@@ -23,7 +23,7 @@ const Payment = () => {
   const [toastMessage, setToastMessage] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const userId = user.id;
+  // const userId = user.id;
 
   const formatPrice = (price) =>
     new Intl.NumberFormat("en-IN", {

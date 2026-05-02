@@ -1,36 +1,35 @@
-import { useSelector, useDispatch } from "react-redux";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { products } from "../assets/frontend_assets/assets";
-import { increaseQuantity, decreaseQuantity } from "../store/cartSlice.js";
 import EmptyCart from "../components/EmptyCart.jsx";
-
+import {
+  useGetCartQuery,
+  useUpdateCartMutation,
+  useRemoveCartItemMutation,
+} from "../services/cartService.js";
+import { useGetUserProfileQuery } from "../services/userService.js";
+import CheckoutSkeleton from "../components/CheckoutSkeleton.jsx";
 
 const Cart = () => {
   const shippingCharges = 100;
+  const [localQuantity, setLocalQuantity] = useState([]);
 
-  const items = useSelector((store) => store?.cart?.items);
-  const user = useSelector((store) => store.user.user);
+  const userData = useSelector((store) => store.user.user);
   const address = useSelector((store) => store.address.addresses);
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const cartData = items
-    .map((item) => {
-      const product = products.find((p) => p._id === item.id);
+  const { data: user } = useGetUserProfileQuery();
 
-      if (!product) {
-        return null;
-      }
+  const { data: cartData = [], isLoading } = useGetCartQuery();
+  const [removeCartItem] = useRemoveCartItemMutation();
+  const [updateCart] = useUpdateCartMutation();
 
-      return product
-        ? { ...product, quantity: item.quantity, size: item.size }
-        : null;
-    })
-    .filter(Boolean);
+
+  if (isLoading) return <CheckoutSkeleton />;
 
   const subTotal = cartData.reduce(
-    (acc, item) => acc + item.price * item.quantity,
+    (acc, item) => acc + item.product.price * item.quantity,
     0,
   );
 
@@ -39,27 +38,56 @@ const Cart = () => {
       maximumFractionDigits: 0,
     }).format(price);
 
-  const handleIncreaseQuantity = (id, size, quantity) => {
-    return dispatch(increaseQuantity({ id, size, quantity }));
+  const handleIncreaseQuantity = (item) => {
+    const { quantity, _id } = item;
+    const newQty = quantity + 1;
+
+    setLocalQuantity((prev) => ({
+      ...prev,
+      [item._id]: newQty,
+    }));
+
+    updateCart({
+      cartItemId: _id,
+      quantity: newQty,
+    });
+  };
+  const handleDecreaseQuantity = async (item) => {
+    try {
+      const { quantity, _id } = item;
+      const newQty = quantity === 1 ? 0 : quantity - 1;
+
+      setLocalQuantity((prev) => ({
+        ...prev,
+        [item._id]: newQty,
+      }));
+
+      await updateCart({
+        cartItemId: _id,
+        quantity: newQty,
+      }).unwrap();
+    } catch (err) {
+      console.error("Failed:", err);
+    }
   };
 
-  const handleDecreaseQuantity = (id, size, quantity) => {
-    return dispatch(decreaseQuantity({ id, size, quantity }));
+  const handleRemoveCartItem = async (id) => {
+    try {
+      await removeCartItem({ cartItemId: id }).unwrap();
+    } catch (err) {
+      console.error("Failed:", err);
+    }
   };
 
   const handleCheckout = () => {
     if (!user) {
       return navigate("/login?redirect=address/saved");
-    }
-
-    if (!address.length) {
-      return navigate("/address/new?redirect=payment");
     } else {
-      navigate("/payment");
+      navigate("/address/saved");
     }
   };
 
-  if (!items.length) {
+  if (!cartData.length) {
     return <EmptyCart />;
   }
 
@@ -77,7 +105,7 @@ const Cart = () => {
                   </span>
                   <span className="text-gray-300 text-lg  mx-2">|</span>
                   <span className="text-black font-semibold text-lg lg:text-sm">
-                    ₹ {formatPrice(subTotal)}
+                    ₹ {subTotal}
                   </span>
                 </div>
               </div>
@@ -91,7 +119,7 @@ const Cart = () => {
                     <div className="flex items-start gap-5 md:gap-8">
                       <div className="w-28 h-36 lg:w-32 lg:h-44 bg-gray-50 flex-shrink-0 overflow-hidden rounded-xl border border-gray-100">
                         <img
-                          src={item.image[0] || item.image}
+                          src={item.product.images[0].url}
                           alt={item.name}
                           className="w-full h-full object-cover"
                         />
@@ -100,12 +128,12 @@ const Cart = () => {
                       <div className="flex flex-col flex-1 min-h-[144px]">
                         <div className="flex items-baseline justify-between">
                           <span className="text-xl md:text-2xl font-medium text-black tabular-nums">
-                            ₹ {formatPrice(item.price)}
+                            ₹ {formatPrice(item.product.price)}
                           </span>
                         </div>
 
                         <h2 className="text-md md:text-lg font-medium mt-1 outfit leading-tight text-gray-900">
-                          {item.name}
+                          {item.product.name}
                         </h2>
 
                         <p className="text-gray-400 text-sm md:text-md mt-2 font-medium">
@@ -122,14 +150,12 @@ const Cart = () => {
                     <div className="flex items-center gap-3 mt-6">
                       <div className="flex items-center justify-between border border-gray-200 rounded-full px-2 w-28 md:w-32 lg:w-36 bg-white shadow-sm transition-all">
                         <button
-                          onClick={() =>
-                            handleDecreaseQuantity(
-                              item._id,
-                              item.size,
-                              item.quantity,
-                            )
-                          }
                           className="text-black active:scale-75 transition-transform  flex items-center justify-center"
+                          onClick={() =>
+                            item.quantity > 1
+                              ? handleDecreaseQuantity(item)
+                              : handleRemoveCartItem(item._id)
+                          }
                         >
                           {item.quantity > 1 ? (
                             <svg
@@ -138,8 +164,7 @@ const Cart = () => {
                               viewBox="0 0 24 24"
                               strokeWidth="1.5"
                               stroke="currentColor"
-                              /* RESPONSIVE WIDTH: w-4 (mobile), w-5 (tablet), w-6 (desktop) */
-                              className="w-4 h-4 md:w-5 md:h-5  lg:h-6"
+                              className="w-4 h-4 md:w-5 md:h-5  lg:h-6  cursor-pointer"
                             >
                               <path
                                 strokeLinecap="round"
@@ -154,8 +179,7 @@ const Cart = () => {
                               viewBox="0 0 24 24"
                               strokeWidth="1.5"
                               stroke="currentColor"
-                              /* Same responsive sizing for the trash icon */
-                              className="w-4 h-4 md:w-5 md:h-5  lg:h-6"
+                              className="w-4 h-4 md:w-5 md:h-5  lg:h-6 cursor-pointer"
                             >
                               <path
                                 strokeLinecap="round"
@@ -167,18 +191,14 @@ const Cart = () => {
                         </button>
 
                         <span className="text-sm md:text-base lg:text-lg font-bold text-black">
-                          {item.quantity}
+                          {localQuantity[item._id] ?? item.quantity}
                         </span>
 
                         <button
-                          onClick={() =>
-                            handleIncreaseQuantity(
-                              item._id,
-                              item.size,
-                              item.quantity,
-                            )
-                          }
-                          className="text-black text-lg md:text-xl lg:text-2xl mb-1 active:scale-75 transition-transform p-1"
+                          onClick={() => {
+                            handleIncreaseQuantity(item);
+                          }}
+                          className="text-black text-lg md:text-xl lg:text-2xl mb-1 active:scale-75 transition-transform p-1 cursor-pointer"
                         >
                           +
                         </button>
@@ -191,7 +211,6 @@ const Cart = () => {
                           viewBox="0 0 24 24"
                           strokeWidth="1.5"
                           stroke="currentColor"
-                          /* Heart icon responsive sizing */
                           className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6"
                         >
                           <path
@@ -239,7 +258,7 @@ const Cart = () => {
             </div>
 
             <button
-              className="hidden lg:block w-full bg-black text-white py-3 mt-8 rounded-full font-semibold text-lg cursor-pointer transition-all shadow-xl "
+              className="hidden lg:block w-full bg-black text-white py-3 mt-8 rounded-full font-semibold text-lg active:scale-[0.97] cursor-pointer transition-all shadow-xl "
               onClick={() => handleCheckout()}
             >
               Proceed to Buy

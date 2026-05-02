@@ -21,8 +21,7 @@ import SignUp from "./pages/SignUp.jsx";
 import { hideToast } from "./store/toastSlice";
 import Toast from "./components/Toast.jsx";
 import { useGetUserProfileQuery } from "./services/userService";
-
-
+import AddressGuard from "./components/AddressGuard.jsx";
 
 const router = createBrowserRouter([
   {
@@ -57,7 +56,9 @@ const router = createBrowserRouter([
         path: "/address/saved",
         element: (
           <AuthGuard>
-            <AddressList />
+            <AddressGuard>
+              <AddressList />
+            </AddressGuard>
           </AuthGuard>
         ),
       },
@@ -66,8 +67,9 @@ const router = createBrowserRouter([
         path: "/address/new",
         element: (
           <AuthGuard>
-            {" "}
-            <AddressNew />{" "}
+            <AddressGuard>
+              <AddressNew />
+            </AddressGuard>
           </AuthGuard>
         ),
       },
@@ -75,30 +77,25 @@ const router = createBrowserRouter([
         path: "/address/edit/:id",
         element: (
           <AuthGuard>
-            {" "}
-            <AddressNew />{" "}
+            <AddressGuard>
+              <AddressNew />
+            </AddressGuard>
           </AuthGuard>
         ),
       },
       {
         path: "/payment",
-        element: (
-          <AuthGuard>
-            <PaymentGuard>
-              <Payment />
-            </PaymentGuard>
-          </AuthGuard>
-        ),
+        element: <Payment />,
       },
     ],
   },
 ]);
 
-const App =  () => {
+const App = () => {
   const dispatch = useDispatch();
   const { message, isVisible } = useSelector((store) => store.toast);
   useGetUserProfileQuery();
- 
+
   return (
     <>
       <RouterProvider router={router} />{" "}

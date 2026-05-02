@@ -1,5 +1,3 @@
-import { assets } from "../assets/assets";
-
 const Footer = () => {
   const linkStyle = "relative w-fit cursor-pointer group hover:text-black pb-1";
   const underlineStyle =
@@ -10,7 +8,10 @@ const Footer = () => {
       <div className="pt-20 pb-10  px-7 md:px-24 lg:px-28">
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-8 xl:pb-10">
           <div>
-            <img src={assets.logo} className="w-32 mb-4" alt="Logo" />
+            <h1 className="monteserrat font-medium text-3xl tracking-tighter flex items-end">
+              FOREVER
+              <span className="mb-2 ml-1 h-2 w-2 rounded-full bg-indigo-300"></span>
+            </h1>
             <p className="text-sm text-gray-600">
               Quality products. Seamless shopping. Delivered to your door.
             </p>

@@ -2,12 +2,12 @@ import { baseApi } from "./baseApi.js";
 
 export const userApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-
     getUserProfile: builder.query({
       query: () => ({
         url: "api/user/profile",
         method: "GET",
       }),
+      transformResponse: (response) => response.user,
       providesTags: ["User"],
     }),
 
@@ -19,11 +19,7 @@ export const userApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["User"],
     }),
-
   }),
 });
 
-export const {
-  useGetUserProfileQuery,
-  useUpdateUserProfileMutation,
-} = userApi;
+export const { useGetUserProfileQuery, useUpdateUserProfileMutation } = userApi;

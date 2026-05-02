@@ -1,14 +1,4 @@
-const Skeleton = ({ className }) => (
-  <div className={`relative overflow-hidden bg-[#f3f3f3]  ${className}`}>
-    {/* 1. -translate-x-full starts it completely hidden to the left
-      2. w-full makes it the same size as the container
-      3. skew-x-[-20deg] gives it that premium slanted look
-    */}
-    <div className="absolute inset-0 -translate-x-full animate-shimmer">
-      <div className="h-full w-full bg-gradient-to-r from-transparent via-white/50 to-transparent skew-x-[-20deg]" />
-    </div>
-  </div>
-);
+import Skeleton from "./Skeleton";
 const HomePageSkeleton = () => {
   return (
     <div className="px-4 sm:px-12 lg:px-28">

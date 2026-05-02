@@ -6,7 +6,6 @@ import RelatedProduct from "../components/RelatedProduct.jsx";
 import Reviews from "../components/Reviews.jsx";
 import { FaStar } from "react-icons/fa";
 import { FiStar } from "react-icons/fi";
-import { useDispatch } from "react-redux";
 import Toast from "../components/Toast.jsx";
 import { useGetProductByIdQuery } from "../services/productService.js";
 import { useAddToCartMutation } from "../services/cartService.js";
