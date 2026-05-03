@@ -5,7 +5,7 @@ const AddressGuard = ({ children }) => {
   const { data: cart, isLoading } = useGetCartQuery();
   if (isLoading) return <div>Loading....</div>;
 
-  if (!cart || !cart.length) {
+  if (!cart.items || !cart.items.length) {
     return <Navigate to="/checkout" replace />;
   }
 

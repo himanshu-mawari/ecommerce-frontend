@@ -9,7 +9,6 @@ import {
 } from "../services/cartService.js";
 import { useGetUserProfileQuery } from "../services/userService.js";
 import CheckoutSkeleton from "../components/CheckoutSkeleton.jsx";
-
 const Cart = () => {
   const shippingCharges = 100;
   const [localQuantity, setLocalQuantity] = useState([]);
@@ -25,13 +24,7 @@ const Cart = () => {
   const [removeCartItem] = useRemoveCartItemMutation();
   const [updateCart] = useUpdateCartMutation();
 
-
   if (isLoading) return <CheckoutSkeleton />;
-
-  const subTotal = cartData.reduce(
-    (acc, item) => acc + item.product.price * item.quantity,
-    0,
-  );
 
   const formatPrice = (price) =>
     new Intl.NumberFormat("en-IN", {
@@ -79,15 +72,20 @@ const Cart = () => {
     }
   };
 
+  console.log(cartData.items.length);
+
   const handleCheckout = () => {
     if (!user) {
       return navigate("/login?redirect=address/saved");
-    } else {
-      navigate("/address/saved");
     }
+
+    if (!cartData.items.length) {
+      return <EmptyCart />;
+    }
+    navigate("/address/saved");
   };
 
-  if (!cartData.length) {
+  if (!cartData.items.length) {
     return <EmptyCart />;
   }
 
@@ -105,13 +103,13 @@ const Cart = () => {
                   </span>
                   <span className="text-gray-300 text-lg  mx-2">|</span>
                   <span className="text-black font-semibold text-lg lg:text-sm">
-                    ₹ {subTotal}
+                    ₹ {cartData.summary.subTotal}
                   </span>
                 </div>
               </div>
 
               <div className="flex flex-col">
-                {cartData.map((item) => (
+                {cartData.items.map((item) => (
                   <div
                     key={`${item._id}-${item.size}`}
                     className="py-8 border-t border-gray-200"
@@ -238,7 +236,7 @@ const Cart = () => {
               <div className="flex justify-between font-medium">
                 <span className="text-gray-500 ">Bag Total</span>
                 <span className="text-black font-semibold">
-                  ₹ {formatPrice(subTotal)}
+                  ₹ {formatPrice(cartData.summary.subTotal)}
                 </span>
               </div>
 
@@ -252,7 +250,7 @@ const Cart = () => {
               <div className="border-t border-gray-200 pt-4 flex justify-between items-center">
                 <span className="font-semibold text-lg lg:text-xl">Total</span>
                 <span className="font-semibold text-xl lg:text-2xl text-black tabular-nums">
-                  ₹ {formatPrice(subTotal + shippingCharges)}
+                  ₹ {formatPrice(cartData.summary.total)}
                 </span>
               </div>
             </div>
@@ -267,12 +265,12 @@ const Cart = () => {
         </div>
       </div>
 
-      <div
-        className="lg:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-gray-100 p-4 z-50 shadow-[0_-10px_20px_rgba(0,0,0,0.03)]"
-        onClick={() => handleCheckout()}
-      >
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-gray-100 p-4 z-50 shadow-[0_-10px_20px_rgba(0,0,0,0.03)]">
         <div className="max-w-md md:max-w-full mx-auto">
-          <button className="w-full bg-black text-white py-4 rounded-full font-bold text-md active:scale-[0.97] transition-all">
+          <button
+            className="w-full bg-black text-white py-4 rounded-full font-bold text-md active:scale-[0.97] transition-all"
+            onClick={() => handleCheckout()}
+          >
             Proceed to Buy
           </button>
         </div>

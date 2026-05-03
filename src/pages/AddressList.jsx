@@ -5,6 +5,7 @@ import { useState } from "react";
 import Toast from "../components/Toast.jsx";
 import { products } from "../assets/frontend_assets/assets";
 import { useGetAllAddressesQuery } from "../services/AddressService.js";
+import { useGetCartQuery } from "../services/cartService.js";
 
 const AddressList = () => {
   
@@ -21,7 +22,7 @@ const AddressList = () => {
   );
 
   const { data: addresses , isLoading } = useGetAllAddressesQuery();
-  // console.log(data)
+  const {data:cartData} = useGetCartQuery();
 
   if(isLoading) return <div>Loading</div>
 
@@ -51,28 +52,14 @@ const AddressList = () => {
 
   console.log(cart);
 
-  const cartData = cart.map((item) => {
-    const product = products.find((p) => p._id === item.id);
 
-    if (!product) {
-      return null;
-    }
-
-    return product
-      ? { ...product, quantity: item.quantity, size: item.size }
-      : null;
-  });
-
-  const subTotal = cartData.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0,
-  );
-  const total = subTotal + 100;
 
   const handleSelectedAddress = (id) => {
     dispatch(selectAddress(id));
     navigate("/payment");
   };
+
+
 
   return (
     <div className="max-w-2xl md:max-w-full mx-auto pb-8">
@@ -198,7 +185,6 @@ const AddressList = () => {
         </div>
         <div className="hidden lg:grid lg:col-span-4 pt-7 h-fit sticky top-20 right-7">
           <div className="border border-gray-300 rounded-2xl bg-white overflow-hidden ">
-            {/* --- BAG SECTION --- */}
             <div
               className="bg-white z-10 cursor-pointer border-b border-gray-200"
               onClick={() => setIsBagOpen(!isBagOpen)}
@@ -227,8 +213,7 @@ const AddressList = () => {
 
             {isBagOpen && (
               <div className="max-h-[40vh] overflow-y-auto custom-scrollbar bg-gray-50/30">
-                {cart.map((items) => {
-                  const product = products.find((p) => p._id === items.id);
+                {cartData.items.map((items) => {
                   return (
                     <div
                       key={items.id}
@@ -236,14 +221,14 @@ const AddressList = () => {
                     >
                       <div className="flex gap-4 pb-2">
                         <img
-                          src={product.image[0]}
+                          src={items.product.images[0].url}
                           className="w-16 h-20 object-cover rounded-lg"
                         />
                         <div className="pt-1 text-sm">
-                          <h1 className="font-medium">{product.name}</h1>
+                          <h1 className="font-medium">{items.product.name}</h1>
                           <p className="text-gray-500">Size {items.size}</p>
                           <p className="font-semibold mt-1">
-                            Rs {formatPrice(product.price * items.quantity)}
+                            Rs {formatPrice(items.product.price * items.quantity)}
                           </p>
                         </div>
                       </div>
@@ -253,7 +238,6 @@ const AddressList = () => {
               </div>
             )}
 
-            {/* --- PRICE DETAILS SECTION --- */}
             <div
               className="bg-white z-10 cursor-pointer"
               onClick={() => setIsPriceOpen(!isPriceOpen)}
@@ -261,8 +245,7 @@ const AddressList = () => {
               <div className="flex justify-between items-center px-5 py-4">
                 <h1 className="text-xl inter font-medium">Price Details</h1>
                 <div className="flex gap-2 text-lg font-semibold items-center">
-                  <p className="text-gray-500 font-medium">Rs {total}</p>{" "}
-                  {/* Calculate total price in your component */}
+                  <p className="text-gray-500 font-medium">Rs {cartData.summary.total}</p>{" "}
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -284,7 +267,7 @@ const AddressList = () => {
               <div className="px-5 py-4 bg-gray-50/50 space-y-3 border-t border-gray-200">
                 <div className="flex justify-between text-gray-600">
                   <p>Bag Total</p>
-                  <p>Rs {subTotal} </p>
+                  <p>Rs {cartData.summary.subTotal} </p>
                 </div>
                 <div className="flex justify-between text-gray-600">
                   <p>Shipping fee</p>
@@ -294,7 +277,7 @@ const AddressList = () => {
                 <hr className="border-gray-300" />
                 <div className="flex justify-between text-lg font-bold">
                   <p>Order Total</p>
-                  <p>Rs {total}</p>
+                  <p>Rs {cartData.summary.total}</p>
                 </div>
               </div>
             )}

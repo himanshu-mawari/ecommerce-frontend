@@ -8,13 +8,19 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import AddressForm from "../components/AddressForm.jsx";
+import {
+  useGetSingleAddressQuery,
+  useUpdateAddressMutation,
+} from "../services/AddressService.js";
 
 const AddressNew = () => {
   const user = useSelector((store) => store.user.user);
   const { id } = useParams();
 
-  const addresses = useSelector((store) => store.address.addresses);
-  const address = addresses.find((a) => a.id === Number(id));
+  const { data: address, isLoading } = useGetSingleAddressQuery({
+    addressId: id,
+  });
+  const [updateAddress] = useUpdateAddressMutation();
 
   const [form, setForm] = useState({
     pincode: "",
@@ -36,6 +42,7 @@ const AddressNew = () => {
 
   useEffect(() => {
     if (isEdit && address) {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       setForm(address);
     }
   }, [isEdit, address]);
@@ -82,7 +89,10 @@ const AddressNew = () => {
     }
 
     if (isEdit) {
-      dispatch(editAddress({ ...form, id: Number(id) }));
+      updateAddress({
+        addressId: id,
+        ...form,
+      });
     } else {
       dispatch(addAddress(form));
     }
@@ -104,6 +114,7 @@ const AddressNew = () => {
     }));
   };
 
+  if (isLoading) return <div>Loading</div>;
   return (
     <div className="py-2 pb-12 relative">
       <div className="sticky top-0 z-10 bg-white border-b border-gray-300 mb-4 py-4 ml-0 px-5 md:px-10 lg:px-14 xl:px-24 flex gap-4 items-center">

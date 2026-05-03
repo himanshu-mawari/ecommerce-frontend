@@ -22,7 +22,7 @@ const Navbar = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const cart = useSelector((store) => store.cart.items);
 
-  const { data: cartData = [] } = useGetCartQuery();
+  const { data: cartData = [] , isLoading} = useGetCartQuery();
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -44,6 +44,7 @@ const Navbar = () => {
     navigate("/");
     dispatch(showToast("Logout successful"));
   };
+
 
   return (
     <>
@@ -189,10 +190,10 @@ const Navbar = () => {
               </svg>
             </Link>
             <div
-              className={`absolute text-white rounded-full ${cartData.length ? "bg-black" : ""} -right-2 bottom-3`}
+              className={`absolute text-white rounded-full ${cartData?.items?.length ? "bg-black" : ""} -right-2 bottom-3`}
             >
               <p className=" w-4 h-4 flex justify-center text-xs ">
-                {cartData.length ? cartData.length : ""}
+                {cartData?.items?.length ? cartData?.items?.length : ""}
               </p>
             </div>
           </div>
