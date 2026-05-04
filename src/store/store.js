@@ -1,15 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
-import cartSlice from "./cartSlice";
-import userSlice from "./userSlice";
 import addressSlice from "./addressSlice";
 import orderSlice from "./orderSlice";
+import cartSlice from "./cartSlice";
+import userSlice from "./userSlice.js"
 import toastSlice from "./toastSlice";
 
 import { baseApi } from "../services/baseApi.js"; 
 
 const store = configureStore({
   reducer: {
-    user: userSlice,
+    user:userSlice,
     cart: cartSlice,
     address: addressSlice,
     order: orderSlice,

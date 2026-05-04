@@ -2,23 +2,34 @@ import { baseApi } from "./baseApi";
 
 export const addressApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+    
+    addAddress: builder.mutation({
+      query: (address) => ({
+        url: "/api/address",
+        method: "POST",
+        body: address,
+      }),
+      invalidatesTags: ["Address"], 
+    }),
+
     getAllAddresses: builder.query({
       query: () => ({
-        url: "api/address",
+        url: "/api/address", 
         method: "GET",
       }),
       transformResponse: (data) => data.data,
       providesTags: ["Address"],
     }),
+
     getSingleAddress: builder.query({
       query: ({ addressId }) => ({
         url: `/api/address/${addressId}`,
         method: "GET",
       }),
-
       transformResponse: (data) => data.data,
-      providedTags: ["Address"],
+      providesTags: ["Address"], // FIXED
     }),
+
     updateAddress: builder.mutation({
       query: ({ addressId, ...data }) => ({
         url: `/api/address/${addressId}`,
@@ -27,12 +38,13 @@ export const addressApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Address"],
     }),
+
     deleteAddress: builder.mutation({
       query: ({ addressId }) => ({
         url: `/api/address/${addressId}`,
         method: "DELETE",
       }),
-      invalidateTage: ["Address"],
+      invalidatesTags: ["Address"], // FIXED
     }),
   }),
 });
@@ -41,4 +53,6 @@ export const {
   useGetAllAddressesQuery,
   useGetSingleAddressQuery,
   useUpdateAddressMutation,
+  useAddAddressMutation,
+  useDeleteAddressMutation, // you forgot to export this
 } = addressApi;

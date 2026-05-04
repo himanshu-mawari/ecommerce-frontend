@@ -11,16 +11,19 @@ import AddressForm from "../components/AddressForm.jsx";
 import {
   useGetSingleAddressQuery,
   useUpdateAddressMutation,
+  useAddAddressMutation,
 } from "../services/AddressService.js";
+import { useGetUserProfileQuery } from "../services/userService.js";
 
 const AddressNew = () => {
-  const user = useSelector((store) => store.user.user);
   const { id } = useParams();
+  const isEdit = Boolean(id);
 
   const { data: address, isLoading } = useGetSingleAddressQuery({
     addressId: id,
-  });
-  const [updateAddress] = useUpdateAddressMutation();
+  },{skip:!id});
+  const {data:userData} = useGetUserProfileQuery();
+
 
   const [form, setForm] = useState({
     pincode: "",
@@ -28,24 +31,37 @@ const AddressNew = () => {
     street: "",
     district: "",
     state: "",
-    name: user?.name || "",
-    phone: user?.phone || "",
+    name: userData.name ||"",
+    phone: userData.phone || "",
   });
   const [error, setErrors] = useState({});
 
   const dispatch = useDispatch();
+
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const isEdit = Boolean(id);
-
   const redirect = searchParams.get("redirect");
 
+  const user = useSelector((store) => store.user.user);
+
+  const [addAddress] = useAddAddressMutation();
+  const [updateAddress] = useUpdateAddressMutation();
+
+
   useEffect(() => {
-    if (isEdit && address) {
+    if (address) {
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      setForm(address);
+      setForm({
+        pincode: address?.pincode,
+        houseNo: address?.houseNo,
+        street: address?.street,
+        district: address?.district,
+        state: address?.state,
+        name: address?.name,
+        phone: address?.phone,
+      });
     }
-  }, [isEdit, address]);
+  }, [address]);
 
   const fetchRegion = async () => {
     try {
@@ -66,7 +82,6 @@ const AddressNew = () => {
       console.error(err);
     }
   };
-
   useEffect(() => {
     if (form.pincode?.length === 6) {
       fetchRegion();
@@ -94,7 +109,7 @@ const AddressNew = () => {
         ...form,
       });
     } else {
-      dispatch(addAddress(form));
+      addAddress(form )
     }
 
     navigate(redirect || "/payment");
@@ -103,10 +118,10 @@ const AddressNew = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    setForm((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+      setForm((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
 
     setErrors((prev) => ({
       ...prev,
@@ -116,10 +131,12 @@ const AddressNew = () => {
 
   if (isLoading) return <div>Loading</div>;
   return (
-    <div className="py-2 pb-12 relative">
-      <div className="sticky top-0 z-10 bg-white border-b border-gray-300 mb-4 py-4 ml-0 px-5 md:px-10 lg:px-14 xl:px-24 flex gap-4 items-center">
+    <div className="pb-12 relative">
+      <div className="sticky top-0 z-10 bg-white border-b border-gray-300 py-4 ml-0 px-5  md:px-8 lg:px-12 xl:px-24 flex gap-4 items-center">
         <Link to="/address/saved">
+          {" "}
           <p className="cursor-pointer">
+            {" "}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -136,12 +153,10 @@ const AddressNew = () => {
             </svg>
           </p>
         </Link>
-        <h1 className="text-lg md:text-xl font-semibold">
-          {isEdit ? "Edit Address" : "Add New Address"}
-        </h1>
+        <h1 className="text-lg md:text-xl font-semibold">{isEdit ? "Edit Address" : "Add New Address"} </h1>
       </div>
 
-      <div className="px-5 md:px-8 xl:px-24 py-3">
+      <div className="px-5 md:px-8 xl:px-24 py-5">
         <div className="bg-[#f3f4f6] rounded-xl py-3 lg:py-5 lg:px-8  px-6 mb-6">
           {form.state === "" && form.district === "" ? (
             <>

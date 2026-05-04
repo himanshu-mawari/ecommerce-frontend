@@ -1,21 +1,18 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { products } from "../assets/frontend_assets/assets";
 import { addOrder } from "../store/orderSlice";
 import Toast from "../components/Toast";
+import { useGetAllAddressesQuery } from "../services/addressService";
+import { useGetCartQuery } from "../services/cartService";
 
 const Payment = () => {
-  const addresses = useSelector((store) => store.address.addresses);
+  const addresses1 = useSelector((store) => store.address.addresses);
   const selectedAddressId = useSelector(
     (store) => store.address.selectedAddressId,
   );
-  const user = useSelector((store) => store.user.user);
+  // const user = useSelector((store) => store.user.user);
   const cart = useSelector((store) => store.cart.items);
-
-  const selectedAddress = addresses.find(
-    (addr) => addr.id === selectedAddressId,
-  );
   const [isBagOpen, setIsBagOpen] = useState(false);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [method, setMethod] = useState();
@@ -23,29 +20,24 @@ const Payment = () => {
   const [toastMessage, setToastMessage] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const userId = user.id;
+
+  const { data: addresses, isLoading } = useGetAllAddressesQuery();
+  const { data: cartData } = useGetCartQuery();
+
+  console.log(cartData);
+
+  if (isLoading) return <div></div>;
+  console.log(addresses);
+
+  const selectedAddress = addresses.find(
+    (addr) => addr._id === selectedAddressId,
+  );
 
   const formatPrice = (price) =>
     new Intl.NumberFormat("en-IN", {
       maximumFractionDigits: 0,
     }).format(price);
 
-  const cartData = cart
-    .map((item) => {
-      const product = products.find((p) => p._id === item.id);
-      return product
-        ? { ...product, quantity: item.quantity, size: item.size }
-        : null;
-    })
-    .filter(Boolean);
-
-  const subTotal = cartData.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0,
-  );
-  const shippingFee = 100;
-  const total = subTotal + shippingFee;
-  
   const handleChangeAddress = () => {
     navigate("/address/saved");
   };
@@ -63,17 +55,9 @@ const Payment = () => {
       return;
     }
 
-
     const orderData = {
-      orderId: crypto.randomUUID(),
-      userId,
-      items: cartData,
-      shippingAddress: selectedAddress,
-      subTotal,
-      shippingFee,
-      totalAmount: total,
-      status: "pending",
-      paymentDetails: { status: "pending", method },
+      shippingAddressId: selectedAddress._id,
+      paymentMethod: method,
     };
 
     if (method === "COD") {
@@ -86,9 +70,11 @@ const Payment = () => {
 
   return (
     <div className="min-h-screen bg-gray-50/50">
-      <div className=" lg:border-t lg:border-gray-200 sticky top-0 z-20 bg-white border-b border-gray-300 py-3 md:py-4 px-5 md:px-11 xl:px-24 flex gap-4 items-center">
+       <div className="sticky top-0 z-10 bg-white border-b border-gray-300 py-4 ml-0 px-5  md:px-8 lg:px-12 xl:px-24 flex gap-4 items-center">
         <Link to="/address/saved">
-          <div className="cursor-pointer hover:bg-gray-100 p-2 rounded-full transition-colors">
+          {" "}
+          <p className="cursor-pointer">
+            {" "}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -103,11 +89,9 @@ const Payment = () => {
                 d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
               />
             </svg>
-          </div>
+          </p>
         </Link>
-        <h1 className="text-md md:text-xl font-semibold">
-          Select Address & Pay
-        </h1>
+        <h1 className="text-lg md:text-xl font-semibold">Select Address & Pay </h1>
       </div>
 
       <div className="max-w-7xl mx-auto pt-7 px-4 md:px-10 pb-24 md:pb-10">
@@ -119,7 +103,8 @@ const Payment = () => {
               </h2>
               <div className="bg-white md:p-8 rounded-3xl border border-gray-300 p-5 shadow-sm">
                 <h2 className="mb-3 text-lg font-semibold text-gray-900">
-                  Deliver to {selectedAddress?.name}, {selectedAddress?.pincode}
+                  Deliver to <span>{selectedAddress?.name?.split(" ")[0]}</span>
+                  , {selectedAddress?.pincode}
                 </h2>
                 <div className="mb-6 space-y-1 text-md text-gray-600 leading-5 font-medium">
                   <p className="truncate">122 {selectedAddress?.street}</p>
@@ -129,7 +114,7 @@ const Payment = () => {
                   <p>{selectedAddress?.phoneNumber || "+91-9873490461"}</p>
                 </div>
                 <button
-                  className="w-full md:w-auto px-8 rounded-full border border-gray-300 py-3 text-sm font-bold transition-all hover:bg-gray-100 cursor-pointer"
+                  className="w-full md:w-auto px-8 rounded-full border border-gray-300 py-3 text-md font-semibold    transition-all hover:bg-gray-100 cursor-pointer"
                   onClick={() => handleChangeAddress()}
                 >
                   Change or Add Address
@@ -194,7 +179,7 @@ const Payment = () => {
             <div className="bg-white rounded-3xl border border-gray-300 overflow-hidden shadow-sm">
               <button
                 onClick={() => setIsBagOpen(!isBagOpen)}
-                className="flex w-full items-center justify-between px-6 py-5 hover:bg-gray-50 transition-colors border-b border-gray-100"
+                className="flex w-full items-center justify-between px-6 py-5 hover:bg-gray-50 transition-colors border-b border-gray-100 cursor-pointer"
               >
                 <span className="font-bold text-gray-800">
                   Items in Bag ({cart.length})
@@ -219,23 +204,23 @@ const Payment = () => {
                 className={`transition-all duration-400 overflow-hidden ${isBagOpen ? "max-h-[350px] overflow-y-auto opacity-100" : "max-h-0 opacity-0"}`}
               >
                 <div className="divide-y divide-gray-100 bg-gray-50/30">
-                  {cartData.map((item) => (
+                  {cartData?.items?.map((item) => (
                     <div key={item._id} className="flex gap-4 p-5">
                       <img
-                        src={item.image[0]}
-                        alt={item.name}
+                        src={item.product.images[0].url}
+                        alt={item.product.name}
                         className="h-16 w-14 rounded-lg border border-gray-100 object-cover bg-white shadow-sm"
                       />
                       <div className="flex-1 flex flex-col justify-center">
                         <h3 className="text-sm font-semibold text-gray-900 leading-tight">
-                          {item.name}
+                          {item.product.name}
                         </h3>
                         <div className="flex justify-between items-center mt-2">
                           <p className="text-xs text-gray-500">
                             Qty: {item.quantity} | Size: {item.size}
                           </p>
                           <p className="text-sm font-bold text-gray-900">
-                            ₹{formatPrice(item.price)}
+                            ₹{formatPrice(item.product.price)}
                           </p>
                         </div>
                       </div>
@@ -246,7 +231,7 @@ const Payment = () => {
 
               <button
                 onClick={() => setIsDetailOpen(!isDetailOpen)}
-                className="flex w-full items-center justify-between px-6 py-5 hover:bg-gray-50 transition-colors"
+                className="flex w-full items-center justify-between px-6 py-5 hover:bg-gray-50 transition-colors cursor-pointer"
               >
                 <span className="font-bold text-gray-800">Price Details</span>
                 <svg
@@ -271,18 +256,22 @@ const Payment = () => {
                 <div className="px-6 pb-5 space-y-3 bg-white">
                   <div className="flex justify-between text-sm text-gray-500 font-medium">
                     <p>Subtotal</p>
-                    <p className="text-gray-900">₹{formatPrice(subTotal)}</p>
+                    <p className="text-gray-900">
+                      ₹{formatPrice(cartData?.summary?.subTotal)}
+                    </p>
                   </div>
                   <div className="flex justify-between text-sm text-gray-500 font-medium">
                     <p>Shipping Fee</p>
                     <p
                       className={
-                        shippingFee === 0
+                        cartData?.summary?.shippingFee === 0
                           ? "text-green-600 font-bold"
                           : "text-gray-900"
                       }
                     >
-                      {shippingFee === 0 ? "FREE" : `+ ₹${shippingFee}`}
+                      {cartData?.summary?.shippingFee === 0
+                        ? "FREE"
+                        : `+ ₹${100}`}
                     </p>
                   </div>
                 </div>
@@ -292,7 +281,7 @@ const Payment = () => {
                       Total Amount
                     </p>
                     <p className="text-2xl font-bold geist tracking-tighter">
-                      ₹ {formatPrice(total)}
+                      ₹ {formatPrice(cartData?.summary?.total)}
                     </p>
                   </div>
                 </div>
@@ -308,7 +297,7 @@ const Payment = () => {
                   Confirm & {method === "COD" ? "Place Order" : "Pay"}
                 </span>
                 <span className="pl-3 border-l border-white/30 font-semibold geist tracking-tight">
-                  ₹ {formatPrice(total)}
+                  ₹ {formatPrice(cartData?.summary?.total)}
                 </span>
               </button>
               <div className="mt-6 flex items-center justify-center gap-2 text-gray-400">
@@ -335,10 +324,13 @@ const Payment = () => {
               Total Amount
             </span>
             <span className="text-xl font-bold text-gray-900 leading-none">
-              ₹{formatPrice(total)}
+              ₹{formatPrice(cartData?.summary?.total)}
             </span>
           </div>
-          <button className="flex-1 bg-black text-white py-4 px-6 rounded-full font-semibold geist   text-md active:scale-95 transition-all shadow-lg whitespace-nowrap" onClick={() => handlePlaceOrder()}>
+          <button
+            className="flex-1 bg-black text-white py-4 px-6 rounded-full font-semibold geist   text-md active:scale-95 transition-all shadow-lg whitespace-nowrap"
+            onClick={() => handlePlaceOrder()}
+          >
             Confirm & {method === "COD" ? "Order" : "Pay"}
           </button>
         </div>

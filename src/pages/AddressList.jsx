@@ -164,8 +164,8 @@ const AddressList = () => {
                 <input
                   type="radio"
                   name="address-selection"
-                  checked={address.id === selectedAddressId}
-                  onChange={() => handleRadioChange(address.id)}
+                  checked={address._id === selectedAddressId}
+                  onChange={() => handleRadioChange(address._id)}
                   className="
                 appearance-none 
                 w-6 h-6 
