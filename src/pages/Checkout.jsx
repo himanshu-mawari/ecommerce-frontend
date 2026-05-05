@@ -115,7 +115,7 @@ const Cart = () => {
                     className="py-8 border-t border-gray-200"
                   >
                     <div className="flex items-start gap-5 md:gap-8">
-                      <div className="w-28 h-36 lg:w-32 lg:h-44 bg-gray-50 flex-shrink-0 overflow-hidden rounded-xl border border-gray-100">
+                      <div className="w-28 h-36 lg:w-32 lg:h-44 bg-gray-50 shrink-0 overflow-hidden rounded-xl border border-gray-100">
                         <img
                           src={item.product.images[0].url}
                           alt={item.name}
@@ -123,7 +123,7 @@ const Cart = () => {
                         />
                       </div>
 
-                      <div className="flex flex-col flex-1 min-h-[144px]">
+                      <div className="flex flex-col flex-1 min-h-36">
                         <div className="flex items-baseline justify-between">
                           <span className="text-xl md:text-2xl font-medium text-black tabular-nums">
                             ₹ {formatPrice(item.product.price)}

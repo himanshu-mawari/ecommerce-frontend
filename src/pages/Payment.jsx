@@ -5,9 +5,11 @@ import { addOrder } from "../store/orderSlice";
 import Toast from "../components/Toast";
 import { useGetAllAddressesQuery } from "../services/addressService";
 import { useGetCartQuery } from "../services/cartService";
+import { useAddOrderMutation } from "../services/orderService";
+import { useGetSingleOrderQuery } from "../services/orderService";
 
 const Payment = () => {
-  const addresses1 = useSelector((store) => store.address.addresses);
+  // const addresses1 = useSelector((store) => store.address.addresses);
   const selectedAddressId = useSelector(
     (store) => store.address.selectedAddressId,
   );
@@ -23,8 +25,8 @@ const Payment = () => {
 
   const { data: addresses, isLoading } = useGetAllAddressesQuery();
   const { data: cartData } = useGetCartQuery();
-
-  console.log(cartData);
+  const [createOrder] = useAddOrderMutation();
+  // const {data:order2} = useGetSingleOrderQuery();
 
   if (isLoading) return <div></div>;
   console.log(addresses);
@@ -42,7 +44,7 @@ const Payment = () => {
     navigate("/address/saved");
   };
 
-  const handlePlaceOrder = () => {
+  const handlePlaceOrder = async () => {
     if (!selectedAddress) {
       setToastMessage("Select address");
       setShowToast(true);
@@ -54,23 +56,27 @@ const Payment = () => {
       setShowToast(true);
       return;
     }
+    try {
+      const orderData = {
+        shippingAddressId: selectedAddress._id,
+        paymentMethod: method,
+      };
 
-    const orderData = {
-      shippingAddressId: selectedAddress._id,
-      paymentMethod: method,
-    };
+      if (method === "COD") {
+        const data = await createOrder(orderData).unwrap();
 
-    if (method === "COD") {
-      dispatch(addOrder(orderData));
-      navigate("/order-success");
-    } else {
-      console.log("Online payment flow");
+        navigate(`/order-success/${data.data._id}`);
+      } else {
+        console.log("Online payment flow");
+      }
+    } catch (err) {
+      console.error(err);
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-50/50">
-       <div className="sticky top-0 z-10 bg-white border-b border-gray-300 py-4 ml-0 px-5  md:px-8 lg:px-12 xl:px-24 flex gap-4 items-center">
+      <div className="sticky top-0 z-10 bg-white border-b border-gray-300 py-4 ml-0 px-5  md:px-8 lg:px-12 xl:px-24 flex gap-4 items-center">
         <Link to="/address/saved">
           {" "}
           <p className="cursor-pointer">
@@ -91,12 +97,14 @@ const Payment = () => {
             </svg>
           </p>
         </Link>
-        <h1 className="text-lg md:text-xl font-semibold">Select Address & Pay </h1>
+        <h1 className="text-lg md:text-xl font-semibold">
+          Select Address & Pay{" "}
+        </h1>
       </div>
 
       <div className="max-w-7xl mx-auto pt-7 px-4 md:px-10 pb-24 md:pb-10">
         <div className="flex flex-col lg:flex-row lg:justify-between lg:gap-12 xl:gap-16 lg:items-start">
-          <div className="flex flex-col w-full lg:flex-1 lg:max-w-[700px] gap-8">
+          <div className="flex flex-col w-full lg:flex-1 lg:max-w-175 gap-8">
             <section>
               <h2 className="text-lg font-semibold mb-4 ml-1">
                 Delivery Address
@@ -201,7 +209,7 @@ const Payment = () => {
               </button>
 
               <div
-                className={`transition-all duration-400 overflow-hidden ${isBagOpen ? "max-h-[350px] overflow-y-auto opacity-100" : "max-h-0 opacity-0"}`}
+                className={`transition-all duration-400 overflow-hidden ${isBagOpen ? "max-h-87.5 overflow-y-auto opacity-100" : "max-h-0 opacity-0"}`}
               >
                 <div className="divide-y divide-gray-100 bg-gray-50/30">
                   {cartData?.items?.map((item) => (
@@ -251,7 +259,7 @@ const Payment = () => {
               </button>
 
               <div
-                className={`transition-all duration-400 overflow-hidden ${isDetailOpen ? "max-h-[150px] opacity-100" : "max-h-0 opacity-0"}`}
+                className={`transition-all duration-400 overflow-hidden ${isDetailOpen ? "max-h-37.5 opacity-100" : "max-h-0 opacity-0"}`}
               >
                 <div className="px-6 pb-5 space-y-3 bg-white">
                   <div className="flex justify-between text-sm text-gray-500 font-medium">
