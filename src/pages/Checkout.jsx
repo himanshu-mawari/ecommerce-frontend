@@ -10,7 +10,6 @@ import {
 import { useGetUserProfileQuery } from "../services/userService.js";
 import CheckoutSkeleton from "../components/CheckoutSkeleton.jsx";
 const Cart = () => {
-  const shippingCharges = 100;
   const [localQuantity, setLocalQuantity] = useState([]);
 
   const userData = useSelector((store) => store.user.user);
@@ -243,7 +242,7 @@ const Cart = () => {
               <div className="flex justify-between font-medium">
                 <span className="text-gray-500 ">Shipping</span>
                 <span className="text-black font-semibold">
-                  ₹ {shippingCharges}
+                  ₹ {cartData.summary.shippingFee}
                 </span>
               </div>
 
