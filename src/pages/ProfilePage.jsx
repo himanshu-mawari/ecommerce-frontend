@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { useGetUserProfileQuery } from "../services/userService.js";
 import { useGetAllAddressesQuery } from "../services/AddressService.js";
 import { useGetUserOrderQuery } from "../services/orderService.js";
+import ProfilePageSkeleton from "../components/ProfilePageSkeleton.jsx"
 
 const ProfilePage = () => {
   const [showToast, setShowToast] = useState(false);
@@ -43,7 +44,7 @@ const ProfilePage = () => {
   const dispatch = useDispatch();
 
   if (isLoading || addressLoading || orderLoading)
-    return <div>Loading....</div>;
+    return <div><ProfilePageSkeleton /></div>;
   const activeAddress = addresses?.find(
     (addr) => addr._id === selectedAddressId,
   );
@@ -81,7 +82,6 @@ const ProfilePage = () => {
         My Profile
       </h1>
 
-      {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 xl:gap-18 items-start">
         <div className="lg:col-span-2 space-y-12">
           <section className="pb-8 border-b border-gray-200">

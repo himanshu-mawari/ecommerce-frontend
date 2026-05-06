@@ -1,6 +1,7 @@
 import ProductCard from "../components/ProductCard";
 import { useParams } from "react-router-dom";
 import { useGetProductsQuery } from "../services/productService.js";
+import CategorySkeleton from "../components/CollectionSkeleton.jsx";
 
 const Collection = () => {
   const { category } = useParams();
@@ -16,11 +17,15 @@ const Collection = () => {
   }
 
   const { data, isLoading, error } = useGetProductsQuery(filters);
-  console.log(data);
 
   const products = data?.data || [];
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading)
+    return (
+      <div>
+        <CategorySkeleton />
+      </div>
+    );
   if (error) return <p>Error...</p>;
 
   return (

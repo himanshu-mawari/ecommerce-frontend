@@ -1,13 +1,14 @@
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useGetUserOrderQuery } from "../services/orderService";
+import OrdersSkeleton from "../components/OrderSkeleton";
 
 const OrderCard = () => {
   // const orderData = useSelector((store) => store.order.order);
 
   const { data: orderData, isLoading } = useGetUserOrderQuery();
 
-  if (isLoading) return <div></div>;
+  if (isLoading) return <div><OrdersSkeleton/></div>;
 
   const formatPrice = (price) =>
     new Intl.NumberFormat("en-IN", {
@@ -29,7 +30,6 @@ const OrderCard = () => {
     cancelled: "bg-red-100 text-red-700",
   };
 
-  console.log(orderData[0].items.length);
 
   return (
     <div className="min-h-screen border-t border-gray-300 py-8 pb-28 lg:pb-40 lg:pt-10 px-4 md:px-10  font-sans">

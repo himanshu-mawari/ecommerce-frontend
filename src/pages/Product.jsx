@@ -9,6 +9,7 @@ import { FiStar } from "react-icons/fi";
 import Toast from "../components/Toast.jsx";
 import { useGetProductByIdQuery } from "../services/productService.js";
 import { useAddToCartMutation } from "../services/cartService.js";
+import ProductDetailSkeleton from "../components/ProductSkeleton.jsx";
 
 const Product = () => {
   const [showToast, setShowToast] = useState(false);
@@ -21,7 +22,7 @@ const Product = () => {
   const { data, isLoading } = useGetProductByIdQuery(id);
   const [addToCart] = useAddToCartMutation();
 
-  if (isLoading) return <div>Loading....</div>;
+  if (isLoading) return <div><ProductDetailSkeleton /></div>;
 
   const activeProduct = data?.data;
   const formatPrice = (price) =>
