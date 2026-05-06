@@ -15,68 +15,66 @@ import Toast from "../components/Toast.jsx";
 import { removeUser } from "../store/userSlice.js";
 import { useNavigate } from "react-router-dom";
 import { useGetUserProfileQuery } from "../services/userService.js";
+import { useGetAllAddressesQuery } from "../services/AddressService.js";
+import { useGetUserOrderQuery } from "../services/orderService.js";
 
 const ProfilePage = () => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [isEditOpen, setIsEditOpen] = useState(false);
   const navigate = useNavigate();
-  
-  const {
-    data:user,
-    isLoading,
-    isError
-  } = useGetUserProfileQuery();
 
-  
-  
-  const address = useSelector((store) => store.address.addresses);
-  
+  const { data: user, isLoading } = useGetUserProfileQuery();
+  const { data: addresses, isLoading: addressLoading } =
+    useGetAllAddressesQuery();
+  const { data: orders, isLoading: orderLoading } = useGetUserOrderQuery();
+
   const [formData, setFormData] = useState({
     name: user?.name || "",
     phone: user?.phone || "",
     email: user?.email || "",
   });
-  
+
   const selectedAddressId = useSelector(
     (store) => store.address.selectedAddressId,
   );
-  const orders = useSelector((store) => store.order.order);
-  
-  const activeAddress = address.find((addr) => addr.id === selectedAddressId);
-  console.log(activeAddress);
-  
+  // const orders = useSelector((store) => store.order.order);
+
   const dispatch = useDispatch();
-  
+
+  if (isLoading || addressLoading || orderLoading)
+    return <div>Loading....</div>;
+  const activeAddress = addresses?.find(
+    (addr) => addr._id === selectedAddressId,
+  );
+
+  // const address =   useSelector((store) => store.address.addresses);
+
   const profileFields = [
     { name: "name", label: "Full Name", type: "text" },
     { name: "phone", label: "Phone Number", type: "tel" },
     { name: "email", label: "Email Address", type: "email" },
   ];
-  
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  
-  console.log(formData.phone)
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await userUpdateProfile(formData.name , formData.phone , formData.email)
+    await userUpdateProfile(formData.name, formData.phone, formData.email);
     dispatch(editUser(formData));
     setToastMessage("Profile update successfully");
     setShowToast(true);
     setIsEditOpen(false);
   };
-  
+
   const handleLogout = async () => {
     await logout();
     dispatch(removeUser());
     navigate("/");
     dispatch(showToast("Logout successful"));
   };
-  
-  if(isLoading) return <div>Loading....</div>
   return (
     <div className="max-w-7xl lg:max-w-full mx-auto bg-white min-h-screen font-sans px-4 md:px-12 lg:px-24 text-black pb-20 py-4 border-t border-gray-300">
       <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold pt-6 uppercase pb-8">
@@ -185,18 +183,18 @@ const ProfilePage = () => {
             <div className="space-y-4">
               {orders.slice(0, 2).map((order) => (
                 <div
-                  key={order.id}
+                  key={order._id}
                   className="flex items-center justify-between p-4 bg-white rounded-2xl border border-gray-100 hover:border-gray-300 transition-all"
                 >
                   <div className="flex items-center gap-4">
                     <Link
-                      to={`/orders/${order.orderId}`}
+                      to={`/orders/${order._id}`}
                       className="flex items-center justify-center gap-3"
                     >
                       <div className="w-16 h-16 bg-gray-100 rounded-xl overflow-hidden ">
-                        {order.items[0]?.image[0] ? (
+                        {order.items[0]?.image ? (
                           <img
-                            src={order.items[0].image[0]}
+                            src={order.items[0].image}
                             alt="product"
                             className="w-full h-full object-cover"
                           />
@@ -206,7 +204,7 @@ const ProfilePage = () => {
                       </div>
                       <div>
                         <p className="text-sm font-bold line-clamp-1 md:w-auto">
-                          {order.orderId}
+                          {order._id}
                         </p>
                         <p className="text-xs text-gray-500">
                           ₹ {order.totalAmount}
