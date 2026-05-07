@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import EmptyCart from "../components/EmptyCart.jsx";
 import {
@@ -11,9 +10,6 @@ import { useGetUserProfileQuery } from "../services/userService.js";
 import CheckoutSkeleton from "../components/CheckoutSkeleton.jsx";
 const Cart = () => {
   const [localQuantity, setLocalQuantity] = useState([]);
-
-  const userData = useSelector((store) => store.user.user);
-  const address = useSelector((store) => store.address.addresses);
 
   const navigate = useNavigate();
 
@@ -70,8 +66,6 @@ const Cart = () => {
       console.error("Failed:", err);
     }
   };
-
-  console.log(cartData.items.length);
 
   const handleCheckout = () => {
     if (!user) {

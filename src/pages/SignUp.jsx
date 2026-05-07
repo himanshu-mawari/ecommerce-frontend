@@ -1,30 +1,32 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addUser } from "../store/userSlice";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { showToast } from "../store/toastSlice";
+import { useSignupMutation } from "../services/authService";
 
 const SignUp = () => {
   const [name, setName] = useState("Himanshu");
   const [email, setEmail] = useState("himanshumawari2006@gmail.com");
   const [password, setPassword] = useState("Himanshu@123");
   const [error, setError] = useState("");
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const location = useLocation();
   const redirect = new URLSearchParams(location.search).get("redirect");
 
-  const handleSubmit = async (e) => {
+  const [signup] = useSignupMutation();
+
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!email || !password) {
+    if (!name || !email || !password) {
       return setError("please fill both field");
     }
-   
-    // const user = await signup(name , email , password);
 
-    // dispatch(addUser(user?.data?.data));
-    // localStorage.setItem("user", JSON.stringify(user?.data?.data));
+    signup({ name, email, password });
+
     navigate(redirect ? `/${redirect}` : "/");
     dispatch(showToast("Signup successful. Complete your profile"));
   };

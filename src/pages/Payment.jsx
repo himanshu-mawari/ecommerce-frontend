@@ -1,35 +1,29 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { addOrder } from "../store/orderSlice";
+import { useSelector } from "react-redux";
 import Toast from "../components/Toast";
 import { useGetAllAddressesQuery } from "../services/addressService";
 import { useGetCartQuery } from "../services/cartService";
 import { useAddOrderMutation } from "../services/orderService";
-import { useGetSingleOrderQuery } from "../services/orderService";
+import { showToast } from "../store/toastSlice";
+import { useDispatch } from "react-redux";
 
-const Payment = () => {
-  // const addresses1 = useSelector((store) => store.address.addresses);
+const Payment =  () => {
   const selectedAddressId = useSelector(
     (store) => store.address.selectedAddressId,
   );
-  // const user = useSelector((store) => store.user.user);
-  const cart = useSelector((store) => store.cart.items);
   const [isBagOpen, setIsBagOpen] = useState(false);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [method, setMethod] = useState();
-  const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { data: addresses, isLoading } = useGetAllAddressesQuery();
-  const { data: cartData } = useGetCartQuery();
+  const { data: addresses, isLoading } =  useGetAllAddressesQuery();
+  const { data: cartData , isLoading:cartLoading } = useGetCartQuery();
   const [createOrder] = useAddOrderMutation();
-  // const {data:order2} = useGetSingleOrderQuery();
 
-  if (isLoading) return <div></div>;
-  console.log(addresses);
+  if (isLoading || cartLoading) return <div></div>;
 
   const selectedAddress = addresses.find(
     (addr) => addr._id === selectedAddressId,
@@ -46,14 +40,12 @@ const Payment = () => {
 
   const handlePlaceOrder = async () => {
     if (!selectedAddress) {
-      setToastMessage("Select address");
-      setShowToast(true);
+      dispatch(showToast("Select Address"))
       return;
     }
-
+    
     if (!method) {
-      setToastMessage("Select a payment method");
-      setShowToast(true);
+      dispatch(showToast("Select a payment method"))
       return;
     }
     try {
@@ -65,6 +57,7 @@ const Payment = () => {
       if (method === "COD") {
         const data = await createOrder(orderData).unwrap();
 
+        dispatch(showToast("Order created successfully"))
         navigate(`/order-success/${data.data._id}`);
       } else {
         console.log("Online payment flow");
@@ -78,9 +71,7 @@ const Payment = () => {
     <div className="min-h-screen bg-gray-50/50">
       <div className="sticky top-0 z-10 bg-white border-b border-gray-300 py-4 ml-0 px-5  md:px-8 lg:px-12 xl:px-24 flex gap-4 items-center">
         <Link to="/address/saved">
-          {" "}
           <p className="cursor-pointer">
-            {" "}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -98,7 +89,7 @@ const Payment = () => {
           </p>
         </Link>
         <h1 className="text-lg md:text-xl font-semibold">
-          Select Address & Pay{" "}
+          Select Address & Pay
         </h1>
       </div>
 
@@ -190,7 +181,7 @@ const Payment = () => {
                 className="flex w-full items-center justify-between px-6 py-5 hover:bg-gray-50 transition-colors border-b border-gray-100 cursor-pointer"
               >
                 <span className="font-bold text-gray-800">
-                  Items in Bag ({cart.length})
+                  Items in Bag ({cartData.items.length})
                 </span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -342,13 +333,7 @@ const Payment = () => {
             Confirm & {method === "COD" ? "Order" : "Pay"}
           </button>
         </div>
-      </div>
-      <Toast
-        message={toastMessage}
-        isVisible={showToast}
-        setIsVisible={setShowToast}
-        duration={2500}
-      />
+     </div>
     </div>
   );
 };

@@ -3,28 +3,24 @@ import { Link, useNavigate } from "react-router-dom";
 import { selectAddress } from "../store/addressSlice";
 import { useState } from "react";
 import Toast from "../components/Toast.jsx";
-import { products } from "../assets/frontend_assets/assets";
 import { useGetAllAddressesQuery } from "../services/AddressService.js";
 import { useGetCartQuery } from "../services/cartService.js";
 
 const AddressList = () => {
-  
-    const [showToast, setShowToast] = useState(false);
-    const [toastMessage, setToastMessage] = useState("");
-    const [isBagOpen, setIsBagOpen] = useState(false);
-    const [isPriceOpen, setIsPriceOpen] = useState(false);
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-  // const addresses = useSelector((store) => store.address.addresses);
-  const cart = useSelector((store) => store.cart.items);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [isBagOpen, setIsBagOpen] = useState(false);
+  const [isPriceOpen, setIsPriceOpen] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const selectedAddressId = useSelector(
     (store) => store.address.selectedAddressId,
   );
 
-  const { data: addresses , isLoading } = useGetAllAddressesQuery();
-  const {data:cartData} = useGetCartQuery();
+  const { data: addresses, isLoading } = useGetAllAddressesQuery();
+  const { data: cartData } = useGetCartQuery();
 
-  if(isLoading) return <div>Loading</div>
+  if (isLoading) return <div>Loading</div>;
 
   const handleRadioChange = (id) => {
     dispatch(selectAddress(id));
@@ -50,16 +46,10 @@ const AddressList = () => {
       maximumFractionDigits: 0,
     }).format(price);
 
-  console.log(cart);
-
-
-
   const handleSelectedAddress = (id) => {
     dispatch(selectAddress(id));
     navigate("/payment");
   };
-
-
 
   return (
     <div className="max-w-2xl md:max-w-full mx-auto pb-8">
@@ -192,7 +182,7 @@ const AddressList = () => {
               <div className="flex justify-between items-center px-5 py-4">
                 <h1 className="text-xl inter font-medium">Bag</h1>
                 <div className="flex gap-2 text-lg text-gray-500 font-medium items-center">
-                  <p>{cart.length} Items</p>
+                  <p>{cartData.items.length} Items</p>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -216,7 +206,7 @@ const AddressList = () => {
                 {cartData.items.map((items) => {
                   return (
                     <div
-                      key={items.id}
+                      key={items._id}
                       className="py-5 px-5 inter border-b border-gray-200 last:border-b-0"
                     >
                       <div className="flex gap-4 pb-2">
@@ -228,7 +218,8 @@ const AddressList = () => {
                           <h1 className="font-medium">{items.product.name}</h1>
                           <p className="text-gray-500">Size {items.size}</p>
                           <p className="font-semibold mt-1">
-                            Rs {formatPrice(items.product.price * items.quantity)}
+                            Rs{" "}
+                            {formatPrice(items.product.price * items.quantity)}
                           </p>
                         </div>
                       </div>
@@ -245,7 +236,9 @@ const AddressList = () => {
               <div className="flex justify-between items-center px-5 py-4">
                 <h1 className="text-xl inter font-medium">Price Details</h1>
                 <div className="flex gap-2 text-lg font-semibold items-center">
-                  <p className="text-gray-500 font-medium">Rs {cartData.summary.total}</p>{" "}
+                  <p className="text-gray-500 font-medium">
+                    Rs {cartData.summary.total}
+                  </p>{" "}
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"

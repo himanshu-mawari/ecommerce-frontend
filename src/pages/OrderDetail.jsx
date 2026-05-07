@@ -1,18 +1,13 @@
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { useGetSingleOrderQuery } from "../services/orderService";
 
 import { Package, Calendar, CreditCard, MapPin } from "lucide-react";
 
 const OrderDetail = () => {
   const { orderId } = useParams();
-  // const order = useSelector((store) => store.order.order);
-  // const activeOrder = order.find((o) => o.orderId.toString() === id);
-  // console.log(activeOrder.items);
 
   const { data: order, isLoading } = useGetSingleOrderQuery(orderId);
   if (isLoading) return <div></div>;
-  console.log(order);
 
   const statusStyles = {
     pending: "bg-yellow-100 text-yellow-600",
@@ -34,8 +29,10 @@ const OrderDetail = () => {
       year: "numeric",
     });
   };
-  const { name, phone , houseNo, state, street, district, pincode } =
+
+  const { name, phone, houseNo, state, street, district, pincode } =
     order.shippingAddress;
+
   return (
     <div className="min-h-screen border-t border-gray-300 py-8 pb-20 px-4 md:px-10 font-sans">
       <div className="max-w-5xl xl:max-w-7xl mx-auto">
@@ -143,7 +140,9 @@ const OrderDetail = () => {
                     <CreditCard size={16} />
                     Payment
                   </div>
-                  <span className="font-semibold">{order.paymentDetails.method}</span>
+                  <span className="font-semibold">
+                    {order.paymentDetails.method}
+                  </span>
                 </div>
 
                 <div className="flex justify-between items-center text-sm">
@@ -151,7 +150,9 @@ const OrderDetail = () => {
                     <Calendar size={16} />
                     Order Date
                   </div>
-                  <span className="font-semibold">{formatDate(order.createdAt)}</span>
+                  <span className="font-semibold">
+                    {formatDate(order.createdAt)}
+                  </span>
                 </div>
               </div>
             </div>

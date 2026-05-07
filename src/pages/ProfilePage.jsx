@@ -9,19 +9,18 @@ import {
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import InputField from "../components/InputField";
-import { editUser } from "../store/userSlice";
 import { Link } from "react-router-dom";
 import Toast from "../components/Toast.jsx";
-import { removeUser } from "../store/userSlice.js";
 import { useNavigate } from "react-router-dom";
 import { useGetUserProfileQuery } from "../services/userService.js";
 import { useGetAllAddressesQuery } from "../services/AddressService.js";
 import { useGetUserOrderQuery } from "../services/orderService.js";
-import ProfilePageSkeleton from "../components/ProfilePageSkeleton.jsx"
+import { useLogoutMutation } from "../services/authService.js";
+import { useUpdateUserProfileMutation } from "../services/userService.js";
+import ProfilePageSkeleton from "../components/ProfilePageSkeleton.jsx";
+import { showToast } from "../store/toastSlice";
 
 const ProfilePage = () => {
-  const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
   const [isEditOpen, setIsEditOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -29,6 +28,9 @@ const ProfilePage = () => {
   const { data: addresses, isLoading: addressLoading } =
     useGetAllAddressesQuery();
   const { data: orders, isLoading: orderLoading } = useGetUserOrderQuery();
+
+  const [logout] = useLogoutMutation();
+  const [updateUserProfile] = useUpdateUserProfileMutation();
 
   const [formData, setFormData] = useState({
     name: user?.name || "",
@@ -39,17 +41,19 @@ const ProfilePage = () => {
   const selectedAddressId = useSelector(
     (store) => store.address.selectedAddressId,
   );
-  // const orders = useSelector((store) => store.order.order);
 
   const dispatch = useDispatch();
 
   if (isLoading || addressLoading || orderLoading)
-    return <div><ProfilePageSkeleton /></div>;
+    return (
+      <div>
+        <ProfilePageSkeleton />
+      </div>
+    );
+
   const activeAddress = addresses?.find(
     (addr) => addr._id === selectedAddressId,
   );
-
-  // const address =   useSelector((store) => store.address.addresses);
 
   const profileFields = [
     { name: "name", label: "Full Name", type: "text" },
@@ -63,16 +67,14 @@ const ProfilePage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await userUpdateProfile(formData.name, formData.phone, formData.email);
-    dispatch(editUser(formData));
-    setToastMessage("Profile update successfully");
-    setShowToast(true);
+    const data = {name:formData.name, phone:formData.phone, email:formData.email}
+    await updateUserProfile(data);
+    dispatch(showToast("Profile update successfully"))
     setIsEditOpen(false);
   };
 
   const handleLogout = async () => {
     await logout();
-    dispatch(removeUser());
     navigate("/");
     dispatch(showToast("Logout successful"));
   };
@@ -237,12 +239,6 @@ const ProfilePage = () => {
           </div>
         </div>
       </div>
-      <Toast
-        message={toastMessage}
-        isVisible={showToast}
-        setIsVisible={setShowToast}
-        duration={2500}
-      />
     </div>
   );
 };

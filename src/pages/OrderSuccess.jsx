@@ -1,30 +1,19 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { clearCart } from "../store/cartSlice";
-import { products } from "../assets/frontend_assets/assets";
+import { useState } from "react";
 import { useGetSingleOrderQuery } from "../services/orderService";
 
 const OrderSuccess = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(clearCart());
-  }, []);
 
   const [isBagOpen, setIsBagOpen] = useState(false);
   const [isPriceOpen, setIsPriceOpen] = useState(false);
 
   const { orderId } = useParams();
 
-  // const order = useSelector((store) => store.order.order);
-  // console.log(order)
   const { data: order, isLoading } = useGetSingleOrderQuery(orderId, {
     skip: !orderId,
   });
 
-  // console.log(order2);
   if (isLoading) return <div></div>;
 
   const formatPrice = (price) =>
@@ -32,8 +21,8 @@ const OrderSuccess = () => {
       maximumFractionDigits: 0,
     }).format(price);
 
-
   if (!order || order.items.length === 0) return null;
+
   return (
     <div className="flex flex-col  items-center py-10  px-4 border-t border-gray-300 min-h-screen">
       <div className="bg-white rounded-[3rem] w-full max-w-3xl overflow-hidden text-center md:border border-gray-300 p-8 md:p-12">

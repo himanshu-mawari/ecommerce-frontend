@@ -1,41 +1,35 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addUser } from "../store/userSlice";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { showToast } from "../store/toastSlice";
-import {useLoginMutation} from "../services/authService.js";
+import { useLoginMutation } from "../services/authService.js";
 
 const Login = () => {
   const [email, setEmail] = useState("himanshu@gmail.com");
   const [password, setPassword] = useState("Himanshu@123");
   const [login] = useLoginMutation();
   const [error, setError] = useState("");
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  
   const location = useLocation();
   const redirect = new URLSearchParams(location.search).get("redirect");
 
-
-  
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!email || !password) {
       return setError("please fill both field");
     }
-    const user = await login({email , password}).unwrap();
-     
-    console.log(user)
-    
-    dispatch(addUser(user?.data));
-    localStorage.setItem("user", JSON.stringify(user?.data?.data));
+    await login({ email, password });
+
     navigate(redirect ? `/${redirect}` : "/");
     dispatch(showToast("Login successful"));
   };
 
   return (
     <div className="py-20 flex items-center justify-center bg-gray-50 px-4 border-t border-gray-300">
-
       <div className="max-w-md w-full  bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
         <div className="pt-8 pb-4 px-6">
           <h1 className="text-2xl md:text-3xl font-bold text-center text-gray-900">
@@ -83,19 +77,21 @@ const Login = () => {
           >
             Sign in
           </button>
-          
-            <Link to={`/signup?redirect=${redirect}`} className="flex items-center justify-center gap-2 mt-4">
+
+          <Link
+            to={`/signup?redirect=${redirect}`}
+            className="flex items-center justify-center gap-2 mt-4"
+          >
             <p className="text-center text-sm text-gray-600">
               Don't have an account?{"  "}
             </p>
-              <p className="font-semibold text-black hover:underline cursor-pointer">
-                Sign up
-              </p>
-            </Link>
-          
+            <p className="font-semibold text-black hover:underline cursor-pointer">
+              Sign up
+            </p>
+          </Link>
         </form>
       </div>
-     </div>
+    </div>
   );
 };
 

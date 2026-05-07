@@ -1,27 +1,29 @@
-import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useGetUserOrderQuery } from "../services/orderService";
 import OrdersSkeleton from "../components/OrderSkeleton";
 
 const OrderCard = () => {
-  // const orderData = useSelector((store) => store.order.order);
-
   const { data: orderData, isLoading } = useGetUserOrderQuery();
 
-  if (isLoading) return <div><OrdersSkeleton/></div>;
+  if (isLoading)
+    return (
+      <div>
+        <OrdersSkeleton />
+      </div>
+    );
 
   const formatPrice = (price) =>
     new Intl.NumberFormat("en-IN", {
       maximumFractionDigits: 0,
     }).format(price);
 
-    const formatDate = (iso) => {
-  return new Date(iso).toLocaleString("en-IN", {
-    month: "short",
-    day: "numeric",
-    year: "numeric"
-  });
-};
+  const formatDate = (iso) => {
+    return new Date(iso).toLocaleString("en-IN", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+  };
 
   const statusStyles = {
     delivered: "bg-green-100 text-green-700",
@@ -29,7 +31,6 @@ const OrderCard = () => {
     pending: "bg-yellow-100 text-yellow-600",
     cancelled: "bg-red-100 text-red-700",
   };
-
 
   return (
     <div className="min-h-screen border-t border-gray-300 py-8 pb-28 lg:pb-40 lg:pt-10 px-4 md:px-10  font-sans">
