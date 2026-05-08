@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-
 const userSlice = createSlice({
   name: "user",
   initialState: {
@@ -10,13 +9,10 @@ const userSlice = createSlice({
     addUser: (state, action) => {
       state.user = action.payload;
     },
-    editUser: (state, action) => {
-      state.user = action.payload;
-    },
+
     removeUser: () => {
-      
-      localStorage.removeItem("user")
-      return {user:null};
+      localStorage.removeItem("user");
+      return { user: null };
     },
   },
 });

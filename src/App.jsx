@@ -22,6 +22,10 @@ import { hideToast } from "./store/toastSlice";
 import Toast from "./components/Toast.jsx";
 import { useGetUserProfileQuery } from "./services/userService";
 import AddressGuard from "./components/AddressGuard.jsx";
+import AdminLayout from "./Layouts/AdminLayout.jsx";
+import AdminLogin from "./components/AdminLogin.jsx";
+import AdminGuard from "./components/AdminGuard.jsx";
+import Dashboard from "./components/Dashboard.jsx";
 
 const router = createBrowserRouter([
   {
@@ -86,6 +90,19 @@ const router = createBrowserRouter([
       {
         path: "/payment",
         element: <Payment />,
+      },
+      { path: "*", element: <Error /> },
+    ],
+  },
+  { path: "/admin/login", element: <AdminLogin /> },
+
+  {
+    path: "/admin",
+    element: <AdminGuard />,
+    children: [
+      {
+        element: <AdminLayout />,
+        children: [{ path: "dashboard", element: <Dashboard /> }],
       },
     ],
   },
