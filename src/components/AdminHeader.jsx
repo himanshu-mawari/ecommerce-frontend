@@ -1,9 +1,10 @@
 import { assets } from "../assets/assets.js";
 
 const AdminHeader = () => {
+  
   return (
     <div>
-      <div className="flex justify-between items-center p-4">
+      <div className="flex justify-between items-center p-4 border-b ">
         <div>
           <h1 className="monteserrat tracking-tighter font-medium text-4xl flex items-end">
             FOREVER
@@ -23,6 +24,7 @@ const AdminHeader = () => {
           />
         </div>
       </div>
+      
     </div>
   );
 };
