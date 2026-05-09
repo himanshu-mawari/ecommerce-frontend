@@ -1,7 +1,6 @@
 import { assets } from "../assets/assets.js";
 
-const AdminHeader = () => {
-  
+const AdminHeader = ({ sideBar, setSideBar }) => {
   return (
     <div>
       <div className="flex justify-between items-center p-4 border-b ">
@@ -21,10 +20,10 @@ const AdminHeader = () => {
             src={assets.menuIcon}
             className="w-6 cursor-pointer lg:hidden"
             alt="menu"
+            onClick={() => setSideBar(!sideBar)}
           />
         </div>
       </div>
-      
     </div>
   );
 };
