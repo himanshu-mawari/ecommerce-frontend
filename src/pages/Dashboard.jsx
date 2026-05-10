@@ -8,7 +8,6 @@ import {
 } from "react-icons/ci";
 import { PiCurrencyInr } from "react-icons/pi";
 
-// Data Objects for Scalability
 const stats = [
   {
     label: "TOTAL PRODUCTS",
@@ -61,7 +60,7 @@ const AdminDashboard = () => {
       <header>
         <div className="flex justify-between items-start">
           <div>
-            <h1 className="text-3xl font-semibold tracking-tight text-gray-900">
+            <h1 className="text-3xl font-medium tracking-tight text-gray-900">
               Dashboard
             </h1>
             <p className="text-sm text-gray-500 mt-1">
@@ -90,7 +89,7 @@ const AdminDashboard = () => {
         {stats.map((item, index) => (
           <div
             key={index}
-            className="bg-white border border-gray-100 p-4 rounded-2xl transition-all duration-200 hover:shadow-md hover:-translate-y-1 flex flex-col justify-between aspect-square"
+            className="bg-white border border-gray-200 p-4 rounded-2xl transition-all duration-200 hover:shadow-md hover:-translate-y-1 flex flex-col justify-between aspect-square"
           >
             <div className="flex justify-between items-start">
               <span className="text-[10px] font-bold text-gray-400 tracking-wider uppercase">

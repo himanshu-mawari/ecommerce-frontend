@@ -25,7 +25,8 @@ import AddressGuard from "./components/AddressGuard.jsx";
 import AdminLayout from "./Layouts/AdminLayout.jsx";
 import AdminLogin from "./components/AdminLogin.jsx";
 import AdminGuard from "./components/AdminGuard.jsx";
-import Dashboard from "./components/Dashboard.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
+import AdminProductPage from "./pages/AdminProductPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -102,7 +103,10 @@ const router = createBrowserRouter([
     children: [
       {
         element: <AdminLayout />,
-        children: [{ path: "dashboard", element: <Dashboard /> }],
+        children: [
+          { path: "dashboard", element: <Dashboard /> },
+          { path: "products", element: <AdminProductPage /> },
+        ],
       },
     ],
   },
