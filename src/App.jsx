@@ -27,6 +27,7 @@ import AdminLogin from "./components/AdminLogin.jsx";
 import AdminGuard from "./components/AdminGuard.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import AdminProductPage from "./pages/AdminProductPage.jsx";
+import AdminProductAddPage from "./pages/AdminProductAddPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -106,6 +107,7 @@ const router = createBrowserRouter([
         children: [
           { path: "dashboard", element: <Dashboard /> },
           { path: "products", element: <AdminProductPage /> },
+          { path: "products/add", element: <AdminProductAddPage /> },
         ],
       },
     ],

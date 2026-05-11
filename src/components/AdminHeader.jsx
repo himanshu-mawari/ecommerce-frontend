@@ -1,14 +1,17 @@
 import { assets } from "../assets/assets.js";
+import {Link} from "react-router-dom";
 
 const AdminHeader = ({ sideBar, setSideBar }) => {
   return (
     <div>
       <div className="flex justify-between items-center p-4 border-b ">
         <div>
+          <Link to="/admin/dashboard">
           <h1 className="monteserrat tracking-tighter font-medium text-4xl flex items-end">
             FOREVER
             <span className="mb-2 ml-1 h-2 w-2 rounded-full bg-indigo-300" />
           </h1>
+          </Link>
           <p className="text-xs text-gray-500 -mt-1">Admin Panel</p>
         </div>
 

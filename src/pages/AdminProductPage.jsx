@@ -6,6 +6,7 @@ import {
   HiOutlineCheckCircle,
   HiOutlineExclamationCircle,
 } from "react-icons/hi2";
+import { Link } from "react-router-dom";
 
 const AdminProductPage = () => {
   const stockItems = [
@@ -34,12 +35,12 @@ const AdminProductPage = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto px-4 py-4 bg-[#F8FAFC] min-h-screen font-sans">
+    <div className="max-w-md mx-auto px-4 py-4  min-h-screen font-sans">
       <div className="flex items-center justify-between mb-4">
         <div>
-            <h1 className="text-3xl font-medium tracking-tight text-gray-900">
-              Products
-            </h1>
+          <h1 className="text-3xl font-medium tracking-tight text-gray-900">
+            Products
+          </h1>
           <div className="flex gap-1.5 mt-1">
             <span className="flex items-center gap-1 text-[10px] font-semibold bg-white px-4 py-2 rounded-md border border-gray-200 text-gray-500">
               <HiOutlineCube className="size-3" /> 12 Total
@@ -49,11 +50,11 @@ const AdminProductPage = () => {
             </span>
           </div>
         </div>
-
-        <button className="bg-indigo-600 text-white text-sm h-9 px-4 rounded-lg font-semibold active:scale-95 transition-transform flex items-center">
-         +
-          Add
-        </button>
+        <Link to="/admin/products/add">
+          <button className="bg-indigo-600 hover:bg-indigo-700 text-white text-sm h-9 px-4 rounded-lg font-semibold active:scale-95 transition-transform flex items-center cursor-pointer">
+            + Add
+          </button>
+        </Link>
       </div>
 
       <div className="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm mb-6 sticky top-4 z-10">
