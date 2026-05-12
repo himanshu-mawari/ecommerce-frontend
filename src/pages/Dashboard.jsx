@@ -7,7 +7,7 @@ import {
   CiWarning,
 } from "react-icons/ci";
 import { PiCurrencyInr } from "react-icons/pi";
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom";
 
 const stats = [
   {
@@ -68,24 +68,24 @@ const AdminDashboard = () => {
               Welcome back. Here’s your store overview.
             </p>
           </div>
-         
         </div>
-
         <div className="mt-6 flex flex-col gap-3">
-          <Link to="/admin/products/add"
+          <Link
+            to="/admin/products/add"
             className="bg-indigo-700 hover:bg-indigo-800 transition-all text-white py-3.5 text-center rounded-xl font-medium shadow-sm active:scale-[0.98] cursor-pointer"
           >
-          <button>
-            + Add Product
-          </button>
+            <button>+ Add Product</button>
           </Link>
           <div className="grid grid-cols-2 gap-3">
             <button className="border border-gray-200 bg-white hover:bg-gray-100 active:scale-[0.98] transition-colors py-2.5 rounded-xl text-gray-700 font-medium cursor-pointer">
               View Orders
             </button>
-            <button className="border border-gray-200 bg-white hover:bg-gray-100 active:scale-[0.98] transition-colors py-2.5 rounded-xl text-gray-700 font-medium cursor-pointer">
-              View Products
-            </button>
+            <Link
+              className="flex items-center justify-center border border-gray-200 bg-white hover:bg-gray-100 active:scale-[0.98] transition-colors py-2.5 rounded-xl text-gray-700 font-medium cursor-pointer"
+              to="/admin/products"
+            >
+              <button>View Products</button>
+            </Link>
           </div>
         </div>
       </header>

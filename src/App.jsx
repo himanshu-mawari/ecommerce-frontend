@@ -26,8 +26,10 @@ import AdminLayout from "./Layouts/AdminLayout.jsx";
 import AdminLogin from "./components/AdminLogin.jsx";
 import AdminGuard from "./components/AdminGuard.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
-import AdminProductPage from "./pages/AdminProductPage.jsx";
-import AdminProductAddPage from "./pages/AdminProductAddPage.jsx";
+import AdminProductPage from "./pages/AdminProduct.jsx";
+import AdminProductAddPage from "./pages/AdminProductAdd.jsx";
+import AdminProductEdit from "./pages/AdminProductEdit.jsx";
+
 
 const router = createBrowserRouter([
   {
@@ -108,6 +110,7 @@ const router = createBrowserRouter([
           { path: "dashboard", element: <Dashboard /> },
           { path: "products", element: <AdminProductPage /> },
           { path: "products/add", element: <AdminProductAddPage /> },
+          { path: "products/edit/:productId", element: <AdminProductEdit /> },
         ],
       },
     ],
