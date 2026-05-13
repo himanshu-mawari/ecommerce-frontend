@@ -77,14 +77,17 @@ const AdminDashboard = () => {
             <button>+ Add Product</button>
           </Link>
           <div className="grid grid-cols-2 gap-3">
-            <button className="border border-gray-200 bg-white hover:bg-gray-100 active:scale-[0.98] transition-colors py-2.5 rounded-xl text-gray-700 font-medium cursor-pointer">
-              View Orders
-            </button>
             <Link
-              className="flex items-center justify-center border border-gray-200 bg-white hover:bg-gray-100 active:scale-[0.98] transition-colors py-2.5 rounded-xl text-gray-700 font-medium cursor-pointer"
+              className="flex items-center justify-center border border-gray-200 bg-white hover:bg-gray-100 active:scale-[0.98] transition-colors py-2.5 rounded-xl text-gray-700 font-medium "
+              to="/admin/orders"
+            >
+              <button className="cursor-pointer">View Orders</button>
+            </Link>
+            <Link
+              className="flex items-center justify-center border border-gray-200 bg-white hover:bg-gray-100 active:scale-[0.98] transition-colors py-2.5 rounded-xl text-gray-700 font-medium "
               to="/admin/products"
             >
-              <button>View Products</button>
+              <button className="cursor-pointer">View Products</button>
             </Link>
           </div>
         </div>

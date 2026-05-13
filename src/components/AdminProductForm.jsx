@@ -51,7 +51,6 @@ const AdminProductForm = ({ initialData }) => {
     setPreviews((prev) => [...prev, ...newPreviews]);
   };
 
-  if (!initialData) return <div></div>;
 
   return (
     <div className="inter">

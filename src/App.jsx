@@ -29,7 +29,7 @@ import Dashboard from "./pages/Dashboard.jsx";
 import AdminProductPage from "./pages/AdminProduct.jsx";
 import AdminProductAddPage from "./pages/AdminProductAdd.jsx";
 import AdminProductEdit from "./pages/AdminProductEdit.jsx";
-
+import AdminOrderPage from "./pages/AdminOrderPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -111,6 +111,7 @@ const router = createBrowserRouter([
           { path: "products", element: <AdminProductPage /> },
           { path: "products/add", element: <AdminProductAddPage /> },
           { path: "products/edit/:productId", element: <AdminProductEdit /> },
+          { path: "orders", element: <AdminOrderPage /> },
         ],
       },
     ],
