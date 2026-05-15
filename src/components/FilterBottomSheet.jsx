@@ -105,7 +105,7 @@ const FilterBottomSheet = ({ isOpen, onClose }) => {
             </section>
           </div>
 
-          <div className="p-2 border-t border-gray-100 grid grid-cols-2 gap-4 bg-white">
+          <div className="p-2 border-t border-gray-100 grid grid-cols-2 gap-9 bg-white">
             <button
               onClick={() => {
                 setStatus("Pending");
@@ -117,7 +117,7 @@ const FilterBottomSheet = ({ isOpen, onClose }) => {
             </button>
             <button
               onClick={() => onClose(false)}
-              className="py-3 text-sm bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg shadow-lg shadow-indigo-100 active:scale-95 transition-all cursor-pointer"
+              className="py-3  text-sm bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg shadow-lg shadow-indigo-100 active:scale-95 transition-all cursor-pointer"
             >
               Apply Filters
             </button>

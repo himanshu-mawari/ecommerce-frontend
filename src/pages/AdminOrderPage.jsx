@@ -5,7 +5,56 @@ import { MdOutlineCancel } from "react-icons/md";
 import FilterBottomSheet from "../components/FilterBottomSheet";
 
 const AdminOrderPage = () => {
-  const [isFilterOpen , setIsFilterOpen] = useState(false)
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const orders = [
+    {
+      id: "Order #10241",
+      customer: "Rahul Sharma",
+      amount: 2499,
+      itemsPreview: "Nike Air Max +1 more items",
+      status: "Pending",
+      paymentStatus: "Paid",
+      date: "15 May 2026",
+      totalItems: 2,
+    },
+    {
+      id: "ORD 10242",
+      customer: "Priya Verma",
+      amount: 1199,
+      itemsPreview: "Oversized Black T-Shirt",
+      status: "Shipped",
+      paymentStatus: "Paid",
+      date: "15 May 2026",
+      totalItems: 1,
+    },
+    {
+      id: "ORD-10243",
+      customer: "Amit Kumar",
+      amount: 3499,
+      itemsPreview: "Adidas Sneakers +2 more items",
+      status: "Delivered",
+      paymentStatus: "Paid",
+      date: "14 May 2026",
+      totalItems: 3,
+    },
+    {
+      id: "ORD-10244",
+      customer: "Sneha Patel",
+      amount: 899,
+      itemsPreview: "Cotton Hoodie",
+      status: "Cancelled",
+      paymentStatus: "Refunded",
+      date: "14 May 2026",
+      totalItems: 1,
+    },
+  ];
+  const statusStyles = {
+    delivered: "bg-green-100 text-green-700",
+    shipped: "bg-blue-100 text-blue-700",
+    pending: "bg-yellow-100 text-yellow-600",
+    cancelled: "bg-red-100 text-red-700",
+  };
+
   return (
     <div className="p-5 inter">
       <div>
@@ -60,12 +109,74 @@ const AdminOrderPage = () => {
               placeholder="Search by order Id and customer name.."
             />
           </div>
-          <button className="bg-indigo-700 text-white px-4 py-1 rounded-xl text-sm font-medium cursor-pointer hover:bg-indigo-800 active:scale-[0.98] transition-all duration-200" onClick={() => setIsFilterOpen(true)}>
-            Filters
-          </button>
+          <div className="flex items-center bg-indigo-700 rounded-xl px-4 py-1 gap-1 cursor-pointer hover:bg-indigo-800 active:scale-[0.98] transition-all duration-200">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="size-5 text-white"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
+              />
+            </svg>
+
+            <button
+              className=" text-white text-sm font-medium cursor-pointer"
+              onClick={() => setIsFilterOpen(true)}
+            >
+              Filters
+            </button>
+          </div>
+        </div>
+        <div className="mt-6 space-y-4">
+          {orders.map((order) => (
+            <div className="bg-white border border-gray-100 p-4 rounded-xl shadow-[0_2px_10px_-3px_rgba(0,0,0,0.07)] active:bg-gray-50 transition-colors cursor-pointer">
+              <div className="flex justify-between items-start mb-1">
+                <div className="flex flex-col">
+                  <h2 className="text-[14px] font-bold text-gray-900 tracking-tight">
+                    {order.id}
+                  </h2>
+                  <div className="flex items-center gap-1.5 text-[12px] text-gray-500 mt-0.5">
+                    <span className="font-medium text-gray-700">
+                      {order.customer}
+                    </span>
+                    <span className="text-gray-300">•</span>
+                    <span>{order.date}</span>
+                  </div>
+                </div>
+
+                <p className="text-[15px] font-bold text-gray-900">
+                  ₹{order.amount}
+                </p>
+              </div>
+
+              <div className="mt-3 mb-4">
+                <p className="text-[13px] text-gray-600 font-normal line-clamp-1 pl-2">
+                  {order.itemsPreview}
+                </p>
+              </div>
+
+              <div className="flex justify-end">
+                <span
+                  className={`px-3 py-1 rounded-md text-[10px] font-extrabold uppercase tracking-normal ${
+                    statusStyles[order.status.toLowerCase()]
+                  }`}
+                >
+                  {order.status}
+                </span>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
-      {isFilterOpen && <FilterBottomSheet isOpen={isFilterOpen} onClose={setIsFilterOpen} />}
+      {isFilterOpen && (
+        <FilterBottomSheet isOpen={isFilterOpen} onClose={setIsFilterOpen} />
+      )}
     </div>
   );
 };
