@@ -3,12 +3,13 @@ import { CiClock1 } from "react-icons/ci";
 import { ImCancelCircle } from "react-icons/im";
 import { MdOutlineCancel } from "react-icons/md";
 import FilterBottomSheet from "../components/FilterBottomSheet";
+import { Link } from "react-router-dom";
 
 const AdminOrderPage = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const orders = [
     {
-      id: "Order #10241",
+      id: "10241",
       customer: "Rahul Sharma",
       amount: 2499,
       itemsPreview: "Nike Air Max +1 more items",
@@ -18,7 +19,7 @@ const AdminOrderPage = () => {
       totalItems: 2,
     },
     {
-      id: "ORD 10242",
+      id: "10242",
       customer: "Priya Verma",
       amount: 1199,
       itemsPreview: "Oversized Black T-Shirt",
@@ -28,7 +29,7 @@ const AdminOrderPage = () => {
       totalItems: 1,
     },
     {
-      id: "ORD-10243",
+      id: "10243",
       customer: "Amit Kumar",
       amount: 3499,
       itemsPreview: "Adidas Sneakers +2 more items",
@@ -38,7 +39,7 @@ const AdminOrderPage = () => {
       totalItems: 3,
     },
     {
-      id: "ORD-10244",
+      id: "10244",
       customer: "Sneha Patel",
       amount: 899,
       itemsPreview: "Cotton Hoodie",
@@ -133,44 +134,46 @@ const AdminOrderPage = () => {
             </button>
           </div>
         </div>
-        <div className="mt-6 space-y-4">
+        <div className="mt-6 flex flex-col gap-4">
           {orders.map((order) => (
-            <div className="bg-white border border-gray-100 p-4 rounded-xl shadow-[0_2px_10px_-3px_rgba(0,0,0,0.07)] active:bg-gray-50 transition-colors cursor-pointer">
-              <div className="flex justify-between items-start mb-1">
-                <div className="flex flex-col">
-                  <h2 className="text-[14px] font-bold text-gray-900 tracking-tight">
-                    {order.id}
-                  </h2>
-                  <div className="flex items-center gap-1.5 text-[12px] text-gray-500 mt-0.5">
-                    <span className="font-medium text-gray-700">
-                      {order.customer}
-                    </span>
-                    <span className="text-gray-300">•</span>
-                    <span>{order.date}</span>
+            <Link to={`/admin/orders/${order.id}`}>
+              <div className="bg-white border border-gray-200 p-4 rounded-xl shadow-[0_2px_10px_-3px_rgba(0,0,0,0.07)] active:bg-gray-50 transition-colors cursor-pointer hover:border-gray-400 ">
+                <div className="flex justify-between items-start mb-1">
+                  <div className="flex flex-col">
+                    <h2 className="text-[14px] font-bold text-gray-900 tracking-tight">
+                      ORD-{order.id}
+                    </h2>
+                    <div className="flex items-center gap-1.5 text-[12px] text-gray-500 mt-0.5">
+                      <span className="font-medium text-gray-700">
+                        {order.customer}
+                      </span>
+                      <span className="text-gray-300">•</span>
+                      <span>{order.date}</span>
+                    </div>
                   </div>
+
+                  <p className="text-[15px] font-bold text-gray-900">
+                    ₹{order.amount}
+                  </p>
                 </div>
 
-                <p className="text-[15px] font-bold text-gray-900">
-                  ₹{order.amount}
-                </p>
-              </div>
+                <div className="mt-3 mb-4">
+                  <p className="text-[13px] text-gray-600 font-normal line-clamp-1 pl-2">
+                    {order.itemsPreview}
+                  </p>
+                </div>
 
-              <div className="mt-3 mb-4">
-                <p className="text-[13px] text-gray-600 font-normal line-clamp-1 pl-2">
-                  {order.itemsPreview}
-                </p>
+                <div className="flex justify-end">
+                  <span
+                    className={`px-3 py-1 rounded-md text-[10px] font-extrabold uppercase tracking-normal ${
+                      statusStyles[order.status.toLowerCase()]
+                    }`}
+                  >
+                    {order.status}
+                  </span>
+                </div>
               </div>
-
-              <div className="flex justify-end">
-                <span
-                  className={`px-3 py-1 rounded-md text-[10px] font-extrabold uppercase tracking-normal ${
-                    statusStyles[order.status.toLowerCase()]
-                  }`}
-                >
-                  {order.status}
-                </span>
-              </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
