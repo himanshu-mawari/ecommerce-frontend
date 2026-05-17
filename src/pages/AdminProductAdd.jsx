@@ -3,7 +3,7 @@ import AdminProductForm from "../components/AdminProductForm";
 
 const AdminProductAdd = () => {
   return (
-    <div className="max-w-md mx-auto px-4 py-4 min-h-screen font-sans pb-32">
+    <div className="max-w-md mx-auto px-5 py-6 min-h-screen font-sans pb-32">
       <div className="mb-6">
         <h1 className="text-3xl font-medium tracking-tight text-gray-900">
           Add Product

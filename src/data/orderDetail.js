@@ -139,3 +139,38 @@ export const orders = [
       },
     },
   ];
+ export   const statusStyles = {
+    delivered: "bg-green-100 text-green-700",
+    shipped: "bg-blue-100 text-blue-700",
+    pending: "bg-yellow-100 text-yellow-600",
+    cancelled: "bg-red-100 text-red-700",
+  };
+  export const  orderItems = [
+  {
+    id: "ITEM-101",
+    name: "Oversized Black Hoodie",
+    image:
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab",
+    size: "L",
+    quantity: 2,
+    price: 89,
+  },
+  {
+    id: "ITEM-102",
+    name: "Classic White Sneakers",
+    image:
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff",
+    size: "42",
+    quantity: 1,
+    price: 120,
+  },
+  {
+    id: "ITEM-103",
+    name: "Slim Fit Blue Jeans",
+    image:
+      "https://images.unsplash.com/photo-1541099649105-f69ad21f3246",
+    size: "32",
+    quantity: 1,
+    price: 75,
+  },
+];

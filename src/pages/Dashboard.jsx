@@ -57,7 +57,7 @@ const stockItems = [
 
 const AdminDashboard = () => {
   return (
-    <div className="px-5 py-6  min-h-screen space-y-6 pb-10">
+    <div className="px-4 py-6  min-h-screen space-y-6 pb-10">
       <header>
         <div className="flex justify-between items-start">
           <div>

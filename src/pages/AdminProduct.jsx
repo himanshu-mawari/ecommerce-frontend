@@ -55,11 +55,11 @@ const AdminProductPage = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto px-4 py-4  min-h-screen font-sans">
+    <div className="max-w-md mx-auto px-4 py-6 min-h-screen font-sans">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
         <div className="space-y-4">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight text-gray-900">
+            <h1 className="text-3xl font-bold tracking-tight">
               Products
             </h1>
             <p className="text-sm text-gray-500 mt-1">

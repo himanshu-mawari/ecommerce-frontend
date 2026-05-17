@@ -57,9 +57,9 @@ const AdminOrderPage = () => {
   };
 
   return (
-    <div className="p-5 inter">
+    <div className="px-4 py-6  inter">
       <div>
-        <h1 className="text-3xl font-medium inter mb-0.5">Orders</h1>
+        <h1 className="text-3xl font-bold tracking-tight mb-0.5">Orders</h1>
         <p className="text-xs text-gray-500">
           Monitor, manage, and process customer purchases.
         </p>
@@ -120,8 +120,8 @@ const AdminOrderPage = () => {
               class="size-5 text-white"
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
               />
             </svg>
