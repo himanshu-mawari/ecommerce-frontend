@@ -55,8 +55,8 @@ const AdminProductPage = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto px-4 py-6 min-h-screen font-sans">
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
+    <div className="max-w-md sm:max-w-full md:px-12 mx-auto px-4 py-6 min-h-screen font-sans">
+      <div className="flex flex-col justify-between gap-4 mb-6">
         <div className="space-y-4">
           <div>
             <h1 className="text-3xl font-bold tracking-tight">
@@ -125,7 +125,7 @@ const AdminProductPage = () => {
           {stockItems.map((item) => (
             <div
               key={item._id}
-              className="bg-white border border-gray-100 p-3 rounded-xl shadow-sm"
+              className="bg-white border border-gray-200 p-3 rounded-xl shadow-sm"
             >
               <div className="flex gap-3">
                 <div className="size-16 shrink-0 bg-gray-50 rounded-lg border border-gray-50 overflow-hidden">

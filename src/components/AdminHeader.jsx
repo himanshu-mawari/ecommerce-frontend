@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 const AdminHeader = ({ sideBar, setSideBar }) => {
   return (
     <div>
-      <div className="flex justify-between items-center p-4 border-b ">
+      <div className="flex justify-between items-center p-4 sm:px-12  border-b ">
         <div>
           <Link to="/admin/dashboard">
           <h1 className="monteserrat tracking-tighter font-medium text-4xl flex items-end">

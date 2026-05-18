@@ -57,47 +57,45 @@ const stockItems = [
 
 const AdminDashboard = () => {
   return (
-    <div className="px-4 py-6  min-h-screen space-y-6 pb-10">
+    <div className="px-4 py-6 sm:px-12  min-h-screen space-y-6 pb-10">
       <header>
-        <div className="flex justify-between items-start">
+        <div className="flex flex-col  sm:justify-between gap-4 border-gray-100">
           <div>
-            <h1 className="text-3xl font-medium tracking-tight text-gray-900">
+            <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
               Dashboard
             </h1>
-            <p className="text-sm text-gray-500 mt-1">
-              Welcome back. Here’s your store overview.
+            <p className="text-gray-500 mt-1">
+              Welcome back. Here's your store overview.
             </p>
           </div>
-        </div>
-        <div className="mt-6 flex flex-col gap-3">
-          <Link
-            to="/admin/products/add"
-            className="bg-indigo-700 hover:bg-indigo-800 transition-all text-white py-3.5 text-center rounded-xl font-medium shadow-sm active:scale-[0.98] cursor-pointer"
-          >
-            <button>+ Add Product</button>
-          </Link>
-          <div className="grid grid-cols-2 gap-3">
+
+          <div className="grid grid-cols-2 gap-3 w-full sm:flex sm:w-auto sm:gap-3">
             <Link
-              className="flex items-center justify-center border border-gray-200 bg-white hover:bg-gray-100 active:scale-[0.98] transition-colors py-2.5 rounded-xl text-gray-700 font-medium "
-              to="/admin/orders"
+              to="/admin/add-product"
+              className="col-span-2 sm:col-span-1 px-4 py-3 bg-indigo-600 text-white font-medium rounded-lg text-center text-md shadow-sm hover:bg-indigo-700 transition sm:w-48"
             >
-              <button className="cursor-pointer">View Orders</button>
+              + Add Product
             </Link>
             <Link
-              className="flex items-center justify-center border border-gray-200 bg-white hover:bg-gray-100 active:scale-[0.98] transition-colors py-2.5 rounded-xl text-gray-700 font-medium "
               to="/admin/products"
+              className="px-4 py-2 bg-white border sm:flex items-center justify-center border-gray-200 text-gray-700 font-medium rounded-lg text-center text-sm shadow-sm hover:bg-gray-50 transition sm:w-44"
             >
-              <button className="cursor-pointer">View Products</button>
+              View Products
+            </Link>
+            <Link
+              to="/admin/orders"
+              className="px-4 py-2 bg-white border sm:flex items-center justify-center border-gray-200 text-gray-700 font-medium rounded-lg text-center text-sm shadow-sm hover:bg-gray-50 transition sm:w-44"
+            >
+              View Orders
             </Link>
           </div>
         </div>
       </header>
-
       <section className="grid grid-cols-2 gap-4">
         {stats.map((item, index) => (
           <div
             key={index}
-            className="bg-white border border-gray-200 p-4 rounded-2xl transition-all duration-200 hover:shadow-md hover:-translate-y-1 flex flex-col justify-between aspect-square"
+            className="bg-white border border-gray-200 p-4 rounded-2xl transition-all duration-200 hover:shadow-md hover:-translate-y-1 flex flex-col justify-between aspect-square md:aspect-auto md:min-h-[130px]"
           >
             <div className="flex justify-between items-start">
               <span className="text-[10px] font-bold text-gray-400 tracking-wider uppercase">
@@ -113,8 +111,7 @@ const AdminDashboard = () => {
           </div>
         ))}
       </section>
-
-      <section className="bg-white border border-gray-100 p-5 rounded-2xl hover:shadow-md transition-all flex justify-between items-center">
+      <section className="bg-white border border-gray-200 p-5 rounded-2xl hover:shadow-md transition-all flex justify-between items-center">
         <div>
           <span className="text-[10px] font-bold text-gray-400 tracking-wider uppercase">
             TOTAL REVENUE
@@ -125,8 +122,7 @@ const AdminDashboard = () => {
           <PiCurrencyInr />
         </div>
       </section>
-
-      <section className="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden">
+      <section className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
         <div className="p-4 border-b border-gray-50 flex items-center gap-2">
           <CiWarning className="text-orange-500 text-xl font-bold" />
           <h2 className="font-semibold text-gray-800">Low Stock Alerts</h2>
@@ -156,8 +152,7 @@ const AdminDashboard = () => {
           </button>
         </div>
       </section>
-
-      <section className="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden">
+      <section className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
         <div className="p-4 border-b border-gray-50">
           <h2 className="font-semibold text-gray-800">Pending Action</h2>
         </div>
