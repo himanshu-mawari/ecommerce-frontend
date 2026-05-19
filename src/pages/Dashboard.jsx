@@ -61,7 +61,7 @@ const AdminDashboard = () => {
       <header>
         <div className="flex flex-col  sm:justify-between gap-4 border-gray-100">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">
               Dashboard
             </h1>
             <p className="text-gray-500 mt-1">

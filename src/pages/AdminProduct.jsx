@@ -55,37 +55,40 @@ const AdminProductPage = () => {
   };
 
   return (
-    <div className="max-w-md sm:max-w-full md:px-12 mx-auto px-4 py-6 min-h-screen font-sans">
-      <div className="flex flex-col justify-between gap-4 mb-6">
-        <div className="space-y-4">
+    <div className="max-w-md sm:max-w-full sm:px-12 mx-auto px-4 py-6 min-h-screen foxnt-sans">
+      <div className="flex flex-col  justify-between gap-4 mb-6">
+        <div className="space-y-4 md:space-y-0 md:flex md:justify-between">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">
-              Products
-            </h1>
-            <p className="text-sm text-gray-500 mt-1">
+            <h1 className="text-3xl md:text-4xl font-bold tracking-tight">Products</h1>
+
+            <p className="mt-1 text-sm text-gray-500">
               Manage inventory and stock details.
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-2">
-            <span className="inline-flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-full border border-gray-200 text-[11px] font-bold text-gray-600 shadow-sm">
-              <HiOutlineCube className="size-3.5 text-gray-400" />
-              12 Total
-            </span>
-            <span className="inline-flex items-center gap-1.5 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-100 text-[11px] font-bold text-emerald-700 shadow-sm">
-              <HiOutlineCheckCircle className="size-3.5 text-emerald-500" />
-              10 In Stock
-            </span>
+          <div className="flex flex-col items-start gap-3 pb-2">
+            <div className="flex flex-wrap gap-2">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 px-3.5 py-1.5 text-xs md:text-sm font-semibold shadow-sm">
+                <HiOutlineCube className="size-3.5 text-gray-400" />
+                12 Total
+              </span>
+
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-100 bg-emerald-50 px-3.5 py-1.5 text-xs md:text-sm font-semibold text-emerald-700 shadow-sm">
+                <HiOutlineCheckCircle className="size-3.5 text-emerald-500" />
+                10 In Stock
+              </span>
+            </div>
+
+            <Link to="/admin/products/add">
+              <button className="inline-flex h-10 w-54  items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 font-semibold text-white shadow-md shadow-indigo-100 transition-all active:scale-95 hover:bg-indigo-700 md:w-52 ">
+                <span className="text-lg">+</span>
+                Add Product
+              </button>
+            </Link>
           </div>
         </div>
-        <Link to="/admin/products/add">
-          <button className="inline-flex justify-center items-center w-48 gap-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold h-10 px-5 rounded-xl shadow-md shadow-indigo-100 active:scale-95 transition-all cursor-pointer">
-            <span className="text-lg ">+</span>
-            Add Product
-          </button>
-        </Link>
 
-        <div className="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm mb-6 sticky top-4 z-10">
+        <div className="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm mb-4 sticky top-4 z-10">
           <div className="flex flex-col md:flex-row gap-4">
             <div className="relative flex-1">
               <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
@@ -121,7 +124,7 @@ const AdminProductPage = () => {
           </div>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-5">
           {stockItems.map((item) => (
             <div
               key={item._id}
@@ -139,36 +142,36 @@ const AdminProductPage = () => {
                 <div className="flex-1 min-w-0 flex flex-col justify-between">
                   <div>
                     <div className="flex justify-between items-start">
-                      <h2 className="text-sm font-bold text-gray-900 truncate pr-2 leading-tight">
+                      <h2 className="text-sm md:text-md font-bold text-gray-900 truncate pr-2 leading-tight">
                         {item.name}
                       </h2>
                       <span
-                        className={`text-[10px] font-bold px-1.5 py-0.5 rounded border whitespace-nowrap ${getStockStatus(item.stock)}`}
+                        className={`text-[10px] md:text-xs font-bold px-1.5 md:px-2  py-0.5 md:py-1 rounded-full border whitespace-nowrap ${getStockStatus(item.stock)}`}
                       >
                         {item.stock} in stock
                       </span>
                     </div>
-                    <p className="text-[10px] text-gray-400 font-medium uppercase mt-0.5">
+                    <p className="text-[10px] md:text-xs text-gray-400 font-medium uppercase mt-0.5">
                       {item.category}
                     </p>
                   </div>
 
                   <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-50">
-                    <span className="text-sm font-bold text-gray-900">
+                    <span className="text-sm md:text-md font-bold text-gray-900">
                       ₹{item.price}
                     </span>
 
                     <div className="flex gap-1.5">
                       <Link to={`/admin/products/edit/${item._id}`}>
                         <button className="p-2 rounded-lg hover:bg-indigo-50 text-indigo-600 cursor-pointer">
-                          <CiEdit className="size-4" />
+                          <CiEdit className="size-4 md:size-6" />
                         </button>
                       </Link>
                       <button
                         className="p-2 rounded-lg hover:bg-red-50 text-red-500  cursor-pointer"
                         onClick={() => handleDeleteModal(item)}
                       >
-                        <AiOutlineDelete className="size-4" />
+                        <AiOutlineDelete className="size-4 md:size-6" />
                       </button>
                     </div>
                   </div>
