@@ -5,10 +5,17 @@ import { useState } from "react";
 const AdminLayout = () => {
   const [sideBar, setSideBar] = useState(false);
   return (
-    <div>
+    <div className="flex flex-col h-screen">
       <AdminHeader setSideBar={setSideBar} sideBar={sideBar} />
-      <AdminSidebar sideBar={sideBar} setSideBar={setSideBar}  />
-      <Outlet />
+      <div
+        className="flex flex-1 overflow-hidden"
+      >
+        <AdminSidebar sideBar={sideBar} setSideBar={setSideBar} />
+        <div className="flex-1 overflow-y-auto  ">
+
+        <Outlet />
+        </div>
+      </div>
     </div>
   );
 };

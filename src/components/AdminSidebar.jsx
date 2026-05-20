@@ -20,10 +20,10 @@ const AdminSidebar = ({ sideBar, setSideBar }) => {
 
       <div
         className={`
-          fixed top-0 right-0 z-50
-          h-screen w-64 bg-white border-l shadow-xl
+          fixed top-0 left-0 z-50
+          h-screen w-64 bg-white border-r shadow-xl
           transition-transform duration-300 ease-in-out
-          ${sideBar ? "translate-x-0" : "translate-x-full"}
+          ${sideBar ? "translate-x-0" : "-translate-x-full"}
           lg:relative lg:translate-x-0 lg:shadow-none lg:border-r lg:border-l-0
         `}
       >

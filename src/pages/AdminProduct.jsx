@@ -80,7 +80,7 @@ const AdminProductPage = () => {
             </div>
 
             <Link to="/admin/products/add">
-              <button className="inline-flex h-10 w-54  items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 font-semibold text-white shadow-md shadow-indigo-100 transition-all active:scale-95 hover:bg-indigo-700 md:w-52 ">
+              <button className="inline-flex h-10 w-fit  items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 font-semibold text-white shadow-md shadow-indigo-100 transition-all active:scale-95 hover:bg-indigo-700 md:w-52 ">
                 <span className="text-lg">+</span>
                 Add Product
               </button>

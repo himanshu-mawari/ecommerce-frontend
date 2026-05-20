@@ -144,6 +144,7 @@ export const orders = [
     shipped: "bg-blue-100 text-blue-700",
     pending: "bg-yellow-100 text-yellow-600",
     cancelled: "bg-red-100 text-red-700",
+    packed: "bg-purple-100 text-purple-700",
   };
   export const  orderItems = [
   {
