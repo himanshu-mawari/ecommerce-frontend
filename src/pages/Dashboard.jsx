@@ -71,7 +71,7 @@ const AdminDashboard = () => {
 
           <div className="grid grid-cols-2 gap-3 w-full sm:flex sm:w-auto sm:gap-3">
             <Link
-              to="/admin/add-product"
+              to="/admin/products/add"
               className="col-span-2 sm:col-span-1 px-4 py-3 bg-indigo-600 text-white font-medium rounded-lg text-center text-md shadow-sm hover:bg-indigo-700 transition sm:w-48"
             >
               + Add Product

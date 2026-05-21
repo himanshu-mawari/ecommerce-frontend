@@ -15,7 +15,7 @@ const AdminOrderPage = () => {
       {/* Header Layout */}
       <div className="flex flex-col gap-4">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-gray-900">
+          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">
             Orders
           </h1>
           <p className="text-xs md:text-sm text-gray-500 font-light mt-0.5">
