@@ -15,7 +15,6 @@ const AdminProductAdd = () => {
 
       <AdminProductForm />
 
-      {/* Fixed bar — mobile and md only */}
       <div className="fixed bottom-0 left-0 right-0 p-4 bg-white  z-50 lg:hidden">
         <div className="max-w-md mx-auto md:max-w-lg">
           <button className="w-full bg-black text-white py-4 md:py-3 rounded-2xl font-bold text-sm md:text-lg active:scale-[0.98] transition-all">

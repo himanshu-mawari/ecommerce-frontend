@@ -127,7 +127,7 @@ const AdminOrderPage = () => {
                     </div>
                   </div>
                   <p className="text-sm font-bold text-gray-900">
-                    ₹{order.amount}
+                    ₹{order.payment.total}
                   </p>
                 </div>
 
