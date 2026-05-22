@@ -7,12 +7,10 @@ import FilterBottomSheet from "../components/FilterBottomSheet";
 
 const AdminOrderPage = () => {
   const navigate = useNavigate();
-  // Assuming these states/variables are passed or handled via hooks
   const [isFilterOpen, setIsFilterOpen] = React.useState(false);
 
   return (
     <div className="px-4 py-6 md:px-10 md:py-8 inter max-w-7xl mx-auto space-y-6 md:space-y-8">
-      {/* Header Layout */}
       <div className="flex flex-col gap-4">
         <div>
           <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">
@@ -23,7 +21,6 @@ const AdminOrderPage = () => {
           </p>
         </div>
 
-        {/* Stats - Shifted to top right on desktop/tablet to optimize room */}
         <div className="flex gap-3 w-full sm:max-w-xs md:max-w-sm">
           <div className="flex-1 flex items-center gap-3 p-3 bg-white border border-gray-100 rounded-xl shadow-sm transition-all duration-200 hover:border-gray-300">
             <div className="flex items-center justify-center bg-orange-50 size-9 rounded-lg flex-shrink-0">
@@ -55,9 +52,7 @@ const AdminOrderPage = () => {
         </div>
       </div>
 
-      {/* Main Content Area */}
       <div className="space-y-4">
-        {/* Search + Filter Layout */}
         <div className="w-full flex items-center gap-3">
           <div className="relative flex-1 max-w-xl">
             <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
@@ -104,7 +99,6 @@ const AdminOrderPage = () => {
           </button>
         </div>
 
-        {/* MOBILE VIEW: Clean Cards */}
         <div className="flex flex-col gap-3 md:hidden">
           {orders.map((order) => (
             <Link
@@ -147,7 +141,6 @@ const AdminOrderPage = () => {
           ))}
         </div>
 
-        {/* TABLET / DESKTOP VIEW: Adaptive Table Layout */}
         <div className="hidden md:block bg-white border border-gray-100 rounded-xl shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">

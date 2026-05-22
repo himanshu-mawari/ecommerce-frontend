@@ -8,6 +8,7 @@ import {
 } from "react-icons/ci";
 import { PiCurrencyInr } from "react-icons/pi";
 import { Link } from "react-router-dom";
+import { orders } from "../data/orderDetail";
 
 const stats = [
   {
@@ -39,6 +40,19 @@ const stats = [
     bg: "bg-green-50",
   },
 ];
+
+const getInitials = (fullName) => {
+  const words = fullName.trim().split(/\s+/);
+  
+  const firstInitial = words[0].charAt(0).toUpperCase();
+  
+  // 3. Get the first letter of the last word (if a last name exists)
+  const lastInitial = words.length > 1 
+    ? words[words.length - 1].charAt(0).toUpperCase() 
+    : ''; 
+  return firstInitial + lastInitial;
+};
+
 
 const stockItems = [
   {
@@ -122,10 +136,67 @@ const AdminDashboard = () => {
           <PiCurrencyInr />
         </div>
       </section>
+      <section className="bg-white border border-gray-200 p-5 rounded-2xl hover:shadow-md transition-all flex flex-col">
+        <div className="flex justify-between items-baseline mb-4">
+          <div>
+            <h2 className="font-semibold">Recent Orders</h2>
+            <p className="text-xs text-gray-500 mt-0.5">
+              Latest activity from your store
+            </p>
+          </div>
+          <button className="text-sm font-medium text-blue-600 hover:text-blue-700 flex items-center gap-1">
+            View all
+            <span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="size-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
+                />
+              </svg>
+            </span>
+          </button>
+        </div>
+
+        <div className="divide-y divide-gray-100">
+          {orders.map((order) => (
+            <div
+              key={order.id}
+              className="flex items-center justify-between py-4.5 standard-row"
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-11 h-11 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center font-semibold text-base tracking-wide">
+                  {getInitials(order.customer.name)}
+                </div>
+                <div>
+                  <div className="flex flex-col items-baseline mb-0.5">
+                    <span className="font-semibold">{order.id}</span>
+                    <span className="text-xs text-gray-400 ">
+                      {order.customer.name}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="text-lg font-semibold text-gray-900">
+                ₹{order.payment.total}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       <section className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
         <div className="p-4 border-b border-gray-50 flex items-center gap-2">
           <CiWarning className="text-orange-500 text-xl font-bold" />
-          <h2 className="font-semibold text-gray-800">Low Stock Alerts</h2>
+          <h2 className="font-semibold ">Low Stock Alerts</h2>
         </div>
         <div className="p-4 space-y-4">
           {stockItems.map((item) => (
@@ -154,7 +225,7 @@ const AdminDashboard = () => {
       </section>
       <section className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
         <div className="p-4 border-b border-gray-50">
-          <h2 className="font-semibold text-gray-800">Pending Action</h2>
+          <h2 className="font-semibold">Pending Action</h2>
         </div>
         <div className="p-5 space-y-4">
           <div className="flex items-start gap-3">
