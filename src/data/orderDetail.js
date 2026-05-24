@@ -1,144 +1,560 @@
 export const orders = [
-    {
-      id: "ORD-10293",
-      status: "Shipped",
-      placedAt: "15 May 2026, 10:42 AM",
-
-      workflow: {
-        primaryAction: "Mark as Delivered",
-        secondaryAction: "Cancel Order",
-      },
-
-      timeline: [
-        {
-          status: "Order Placed",
-          time: "15 May 2026, 10:42 AM",
-        },
-        {
-          status: "Payment Confirmed",
-          time: "15 May 2026, 10:44 AM",
-        },
-        {
-          status: "Packed",
-          time: "15 May 2026, 4:10 PM",
-        },
-        {
-          status: "Shipped",
-          time: "16 May 2026, 9:20 AM",
-        },
-      ],
-
-      payment: {
-        method: "UPI",
-        status: "Paid",
-        subtotal: 2499,
-        shippingFee: 99,
-        discount: 300,
-        total: 2298,
-      },
-
-      items: [
-        {
-          id: 1,
-          title: "Essential Oversized T-Shirt",
-          size: "L",
-          quantity: 2,
-          price: 899,
-          image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab",
-        },
-        {
-          id: 2,
-          title: "Relaxed Fit Cargo Pants",
-          size: "M",
-          quantity: 1,
-          price: 1499,
-          image: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246",
-        },
-      ],
-
-      customer: {
-        name: "Rahul Sharma",
-        email: "rahul.sharma@example.com",
-        phone: "+91 9876543210",
-      },
-
-      shippingAddress: {
-        street: "Flat 402, Green Valley Residency",
-        city: "Noida",
-        state: "Uttar Pradesh",
-        pincode: "201301",
-        country: "India",
-      },
+  {
+    id: "ORD-10293",
+    status: "Shipped",
+    placedAt: "15 May 2026, 10:42 AM",
+    workflow: {
+      primaryAction: "Mark as Delivered",
+      secondaryAction: "Cancel Order",
     },
-
-    {
-      id: "ORD-10321",
-      status: "Packed",
-      placedAt: "14 May 2026, 7:18 PM",
-
-      workflow: {
-        primaryAction: "Mark as Shipped",
-        secondaryAction: "Refund Order",
-      },
-
-      timeline: [
-        {
-          status: "Order Placed",
-          time: "14 May 2026, 7:18 PM",
-        },
-        {
-          status: "COD Confirmed",
-          time: "14 May 2026, 7:30 PM",
-        },
-        {
-          status: "Packed",
-          time: "15 May 2026, 1:05 PM",
-        },
-      ],
-
-      payment: {
-        method: "Cash on Delivery",
-        status: "Pending",
-        subtotal: 3799,
-        shippingFee: 0,
-        discount: 500,
-        total: 3299,
-      },
-
-      items: [
-        {
-          id: 1,
-          title: "Urban Street Hoodie",
-          size: "XL",
-          quantity: 1,
-          price: 1999,
-          image: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
-        },
-        {
-          id: 2,
-          title: "Classic Straight Jeans",
-          size: "34",
-          quantity: 1,
-          price: 1800,
-          image: "https://images.unsplash.com/photo-1542272604-787c3835535d",
-        },
-      ],
-
-      customer: {
-        name: "Priya Verma",
-        email: "priya.verma@example.com",
-        phone: "+91 9123456780",
-      },
-
-      shippingAddress: {
-        street: "House No. 18B, Lake View Colony",
-        city: "Bengaluru",
-        state: "Karnataka",
-        pincode: "560038",
-        country: "India",
-      },
+    timeline: [
+      { status: "Order Placed", time: "15 May 2026, 10:42 AM" },
+      { status: "Payment Confirmed", time: "15 May 2026, 10:44 AM" },
+      { status: "Packed", time: "15 May 2026, 4:10 PM" },
+      { status: "Shipped", time: "16 May 2026, 9:20 AM" },
+    ],
+    payment: {
+      method: "UPI",
+      status: "Paid",
+      subtotal: 2499,
+      shippingFee: 99,
+      discount: 300,
+      total: 2298,
     },
-  ];
+    items: [
+      {
+        id: 1,
+        title: "Essential Oversized T-Shirt",
+        size: "L",
+        quantity: 2,
+        price: 899,
+        image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab",
+      },
+      {
+        id: 2,
+        title: "Relaxed Fit Cargo Pants",
+        size: "M",
+        quantity: 1,
+        price: 1499,
+        image: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246",
+      },
+    ],
+    customer: {
+      name: "Rahul Sharma",
+      email: "rahul.sharma@example.com",
+      phone: "+91 9876543210",
+    },
+    shippingAddress: {
+      street: "Flat 402, Green Valley Residency",
+      city: "Noida",
+      state: "Uttar Pradesh",
+      pincode: "201301",
+      country: "India",
+    },
+  },
+
+  {
+    id: "ORD-10321",
+    status: "Packed",
+    placedAt: "14 May 2026, 7:18 PM",
+    workflow: {
+      primaryAction: "Mark as Shipped",
+      secondaryAction: "Refund Order",
+    },
+    timeline: [
+      { status: "Order Placed", time: "14 May 2026, 7:18 PM" },
+      { status: "COD Confirmed", time: "14 May 2026, 7:30 PM" },
+      { status: "Packed", time: "15 May 2026, 1:05 PM" },
+    ],
+    payment: {
+      method: "Cash on Delivery",
+      status: "Pending",
+      subtotal: 3799,
+      shippingFee: 0,
+      discount: 500,
+      total: 3299,
+    },
+    items: [
+      {
+        id: 1,
+        title: "Urban Street Hoodie",
+        size: "XL",
+        quantity: 1,
+        price: 1999,
+        image: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+      },
+      {
+        id: 2,
+        title: "Classic Straight Jeans",
+        size: "34",
+        quantity: 1,
+        price: 1800,
+        image: "https://images.unsplash.com/photo-1542272604-787c3835535d",
+      },
+    ],
+    customer: {
+      name: "Priya Verma",
+      email: "priya.verma@example.com",
+      phone: "+91 9123456780",
+    },
+    shippingAddress: {
+      street: "House No. 18B, Lake View Colony",
+      city: "Bengaluru",
+      state: "Karnataka",
+      pincode: "560038",
+      country: "India",
+    },
+  },
+
+  {
+    id: "ORD-10347",
+    status: "Delivered",
+    placedAt: "10 May 2026, 2:30 PM",
+    workflow: {
+      primaryAction: "Initiate Return",
+      secondaryAction: "Download Invoice",
+    },
+    timeline: [
+      { status: "Order Placed", time: "10 May 2026, 2:30 PM" },
+      { status: "Payment Confirmed", time: "10 May 2026, 2:32 PM" },
+      { status: "Packed", time: "11 May 2026, 11:00 AM" },
+      { status: "Shipped", time: "12 May 2026, 8:45 AM" },
+      { status: "Delivered", time: "13 May 2026, 3:15 PM" },
+    ],
+    payment: {
+      method: "Credit Card",
+      status: "Paid",
+      subtotal: 4599,
+      shippingFee: 0,
+      discount: 600,
+      total: 3999,
+    },
+    items: [
+      {
+        id: 1,
+        title: "Premium Slim Fit Shirt",
+        size: "M",
+        quantity: 1,
+        price: 1299,
+        image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c",
+      },
+      {
+        id: 2,
+        title: "Chino Trousers",
+        size: "32",
+        quantity: 1,
+        price: 1600,
+        image: "https://images.unsplash.com/photo-1473966968600-fa801b869a1a",
+      },
+      {
+        id: 3,
+        title: "Canvas Sneakers",
+        size: "42",
+        quantity: 1,
+        price: 1700,
+        image: "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77",
+      },
+    ],
+    customer: {
+      name: "Arjun Mehta",
+      email: "arjun.mehta@example.com",
+      phone: "+91 9988776655",
+    },
+    shippingAddress: {
+      street: "B-204, Suncity Apartments",
+      city: "Pune",
+      state: "Maharashtra",
+      pincode: "411021",
+      country: "India",
+    },
+  },
+
+  {
+    id: "ORD-10368",
+    status: "Cancelled",
+    placedAt: "12 May 2026, 5:55 PM",
+    workflow: {
+      primaryAction: "Reorder",
+      secondaryAction: "View Refund Status",
+    },
+    timeline: [
+      { status: "Order Placed", time: "12 May 2026, 5:55 PM" },
+      { status: "Payment Confirmed", time: "12 May 2026, 5:57 PM" },
+      { status: "Cancelled", time: "12 May 2026, 8:30 PM" },
+      { status: "Refund Initiated", time: "13 May 2026, 10:00 AM" },
+    ],
+    payment: {
+      method: "Net Banking",
+      status: "Refunded",
+      subtotal: 1999,
+      shippingFee: 49,
+      discount: 0,
+      total: 2048,
+    },
+    items: [
+      {
+        id: 1,
+        title: "Graphic Print T-Shirt",
+        size: "S",
+        quantity: 2,
+        price: 799,
+        image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c",
+      },
+      {
+        id: 2,
+        title: "Running Shorts",
+        size: "M",
+        quantity: 1,
+        price: 599,
+        image: "https://images.unsplash.com/photo-1591195853828-11db59a44f43",
+      },
+    ],
+    customer: {
+      name: "Sneha Iyer",
+      email: "sneha.iyer@example.com",
+      phone: "+91 9765432109",
+    },
+    shippingAddress: {
+      street: "12, Gandhi Nagar, Phase 2",
+      city: "Chennai",
+      state: "Tamil Nadu",
+      pincode: "600040",
+      country: "India",
+    },
+  },
+
+  {
+    id: "ORD-10389",
+    status: "Processing",
+    placedAt: "16 May 2026, 9:05 AM",
+    workflow: {
+      primaryAction: "Mark as Packed",
+      secondaryAction: "Cancel Order",
+    },
+    timeline: [
+      { status: "Order Placed", time: "16 May 2026, 9:05 AM" },
+      { status: "Payment Confirmed", time: "16 May 2026, 9:07 AM" },
+    ],
+    payment: {
+      method: "UPI",
+      status: "Paid",
+      subtotal: 5298,
+      shippingFee: 99,
+      discount: 800,
+      total: 4597,
+    },
+    items: [
+      {
+        id: 1,
+        title: "Leather Biker Jacket",
+        size: "L",
+        quantity: 1,
+        price: 3499,
+        image: "https://images.unsplash.com/photo-1551028719-00167b16eac5",
+      },
+      {
+        id: 2,
+        title: "Ribbed Turtleneck Sweater",
+        size: "M",
+        quantity: 1,
+        price: 1799,
+        image: "https://images.unsplash.com/photo-1620012253295-c15cc3e65df4",
+      },
+    ],
+    customer: {
+      name: "Karan Kapoor",
+      email: "karan.kapoor@example.com",
+      phone: "+91 9001234567",
+    },
+    shippingAddress: {
+      street: "Tower C, Flat 1101, Prestige Heights",
+      city: "Hyderabad",
+      state: "Telangana",
+      pincode: "500081",
+      country: "India",
+    },
+  },
+
+  {
+    id: "ORD-10412",
+    status: "Return Requested",
+    placedAt: "8 May 2026, 11:20 AM",
+    workflow: {
+      primaryAction: "Approve Return",
+      secondaryAction: "Reject Return",
+    },
+    timeline: [
+      { status: "Order Placed", time: "8 May 2026, 11:20 AM" },
+      { status: "Payment Confirmed", time: "8 May 2026, 11:22 AM" },
+      { status: "Packed", time: "9 May 2026, 9:30 AM" },
+      { status: "Shipped", time: "10 May 2026, 7:50 AM" },
+      { status: "Delivered", time: "11 May 2026, 1:40 PM" },
+      { status: "Return Requested", time: "13 May 2026, 4:00 PM" },
+    ],
+    payment: {
+      method: "Debit Card",
+      status: "Paid",
+      subtotal: 2799,
+      shippingFee: 0,
+      discount: 200,
+      total: 2599,
+    },
+    items: [
+      {
+        id: 1,
+        title: "Linen Summer Shirt",
+        size: "XL",
+        quantity: 1,
+        price: 1299,
+        image: "https://images.unsplash.com/photo-1598033129183-c4f50c736f10",
+      },
+      {
+        id: 2,
+        title: "Jogger Track Pants",
+        size: "L",
+        quantity: 1,
+        price: 1500,
+        image: "https://images.unsplash.com/photo-1552902865-b72c031ac5ea",
+      },
+    ],
+    customer: {
+      name: "Divya Nair",
+      email: "divya.nair@example.com",
+      phone: "+91 9654321087",
+    },
+    shippingAddress: {
+      street: "No. 7, Palam Vihar",
+      city: "Gurugram",
+      state: "Haryana",
+      pincode: "122017",
+      country: "India",
+    },
+  },
+
+  {
+    id: "ORD-10435",
+    status: "Out for Delivery",
+    placedAt: "15 May 2026, 3:45 PM",
+    workflow: {
+      primaryAction: "Mark as Delivered",
+      secondaryAction: "Report Issue",
+    },
+    timeline: [
+      { status: "Order Placed", time: "15 May 2026, 3:45 PM" },
+      { status: "Payment Confirmed", time: "15 May 2026, 3:47 PM" },
+      { status: "Packed", time: "16 May 2026, 10:00 AM" },
+      { status: "Shipped", time: "16 May 2026, 2:30 PM" },
+      { status: "Out for Delivery", time: "17 May 2026, 8:10 AM" },
+    ],
+    payment: {
+      method: "UPI",
+      status: "Paid",
+      subtotal: 3198,
+      shippingFee: 49,
+      discount: 350,
+      total: 2897,
+    },
+    items: [
+      {
+        id: 1,
+        title: "Denim Jacket",
+        size: "M",
+        quantity: 1,
+        price: 2199,
+        image: "https://images.unsplash.com/photo-1576871337632-b9aef4c17ab9",
+      },
+      {
+        id: 2,
+        title: "Basic White Tee",
+        size: "L",
+        quantity: 2,
+        price: 499,
+        image: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a",
+      },
+    ],
+    customer: {
+      name: "Rohan Desai",
+      email: "rohan.desai@example.com",
+      phone: "+91 9345678901",
+    },
+    shippingAddress: {
+      street: "Flat 306, Sunrise Enclave",
+      city: "Ahmedabad",
+      state: "Gujarat",
+      pincode: "380015",
+      country: "India",
+    },
+  },
+
+  {
+    id: "ORD-10458",
+    status: "Shipped",
+    placedAt: "13 May 2026, 6:00 PM",
+    workflow: {
+      primaryAction: "Mark as Delivered",
+      secondaryAction: "Cancel Order",
+    },
+    timeline: [
+      { status: "Order Placed", time: "13 May 2026, 6:00 PM" },
+      { status: "COD Confirmed", time: "13 May 2026, 6:15 PM" },
+      { status: "Packed", time: "14 May 2026, 12:30 PM" },
+      { status: "Shipped", time: "15 May 2026, 10:00 AM" },
+    ],
+    payment: {
+      method: "Cash on Delivery",
+      status: "Pending",
+      subtotal: 1598,
+      shippingFee: 99,
+      discount: 0,
+      total: 1697,
+    },
+    items: [
+      {
+        id: 1,
+        title: "Polo Collar T-Shirt",
+        size: "S",
+        quantity: 2,
+        price: 699,
+        image: "https://images.unsplash.com/photo-1571945153237-4929e783af4a",
+      },
+      {
+        id: 2,
+        title: "Cotton Shorts",
+        size: "M",
+        quantity: 1,
+        price: 499,
+        image: "https://images.unsplash.com/photo-1591195853828-11db59a44f43",
+      },
+    ],
+    customer: {
+      name: "Ananya Singh",
+      email: "ananya.singh@example.com",
+      phone: "+91 9812345670",
+    },
+    shippingAddress: {
+      street: "C-45, Sector 62",
+      city: "Noida",
+      state: "Uttar Pradesh",
+      pincode: "201309",
+      country: "India",
+    },
+  },
+
+  {
+    id: "ORD-10479",
+    status: "Processing",
+    placedAt: "17 May 2026, 8:22 AM",
+    workflow: {
+      primaryAction: "Mark as Packed",
+      secondaryAction: "Cancel Order",
+    },
+    timeline: [
+      { status: "Order Placed", time: "17 May 2026, 8:22 AM" },
+      { status: "Payment Confirmed", time: "17 May 2026, 8:24 AM" },
+    ],
+    payment: {
+      method: "Credit Card",
+      status: "Paid",
+      subtotal: 6499,
+      shippingFee: 0,
+      discount: 1000,
+      total: 5499,
+    },
+    items: [
+      {
+        id: 1,
+        title: "Wool Blend Overcoat",
+        size: "L",
+        quantity: 1,
+        price: 4499,
+        image: "https://images.unsplash.com/photo-1544923246-77307dd654cb",
+      },
+      {
+        id: 2,
+        title: "Formal Dress Shirt",
+        size: "40",
+        quantity: 2,
+        price: 1000,
+        image: "https://images.unsplash.com/photo-1602810316693-3667c854239a",
+      },
+    ],
+    customer: {
+      name: "Vikram Bhatia",
+      email: "vikram.bhatia@example.com",
+      phone: "+91 9700112233",
+    },
+    shippingAddress: {
+      street: "Villa 9, DLF Phase 4",
+      city: "Gurugram",
+      state: "Haryana",
+      pincode: "122009",
+      country: "India",
+    },
+  },
+
+  {
+    id: "ORD-10502",
+    status: "Delivered",
+    placedAt: "5 May 2026, 1:10 PM",
+    workflow: {
+      primaryAction: "Initiate Return",
+      secondaryAction: "Download Invoice",
+    },
+    timeline: [
+      { status: "Order Placed", time: "5 May 2026, 1:10 PM" },
+      { status: "Payment Confirmed", time: "5 May 2026, 1:12 PM" },
+      { status: "Packed", time: "6 May 2026, 9:00 AM" },
+      { status: "Shipped", time: "7 May 2026, 7:30 AM" },
+      { status: "Delivered", time: "8 May 2026, 2:50 PM" },
+    ],
+    payment: {
+      method: "UPI",
+      status: "Paid",
+      subtotal: 3297,
+      shippingFee: 49,
+      discount: 450,
+      total: 2896,
+    },
+    items: [
+      {
+        id: 1,
+        title: "Slim Fit Chinos",
+        size: "30",
+        quantity: 1,
+        price: 1499,
+        image: "https://images.unsplash.com/photo-1473966968600-fa801b869a1a",
+      },
+      {
+        id: 2,
+        title: "Striped Casual Shirt",
+        size: "M",
+        quantity: 1,
+        price: 999,
+        image: "https://images.unsplash.com/photo-1598033129183-c4f50c736f10",
+      },
+      {
+        id: 3,
+        title: "Sports Ankle Socks",
+        size: "Free",
+        quantity: 3,
+        price: 199,
+        image: "https://images.unsplash.com/photo-1586350977771-b3b0abd50c82",
+      },
+    ],
+    customer: {
+      name: "Meera Pillai",
+      email: "meera.pillai@example.com",
+      phone: "+91 9567890123",
+    },
+    shippingAddress: {
+      street: "Flat 701, Emerald Isle",
+      city: "Kochi",
+      state: "Kerala",
+      pincode: "682030",
+      country: "India",
+    },
+  },
+];
  export   const statusStyles = {
     delivered: "bg-green-100 text-green-700",
     shipped: "bg-blue-100 text-blue-700",

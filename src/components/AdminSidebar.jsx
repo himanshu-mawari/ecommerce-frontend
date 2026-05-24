@@ -21,13 +21,13 @@ const AdminSidebar = ({ sideBar, setSideBar }) => {
       <div
         className={`
           fixed top-0 left-0 z-50
-          h-screen w-64 bg-white border-r shadow-xl
+          h-screen lg:w-48 w-64  bg-white border-r shadow-xl border-gray-300
           transition-transform duration-300 ease-in-out
           ${sideBar ? "translate-x-0" : "-translate-x-full"}
           lg:relative lg:translate-x-0 lg:shadow-none lg:border-r lg:border-l-0
         `}
       >
-        <div className="flex items-center justify-between lg:justify-center p-4 border-b border-gray-200">
+        <div className="flex items-center justify-between lg:justify-center p-4 border-b border-gray-300">
           <span className="text-sm font-bold tracking-widest uppercase text-gray-400 lg:block hidden">
             Management
           </span>
