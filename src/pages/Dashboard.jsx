@@ -8,7 +8,7 @@ import {
 } from "react-icons/ci";
 import { PiCurrencyInr } from "react-icons/pi";
 import { Link } from "react-router-dom";
-import { orders , statusStyles} from "../data/orderDetail";
+import { orders, statusStyles } from "../data/orderDetail";
 
 const stats = [
   {
@@ -53,7 +53,6 @@ const getInitials = (fullName) => {
 
   const firstInitial = words[0].charAt(0).toUpperCase();
 
-  // 3. Get the first letter of the last word (if a last name exists)
   const lastInitial =
     words.length > 1 ? words[words.length - 1].charAt(0).toUpperCase() : "";
   return firstInitial + lastInitial;
@@ -76,7 +75,7 @@ const stockItems = [
 
 const AdminDashboard = () => {
   return (
-    <div className="px-4 py-6 sm:px-12 lg:px-6  min-h-screen space-y-6 pb-10" >
+    <div className="px-4 py-6 sm:px-12 lg:px-6  min-h-screen space-y-6 pb-10 ">
       <header>
         <div className="flex flex-col lg:flex-row lg:items-end sm:justify-between gap-4 border-gray-100">
           <div>
@@ -129,7 +128,9 @@ const AdminDashboard = () => {
         {stats.map((item, index) => (
           <div
             key={index}
-            className="bg-white border border-gray-200 p-4 rounded-2xl transition-all duration-200 hover:shadow-md hover:-translate-y-1 flex flex-col justify-between aspect-square md:aspect-auto md:min-h-32.5"
+            className={`bg-white border border-gray-200 p-5 rounded-2xl transition-all duration-200 hover:shadow-sm flex flex-col justify-between gap-4
+      ${item.label === "TOTAL REVENUE" ? "col-span-2 lg:col-span-1" : ""}
+    `}
           >
             <div className="flex justify-between items-start lg:items-center lg:gap-2">
               <span className="text-[10px] font-bold text-gray-400 tracking-wider uppercase">
@@ -142,7 +143,7 @@ const AdminDashboard = () => {
               </div>
             </div>
             <p
-              className={`text-3xl font-semibold lg:font-medium lg:text-2xl ${item.label === "TOTAL REVENUE" ? "lg:text-[20px]" : ""}`}
+              className={`text-3xl font-semibold lg:font-medium lg:text-2xl ${item.label === "TOTAL REVENUE" ? "text-[20px] md:text-3xl lg:text-[20px]" : ""}`}
             >
               {item.value}
             </p>
@@ -150,7 +151,7 @@ const AdminDashboard = () => {
         ))}
       </section>
 
-      <section className="lg:grid grid-cols-[60%_1fr] gap-7 space-y-6">
+      <section className="lg:grid grid-cols-[60%_1fr] gap-7 space-y-6 lg:space-y-0">
         <div className="bg-white border border-gray-200 p-5 rounded-2xl hover:shadow-md transition-all flex flex-col">
           <div className="flex justify-between items-baseline mb-4">
             <div>
@@ -166,13 +167,13 @@ const AdminDashboard = () => {
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
-                  stroke-width="1.5"
+                  strokeWidth="1.5"
                   stroke="currentColor"
-                  class="size-6"
+                  className="size-6"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
                   />
                 </svg>
@@ -181,7 +182,7 @@ const AdminDashboard = () => {
           </div>
 
           <div className="divide-y divide-gray-100">
-            {orders.slice(0,5).map((order) => (
+            {orders.slice(0, 5).map((order) => (
               <div
                 key={order.id}
                 className="flex items-center justify-between py-4.5 standard-row"
@@ -200,12 +201,14 @@ const AdminDashboard = () => {
                   </div>
                 </div>
 
-                <div className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
-                              statusStyles[order.status.toLowerCase()] ||
-                              "bg-gray-100 text-gray-800"
-                            }`}>
+                <div
+                  className={`hidden md:inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
+                    statusStyles[order.status.toLowerCase()] ||
+                    "bg-gray-100 text-gray-800"
+                  }`}
+                >
                   {order.status}
-                  </div>
+                </div>
 
                 <div className="text-lg font-semibold text-gray-900">
                   ₹{order.payment.total}
@@ -240,9 +243,11 @@ const AdminDashboard = () => {
                   </div>
                 </div>
               ))}
-              <button className="w-full py-3 bg-indigo-700 hover:bg-indigo-800 transition-all text-white rounded-xl font-medium shadow-sm active:scale-[0.98] cursor-pointer">
-                View inventory
-              </button>
+              <div className="flex justify-center w-full">
+                <button className="w-full lg:w-60 py-3 lg:py-2  bg-indigo-700 hover:bg-indigo-800 transition-all text-white rounded-xl font-medium shadow-sm active:scale-[0.98] cursor-pointer">
+                  View inventory
+                </button>
+              </div>
             </div>
           </div>
 
@@ -261,9 +266,11 @@ const AdminDashboard = () => {
                   waiting to be processed.
                 </p>
               </div>
-              <button className="w-full py-3 bg-indigo-700 hover:bg-indigo-800 transition-all text-white rounded-xl font-medium shadow-sm active:scale-[0.98] cursor-pointer">
-                Review now
-              </button>
+              <div className="flex justify-center w-full">
+                <button className="w-full lg:w-60 py-3 lg:py-2  bg-indigo-700 hover:bg-indigo-800 transition-all text-white rounded-xl font-medium shadow-sm active:scale-[0.98] cursor-pointer">
+                  Review now
+                </button>
+              </div>
             </div>
           </div>
         </div>

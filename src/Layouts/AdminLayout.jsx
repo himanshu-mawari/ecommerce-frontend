@@ -11,7 +11,7 @@ const AdminLayout = () => {
         className="flex flex-1 overflow-hidden"
       >
         <AdminSidebar sideBar={sideBar} setSideBar={setSideBar} />
-        <div className="flex-1 overflow-y-auto  ">
+        <div className="flex-1 overflow-y-auto lg:overflow-hidden ">
 
         <Outlet />
         </div>

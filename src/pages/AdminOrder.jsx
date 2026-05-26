@@ -53,51 +53,62 @@ const AdminOrderPage = () => {
       </div>
 
       <div className="space-y-4">
-        <div className="w-full flex items-center gap-3">
-          <div className="relative flex-1 max-w-xl">
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
+         <div className="bg-white rounded-2xl mb-4 sticky top-4 z-10">
+          {/* Flex container: items stay side-by-side but space out dynamically */}
+          <div className="w-full flex items-center gap-2 md:gap-3">
+            {/* Search Input Box */}
+            <div className="relative flex-1 max-w-xl">
+              <span className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+                <svg
+                  className="h-4 w-4 text-gray-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
+                </svg>
+              </span>
+              <input
+                type="text"
+                className="w-full  border border-gray-200 rounded-full py-2.5 md:py-3 pl-11 pr-4 focus:outline-none focus:ring-2 focus:ring-indigo-300 text-sm md:text-[15px] text-gray-700 placeholder:text-gray-400"
+                placeholder="Search by order ID or name..."
+              />
+            </div>
+
+            {/* Responsive Filters Button */}
+            <button
+              onClick={() => setIsFilterOpen(true)}
+              className="flex items-center justify-center bg-white border border-gray-200 rounded-full h-10 w-10 md:h-auto md:w-auto md:rounded-xl px-0 md:px-4 py-0 md:py-3 gap-2 hover:bg-gray-50 active:scale-[0.98] transition-all text-gray-700 shrink-0 shadow-sm"
+            >
+              {/* Filter Icon (Always Visible) */}
               <svg
-                className="h-4 w-4 text-gray-400"
+                xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke="currentColor"
                 strokeWidth="2"
+                stroke="currentColor"
+                className="size-4 md:size-4.5 text-gray-600"
               >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
                 />
               </svg>
-            </div>
-            <input
-              type="text"
-              className="w-full rounded-xl border border-gray-200 py-2.5 pl-11 pr-4 focus:outline-none focus:ring-2 focus:ring-indigo-300 transition-all text-sm text-gray-600 placeholder:text-gray-400"
-              placeholder="Search by order ID or name..."
-            />
-          </div>
 
-          <button
-            onClick={() => setIsFilterOpen(true)}
-            className="flex items-center bg-indigo-700  rounded-xl px-4 py-2.5 gap-2 hover:bg-gray-900 active:scale-[0.98] transition-all text-white shrink-0"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.8"
-              stroke="currentColor"
-              className="size-4"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
-              />
-            </svg>
-            <span className="text-sm font-normal tracking-wide">Filters</span>
-          </button>
+              {/* Button Text (Hidden on Mobile, Visible on Desktop) */}
+              <span className="hidden md:inline text-[15px] font-medium text-gray-800">
+                Filters
+              </span>
+            </button>
+          </div>
         </div>
+
 
         <div className="flex flex-col gap-3 md:hidden">
           {orders.map((order) => (

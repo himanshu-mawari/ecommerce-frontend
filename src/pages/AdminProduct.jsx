@@ -1,11 +1,7 @@
 import { useState } from "react";
 import { CiEdit } from "react-icons/ci";
 import { AiOutlineDelete } from "react-icons/ai";
-import {
-  HiOutlineCube,
-  HiOutlineCheckCircle,
-  HiOutlineExclamationCircle,
-} from "react-icons/hi2";
+import { HiOutlineCube, HiOutlineCheckCircle, HiExclamationTriangle } from "react-icons/hi2"
 import { Link } from "react-router-dom";
 import DeleteConfirmModal from "../components/DeleteConfirmModal";
 
@@ -34,6 +30,7 @@ const AdminProductPage = () => {
   ]);
   const [open, setOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const getStockStatus = (qty) => {
     if (qty === 0) return "bg-red-50 text-red-600 border-red-100";
@@ -55,139 +52,145 @@ const AdminProductPage = () => {
   };
 
   return (
-    <div className="max-w-md sm:max-w-full sm:px-12 mx-auto px-4 py-6 min-h-screen foxnt-sans">
-      <div className="flex flex-col  justify-between gap-4 mb-6">
-        <div className="space-y-4 md:space-y-0 md:flex md:justify-between">
-          <div>
-            <h1 className="text-3xl md:text-4xl font-bold tracking-tight">Products</h1>
+    <div className="max-w-md sm:max-w-full sm:px-12 lg:px-6 mx-auto px-4 py-6 min-h-screen font-sans">
+  <div className="flex flex-col justify-between gap-4">
+    
+    {/* HEADER SECTION */}
+    <div className="space-y-4 md:space-y-0 md:flex md:justify-between lg:items-center lg:mb-4">
+      <div>
+        <h1 className="text-3xl md:text-4xl lg:text-2xl lg:font-semibold font-bold tracking-tight">
+          Products
+        </h1>
+        <p className="mt-1 text-sm text-gray-500">
+          Manage inventory and stock details.
+        </p>
+      </div>
+      <div className="flex flex-col lg:flex-row items-start gap-3 pb-2">
+        <div className="flex flex-wrap gap-2">
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 px-3.5 py-1.5 lg:py-2.5 lg:rounded-xl text-xs md:text-sm font-semibold shadow-sm">
+            <HiOutlineCube className="size-3.5 text-gray-400" />
+            12 Total
+          </span>
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-100 bg-emerald-50 px-3.5 py-1.5 lg:py-2.5 lg:rounded-xl text-xs md:text-sm font-semibold text-emerald-700 shadow-sm">
+            <HiOutlineCheckCircle className="size-3.5 text-emerald-500" />
+            10 In Stock
+          </span>
+        </div>
+        <Link to="/admin/products/add">
+          <button className="inline-flex h-10 w-fit items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 font-semibold text-white shadow-md shadow-indigo-100 transition-all active:scale-95 hover:bg-indigo-700 md:w-52 lg:w-auto">
+            <span className="text-lg">+</span>
+            Add Product
+          </button>
+        </Link>
+      </div>
+    </div>
 
-            <p className="mt-1 text-sm text-gray-500">
-              Manage inventory and stock details.
-            </p>
-          </div>
-
-          <div className="flex flex-col items-start gap-3 pb-2">
-            <div className="flex flex-wrap gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 px-3.5 py-1.5 text-xs md:text-sm font-semibold shadow-sm">
-                <HiOutlineCube className="size-3.5 text-gray-400" />
-                12 Total
-              </span>
-
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-100 bg-emerald-50 px-3.5 py-1.5 text-xs md:text-sm font-semibold text-emerald-700 shadow-sm">
-                <HiOutlineCheckCircle className="size-3.5 text-emerald-500" />
-                10 In Stock
-              </span>
-            </div>
-
-            <Link to="/admin/products/add">
-              <button className="inline-flex h-10 w-fit  items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 font-semibold text-white shadow-md shadow-indigo-100 transition-all active:scale-95 hover:bg-indigo-700 md:w-52 ">
-                <span className="text-lg">+</span>
-                Add Product
-              </button>
-            </Link>
-          </div>
+    {/* SEARCH & FILTERS BAR */}
+    <div className="bg-white rounded-2xl sticky top-4 z-10">
+      <div className="w-full flex items-center gap-2 md:gap-3">
+        <div className="relative flex-1 max-w-xl">
+          <span className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+            <svg className="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </span>
+          <input
+            type="text"
+            className="w-full border border-gray-200 rounded-full py-2.5 md:py-3 pl-11 pr-4 focus:outline-none focus:ring-2 focus:ring-indigo-300 text-sm md:text-[15px] text-gray-700 placeholder:text-gray-400"
+            placeholder="Search by order ID or name..."
+          />
         </div>
 
-        <div className="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm mb-4 sticky top-4 z-10">
-          <div className="flex flex-col md:flex-row gap-4">
-            <div className="relative flex-1">
-              <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
-                <svg
-                  className="h-5 w-5 text-gray-400"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                >
-                  <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </div>
-              <input
-                type="text"
-                className="w-full rounded-xl border border-gray-200 py-2.5 pl-11 pr-4 focus:outline-none focus:ring-2 focus:ring-indigo-300 transition-all text-sm text-gray-600 placeholder:text-gray-400"
-                placeholder="Search products by name..."
+        <button
+          onClick={() => setIsFilterOpen(true)}
+          className="flex items-center justify-center bg-white border border-gray-200 rounded-full h-10 w-10 md:h-auto md:w-auto md:rounded-xl px-0 md:px-4 py-0 md:py-3 gap-2 hover:bg-gray-50 active:scale-[0.98] transition-all text-gray-700 shrink-0 shadow-sm"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="size-4 md:size-4.5 text-gray-600">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
+          </svg>
+          <span className="hidden md:inline text-[15px] font-medium text-gray-800">
+            Filters
+          </span>
+        </button>
+      </div>
+    </div>
+
+    {/* PRODUCT CARDS LIST */}
+    <div className="space-y-5">
+      {stockItems.map((item) => (
+        <div
+          key={item._id}
+          className="bg-white border border-gray-200 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow"
+        >
+          {/* Top Section: Media + Title Details */}
+          <div className="flex gap-4 items-start pb-3">
+            <div className="size-16 shrink-0 bg-gray-50 rounded-lg border border-gray-100 overflow-hidden flex items-center justify-center">
+              <img
+                src={item.img}
+                className="w-full h-full object-contain mix-blend-multiply"
+                alt={item.name}
               />
             </div>
 
-            <div className="flex gap-2">
-              <select className="bg-gray-50 border border-gray-200 text-gray-600 text-sm rounded-xl focus:bg-gray-100 focus:border-black block w-full p-2.5 outline-none">
-                <option value="all">All Categories</option>
-                <option value="audio">Audio</option>
-                <option value="wearables">Wearables</option>
-              </select>
-              <select className="bg-gray-50 border border-gray-200 text-gray-600 text-sm rounded-xl focus:bg-gray-100 focus:border-black block w-full p-2.5 outline-none">
-                <option value="all">Stock Status</option>
-                <option value="low">Low Stock</option>
-                <option value="out">Out of Stock</option>
-              </select>
+            <div className="flex-1 min-w-0">
+              <div className="flex justify-between items-start gap-2">
+                <h2 className="text-sm md:text-base font-bold text-gray-900 truncate leading-snug">
+                  {item.name}
+                </h2>
+                
+                {/* Threshold Logic: Add icon if stock is critically low (e.g., < 10) */}
+                <span
+                  className={`inline-flex items-center gap-1 text-[10px] md:text-xs font-bold px-2 py-0.5 md:py-1 rounded-full border whitespace-nowrap shadow-sm ${getStockStatus(item.stock)}`}
+                >
+                  {item.stock <= 5 && (
+                    <HiExclamationTriangle className="text-amber-500 size-3 shrink-0 animate-pulse" />
+                  )}
+                  {item.stock} in stock
+                </span>
+              </div>
+              
+              {/* Category Case & Tracking Fix */}
+              <p className="text-[10px] md:text-xs text-gray-400 font-bold uppercase tracking-wider mt-1">
+                {item.category}
+              </p>
             </div>
           </div>
-        </div>
 
-        <div className="space-y-5">
-          {stockItems.map((item) => (
-            <div
-              key={item._id}
-              className="bg-white border border-gray-200 p-3 rounded-xl shadow-sm"
-            >
-              <div className="flex gap-3">
-                <div className="size-16 shrink-0 bg-gray-50 rounded-lg border border-gray-50 overflow-hidden">
-                  <img
-                    src={item.img}
-                    className="w-full h-full object-contain mix-blend-multiply"
-                    alt=""
-                  />
-                </div>
+          {/* Bottom Section: Separated Price & Actions Row */}
+          <div className="flex items-center justify-between pt-2">
+            <span className="text-base md:text-lg font-extrabold text-gray-900 tracking-tight">
+              ₹{item.price.toLocaleString("en-IN")}
+            </span>
 
-                <div className="flex-1 min-w-0 flex flex-col justify-between">
-                  <div>
-                    <div className="flex justify-between items-start">
-                      <h2 className="text-sm md:text-md font-bold text-gray-900 truncate pr-2 leading-tight">
-                        {item.name}
-                      </h2>
-                      <span
-                        className={`text-[10px] md:text-xs font-bold px-1.5 md:px-2  py-0.5 md:py-1 rounded-full border whitespace-nowrap ${getStockStatus(item.stock)}`}
-                      >
-                        {item.stock} in stock
-                      </span>
-                    </div>
-                    <p className="text-[10px] md:text-xs text-gray-400 font-medium uppercase mt-0.5">
-                      {item.category}
-                    </p>
-                  </div>
-
-                  <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-50">
-                    <span className="text-sm md:text-md font-bold text-gray-900">
-                      ₹{item.price}
-                    </span>
-
-                    <div className="flex gap-1.5">
-                      <Link to={`/admin/products/edit/${item._id}`}>
-                        <button className="p-2 rounded-lg hover:bg-indigo-50 text-indigo-600 cursor-pointer">
-                          <CiEdit className="size-4 md:size-6" />
-                        </button>
-                      </Link>
-                      <button
-                        className="p-2 rounded-lg hover:bg-red-50 text-red-500  cursor-pointer"
-                        onClick={() => handleDeleteModal(item)}
-                      >
-                        <AiOutlineDelete className="size-4 md:size-6" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            {/* Separated and Affordance-enhanced Action Buttons */}
+            <div className="flex items-center gap-3">
+              <Link to={`/admin/products/edit/${item._id}`}>
+                <button className="p-2 rounded-lg hover:bg-indigo-50 active:bg-indigo-100 text-indigo-600 transition-colors cursor-pointer" title="Edit Product">
+                  <CiEdit className="size-4 md:size-5.5" />
+                </button>
+              </Link>
+              <button
+                className="p-2 rounded-lg hover:bg-red-50 active:bg-red-100 text-red-500 transition-colors cursor-pointer"
+                onClick={() => handleDeleteModal(item)}
+                title="Delete Product"
+              >
+                <AiOutlineDelete className="size-4 md:size-5.5" />
+              </button>
             </div>
-          ))}
+          </div>
+
         </div>
-        <DeleteConfirmModal
-          isOpen={open}
-          onClose={() => setOpen(false)}
-          onConfirm={handleProductDelete}
-          productName={selectedProduct?.name}
-        />
-      </div>
+      ))}
     </div>
+
+    <DeleteConfirmModal
+      isOpen={open}
+      onClose={() => setOpen(false)}
+      onConfirm={handleProductDelete}
+      productName={selectedProduct?.name}
+    />
+  </div>
+</div>
   );
 };
 
