@@ -1,4 +1,4 @@
-import React from "react";
+import {useState} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { CiClock1 } from "react-icons/ci";
 import { MdOutlineCancel } from "react-icons/md";
@@ -7,13 +7,16 @@ import FilterBottomSheet from "../components/FilterBottomSheet";
 
 const AdminOrderPage = () => {
   const navigate = useNavigate();
-  const [isFilterOpen, setIsFilterOpen] = React.useState(false);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [pageNumber , setPageNumber] = useState(1);
+  const page_size = 6;
 
+  const paginatedOrderList = orders.slice((pageNumber - 1 ) * page_size , pageNumber * page_size )
   return (
-    <div className="px-4 py-6 md:px-10 md:py-8 inter max-w-7xl mx-auto space-y-6 md:space-y-8">
-      <div className="flex flex-col gap-4">
+    <div className="px-4 py-6 md:px-10 md:py-8 lg:px-6 inter max-w-7xl mx-auto space-y-6 md:space-y-8">
+      <div  className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div>
-          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">
+          <h1 className="text-3xl md:text-4xl lg:text-2xl lg:font-semibold font-bold tracking-tight text-gray-900">
             Orders
           </h1>
           <p className="text-xs md:text-sm text-gray-500 font-light mt-0.5">
@@ -23,7 +26,7 @@ const AdminOrderPage = () => {
 
         <div className="flex gap-3 w-full sm:max-w-xs md:max-w-sm">
           <div className="flex-1 flex items-center gap-3 p-3 bg-white border border-gray-100 rounded-xl shadow-sm transition-all duration-200 hover:border-gray-300">
-            <div className="flex items-center justify-center bg-orange-50 size-9 rounded-lg flex-shrink-0">
+            <div className="flex items-center justify-center bg-orange-50 size-9 rounded-lg shrink-0">
               <CiClock1 className="w-5 h-5 text-orange-500" />
             </div>
             <div className="flex flex-col">
@@ -37,7 +40,7 @@ const AdminOrderPage = () => {
           </div>
 
           <div className="flex-1 flex items-center gap-3 p-3 bg-white border border-gray-100 rounded-xl shadow-sm transition-all duration-200 hover:border-gray-300">
-            <div className="flex items-center justify-center bg-red-50 size-9 rounded-lg flex-shrink-0">
+            <div className="flex items-center justify-center bg-red-50 size-9 rounded-lg shrink-0">
               <MdOutlineCancel className="w-5 h-5 text-red-500" />
             </div>
             <div className="flex flex-col">
@@ -111,7 +114,7 @@ const AdminOrderPage = () => {
 
 
         <div className="flex flex-col gap-3 md:hidden">
-          {orders.map((order) => (
+          {paginatedOrderList.map((order) => (
             <Link
               to={`/admin/orders/${order.id}`}
               key={order.id}
@@ -175,7 +178,7 @@ const AdminOrderPage = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
-                {orders.map((order) => (
+                {paginatedOrderList.map((order) => (
                   <tr
                     key={order.id}
                     onClick={() => navigate(`/admin/orders/${order.id}`)}

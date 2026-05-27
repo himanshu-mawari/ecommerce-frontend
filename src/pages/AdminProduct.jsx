@@ -96,7 +96,7 @@ const AdminProductPage = () => {
           </span>
           <input
             type="text"
-            className="w-full border border-gray-200 rounded-full py-2.5 md:py-3 pl-11 pr-4 focus:outline-none focus:ring-2 focus:ring-indigo-300 text-sm md:text-[15px] text-gray-700 placeholder:text-gray-400"
+            className="w-full border font-medium border-gray-200 rounded-full py-2.5 md:py-3 pl-11 pr-4 focus:outline-none focus:ring-2 focus:ring-indigo-300 text-sm md:text-[15px] text-gray-700 placeholder:text-gray-400"
             placeholder="Search by order ID or name..."
           />
         </div>
