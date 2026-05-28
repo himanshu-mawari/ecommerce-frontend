@@ -69,7 +69,7 @@ const AdminProductForm = ({ initialData }) => {
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="e.g. Slim Fit Cotton Shirt"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2.5 mt-1 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200 transition-all"
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2.5 mt-1 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300 transition-all"
                 />
               </div>
               <div>
@@ -79,7 +79,7 @@ const AdminProductForm = ({ initialData }) => {
                   rows={5}
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2.5 mt-1 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200 transition-all"
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2.5 mt-1 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300 transition-all"
                 />
               </div>
             </div>
@@ -111,7 +111,7 @@ const AdminProductForm = ({ initialData }) => {
                     htmlFor={`file-upload-${index}`}
                     className="group flex flex-col items-center justify-center aspect-square w-full border-2 border-dashed border-gray-200 rounded-xl hover:bg-gray-50 hover:border-indigo-300 transition-all cursor-pointer"
                   >
-                    <HiOutlinePlus className="text-gray-400 group-hover:text-indigo-600 size-5 transition-colors" />
+                    <HiOutlinePlus className="text-gray-400 group-hover:text-indigo-300 size-5 transition-colors" />
                     {index === 0 && (
                       <span className="text-[10px] text-gray-400 mt-1">
                         Cover
@@ -188,7 +188,7 @@ const AdminProductForm = ({ initialData }) => {
               <div>
                 <label className="text-xs font-medium">Category</label>
                 <select
-                  className="w-full mt-1 bg-gray-50 border border-gray-200 text-sm rounded-xl p-3 outline-none focus:ring-2 focus:ring-indigo-100"
+                  className="w-full mt-1 bg-gray-50 border border-gray-200 text-sm rounded-xl p-3 outline-none "
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
                 >
@@ -201,7 +201,7 @@ const AdminProductForm = ({ initialData }) => {
               <div>
                 <label className="text-xs font-medium">Sub Category</label>
                 <select
-                  className="w-full mt-1 bg-gray-50 border border-gray-200 text-sm rounded-xl p-3 outline-none focus:ring-2 focus:ring-indigo-100 "
+                  className="w-full mt-1 bg-gray-50 border border-gray-200 text-sm rounded-xl p-3 outline-none "
                   value={subCategory}
                   onChange={(e) => setSubCategory(e.target.value)}
                 >

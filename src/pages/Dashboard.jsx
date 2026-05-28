@@ -160,7 +160,7 @@ const AdminDashboard = () => {
                 Latest activity from your store
               </p>
             </div>
-            <button className="text-sm font-medium text-blue-600 hover:text-blue-700 flex items-center gap-1">
+            <button className="text-sm lg:text-[12px] font-medium text-blue-600 hover:text-blue-700 flex items-center gap-1 cursor-pointer hover:underline">
               View all
               <span>
                 <svg
@@ -169,7 +169,7 @@ const AdminDashboard = () => {
                   viewBox="0 0 24 24"
                   strokeWidth="1.5"
                   stroke="currentColor"
-                  className="size-6"
+                  className="size-6 lg:size-5"
                 >
                   <path
                     strokeLinecap="round"
@@ -188,13 +188,13 @@ const AdminDashboard = () => {
                 className="flex items-center justify-between py-4.5 standard-row"
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-11 h-11 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center font-semibold text-base tracking-wide">
+                  <div className="w-11 h-11 lg:w-8 lg:h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center font-semibold text-base lg:text-sm tracking-wide">
                     {getInitials(order.customer.name)}
                   </div>
                   <div>
                     <div className="flex flex-col items-baseline mb-0.5">
-                      <span className="font-semibold">{order.id}</span>
-                      <span className="text-xs text-gray-400 ">
+                      <span className="lg:text-sm font-semibold">{order.id}</span>
+                      <span className="text-xs lg:text-[11px] text-gray-400 ">
                         {order.customer.name}
                       </span>
                     </div>
@@ -202,7 +202,7 @@ const AdminDashboard = () => {
                 </div>
 
                 <div
-                  className={`hidden md:inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
+                  className={`hidden md:inline-flex items-center px-3 py-1 rounded-full text-xs lg:text-[10px] font-semibold ${
                     statusStyles[order.status.toLowerCase()] ||
                     "bg-gray-100 text-gray-800"
                   }`}
@@ -210,7 +210,7 @@ const AdminDashboard = () => {
                   {order.status}
                 </div>
 
-                <div className="text-lg font-semibold text-gray-900">
+                <div className="text-lg font-semibold lg:text-sm text-gray-900">
                   ₹{order.payment.total}
                 </div>
               </div>

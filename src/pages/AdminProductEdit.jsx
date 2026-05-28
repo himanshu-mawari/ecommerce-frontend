@@ -43,9 +43,9 @@ const AdminProductEdit = () => {
   );
 
   return (
-    <div className="max-w-md mx-auto md:max-w-full px-5 md:px-12 py-6  min-h-screen font-sans pb-32">
+    <div className="max-w-md mx-auto md:max-w-full px-5 md:px-12 lg:px-6 py-6  min-h-screen font-sans pb-32">
       <div className="mb-6">
-        <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">
+        <h1 className="text-3xl md:text-4xl lg:text-2xl lg:font-semibold font-bold tracking-tight text-gray-900">
           Edit Product
         </h1>
         <p className="text-xs text-gray-500 mt-1">

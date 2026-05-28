@@ -1,4 +1,4 @@
-import {useState} from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { CiClock1 } from "react-icons/ci";
 import { MdOutlineCancel } from "react-icons/md";
@@ -8,18 +8,21 @@ import FilterBottomSheet from "../components/FilterBottomSheet";
 const AdminOrderPage = () => {
   const navigate = useNavigate();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [pageNumber , setPageNumber] = useState(1);
+  const [pageNumber, setPageNumber] = useState(1);
   const page_size = 6;
 
-  const paginatedOrderList = orders.slice((pageNumber - 1 ) * page_size , pageNumber * page_size )
+  const paginatedOrderList = orders.slice(
+    (pageNumber - 1) * page_size,
+    pageNumber * page_size,
+  );
   return (
-    <div className="px-4 py-6 md:px-10 md:py-8 lg:px-6 inter max-w-7xl mx-auto space-y-6 md:space-y-8">
-      <div  className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+    <div className="px-4 py-6 md:px-10 md:py-8 lg:py-6 lg:px-6 inter max-w-7xl mx-auto space-y-6 md:space-y-8">
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div>
           <h1 className="text-3xl md:text-4xl lg:text-2xl lg:font-semibold font-bold tracking-tight text-gray-900">
             Orders
           </h1>
-          <p className="text-xs md:text-sm text-gray-500 font-light mt-0.5">
+          <p className="text-xs md:text-sm lg:text-xs text-gray-500 lg:font-normal font-light mt-0.5">
             Monitor, manage, and process customer purchases.
           </p>
         </div>
@@ -56,7 +59,7 @@ const AdminOrderPage = () => {
       </div>
 
       <div className="space-y-4">
-         <div className="bg-white rounded-2xl mb-4 sticky top-4 z-10">
+        <div className="bg-white rounded-2xl mb-4 sticky top-4 z-10">
           {/* Flex container: items stay side-by-side but space out dynamically */}
           <div className="w-full flex items-center gap-2 md:gap-3">
             {/* Search Input Box */}
@@ -112,7 +115,6 @@ const AdminOrderPage = () => {
           </div>
         </div>
 
-
         <div className="flex flex-col gap-3 md:hidden">
           {paginatedOrderList.map((order) => (
             <Link
@@ -131,7 +133,7 @@ const AdminOrderPage = () => {
                         {order.customer.name}
                       </span>
                       <span className="text-gray-300">•</span>
-                      <span>{order.date}</span>
+                      <span>{order.placedAt}</span>
                     </div>
                   </div>
                   <p className="text-sm font-bold text-gray-900">
@@ -160,61 +162,86 @@ const AdminOrderPage = () => {
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="border-b border-gray-100 bg-gray-50/75">
-                  <th className="px-6 py-3.5 text-[11px] font-bold text-gray-400 uppercase tracking-wider w-[25%]">
+                  <th className="px-6 py-3.5 text-[11px] font-bold text-gray-400 uppercase tracking-wider w-[19%]">
                     Order
-                  </th>
-                  <th className="px-6 py-3.5 text-[11px] font-bold text-gray-400 uppercase tracking-wider hidden lg:table-cell w-[20%]">
-                    Date
-                  </th>
-                  <th className="px-6 py-3.5 text-[11px] font-bold text-gray-400 uppercase tracking-wider hidden md:table-cell w-[25%]">
-                    Items
                   </th>
                   <th className="px-6 py-3.5 text-[11px] font-bold text-gray-400 uppercase tracking-wider w-[15%]">
                     Amount
                   </th>
-                  <th className="px-6 py-3.5 text-[11px] font-bold text-gray-400 uppercase tracking-wider w-[15%]">
+                  <th className="px-6 py-3.5 text-[11px] font-bold text-gray-400 uppercase tracking-wider hidden md:table-cell w-[25%]">
+                    Items
+                  </th>
+                  <th className="px-6 py-3.5 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
                     Status
+                  </th>
+                  <th className="px-6 py-3.5 text-[11px] font-bold text-gray-400 uppercase tracking-wider hidden lg:table-cell w-[18%]">
+                    Date
+                  </th>
+                  {/* 1. Added Action Header Column */}
+                  <th className="px-6 py-3.5 text-[11px] font-bold text-gray-400 uppercase tracking-wider text-right w-[11%]">
+                    Action
                   </th>
                 </tr>
               </thead>
+
               <tbody className="divide-y divide-gray-50">
                 {paginatedOrderList.map((order) => (
                   <tr
                     key={order.id}
                     onClick={() => navigate(`/admin/orders/${order.id}`)}
-                    className="hover:bg-gray-50/50 transition-colors cursor-pointer group"
+                    className="hover:bg-gray-50 transition-colors cursor-pointer group"
                   >
-                    <td className="px-6 py-4">
+                    <td className="px-5 py-4">
                       <p className="font-bold text-gray-900 group-hover:text-black transition-colors text-sm">
                         {order.id}
                       </p>
                       <p className="text-xs text-gray-500 font-light mt-0.5">
-                        {order.customer.name}
+                        {order.customer?.name}
                       </p>
                     </td>
-                    <td className="px-6 py-4 text-sm font-light text-gray-500 hidden lg:table-cell">
-                      {order.date}
+
+                    <td className="px-6 py-4 font-semibold text-gray-900 text-sm">
+                      ₹{order.payment?.total}
                     </td>
+
                     <td className="px-6 py-4 text-sm font-light text-gray-500 hidden md:table-cell">
-                      <div className="flex flex-col items-start gap-1 max-w-36  w-full">
+                      <div className="flex flex-col items-start gap-1 max-w-36 w-full">
+                        {/* Added optional chaining just in case an item array comes up empty */}
                         <span className="truncate w-full">
-                          {order.items[0].title}
+                          {order.items?.[0]?.title || "No items"}
                         </span>
 
-                        <span className="text-xs text-gray-600 shrink-0">
-                          +{order.items.length - 1} more items
-                        </span>
+                        {order.items?.length > 1 && (
+                          <span className="text-xs text-gray-400 font-normal shrink-0">
+                            +{order.items.length - 1} more items
+                          </span>
+                        )}
                       </div>
                     </td>
-                    <td className="px-6 py-4 font-semibold text-gray-900 text-sm">
-                      ₹{order.payment.total}
-                    </td>
+
                     <td className="px-6 py-4">
                       <span
-                        className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${statusStyles[order.status.toLowerCase()]}`}
+                        className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                          statusStyles[order.status?.toLowerCase()] ||
+                          "bg-gray-100 text-gray-800"
+                        }`}
                       >
                         {order.status}
                       </span>
+                    </td>
+
+                    <td className="px-3 py-4 text-sm font-light text-gray-500 hidden lg:table-cell">
+                      {order.placedAt}
+                    </td>
+
+                    {/* 2. Added Action Data Column with interactive Button */}
+                    <td className="px-6 py-4 text-right ">
+                      <button
+                        type="button"
+                        className="text-xs font-semibold text-blue-600 bg-blue-50/0 group-hover:bg-blue-50 px-2.5 py-1.5 rounded-md transition-all duration-200 cursor-pointer"
+                      >
+                        View
+                      </button>
                     </td>
                   </tr>
                 ))}

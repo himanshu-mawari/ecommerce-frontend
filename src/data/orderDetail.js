@@ -2,7 +2,7 @@ export const orders = [
   {
     id: "ORD-10293",
     status: "Shipped",
-    placedAt: "15 May 2026, 10:42 AM",
+    placedAt: "15 May 2026, ",
     workflow: {
       primaryAction: "Mark as Delivered",
       secondaryAction: "Cancel Order",
@@ -56,7 +56,7 @@ export const orders = [
   {
     id: "ORD-10321",
     status: "Packed",
-    placedAt: "14 May 2026, 7:18 PM",
+    placedAt: "14 May 2026,",
     workflow: {
       primaryAction: "Mark as Shipped",
       secondaryAction: "Refund Order",
@@ -109,7 +109,7 @@ export const orders = [
   {
     id: "ORD-10347",
     status: "Delivered",
-    placedAt: "10 May 2026, 2:30 PM",
+    placedAt: "10 May 2026,",
     workflow: {
       primaryAction: "Initiate Return",
       secondaryAction: "Download Invoice",
@@ -172,7 +172,7 @@ export const orders = [
   {
     id: "ORD-10368",
     status: "Cancelled",
-    placedAt: "12 May 2026, 5:55 PM",
+    placedAt: "12 May 2026,",
     workflow: {
       primaryAction: "Reorder",
       secondaryAction: "View Refund Status",
@@ -226,7 +226,7 @@ export const orders = [
   {
     id: "ORD-10389",
     status: "Processing",
-    placedAt: "16 May 2026, 9:05 AM",
+    placedAt: "16 May 2026,",
     workflow: {
       primaryAction: "Mark as Packed",
       secondaryAction: "Cancel Order",
@@ -278,7 +278,7 @@ export const orders = [
   {
     id: "ORD-10412",
     status: "Return Requested",
-    placedAt: "8 May 2026, 11:20 AM",
+    placedAt: "8 May 2026, ",
     workflow: {
       primaryAction: "Approve Return",
       secondaryAction: "Reject Return",

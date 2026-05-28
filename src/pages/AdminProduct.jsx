@@ -52,7 +52,7 @@ const AdminProductPage = () => {
   };
 
   return (
-    <div className="max-w-md sm:max-w-full sm:px-12 lg:px-6 mx-auto px-4 py-6 min-h-screen font-sans">
+    <div className="max-w-md sm:max-w-full sm:px-12 lg:px-6 mx-auto px-4 py-6 min-h-screen inter">
   <div className="flex flex-col justify-between gap-4">
     
     {/* HEADER SECTION */}
@@ -61,7 +61,7 @@ const AdminProductPage = () => {
         <h1 className="text-3xl md:text-4xl lg:text-2xl lg:font-semibold font-bold tracking-tight">
           Products
         </h1>
-        <p className="mt-1 text-sm text-gray-500">
+        <p className="mt-1 text-sm  lg:text-xs text-gray-500 lg:font-normal">
           Manage inventory and stock details.
         </p>
       </div>
