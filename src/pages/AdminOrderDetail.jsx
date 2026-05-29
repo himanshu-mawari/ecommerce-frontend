@@ -6,8 +6,8 @@ import { orders, orderItems, statusStyles } from "../data/orderDetail";
 
 const AdminOrderDetail = () => {
   return (
-    <div className="max-w-2xl mx-auto px-4 py-6 pb-24 inter">
-      <div className="flex items-center gap-4 w-full">
+    <div className="max-w-2xl lg:max-w-full mx-auto px-4 sm:px-0 lg:px-6 py-6 pb-24 inter">
+      <div className="flex items-center gap-4 sm:gap-0 md:gap-1 w-full">
         <button
           onClick={() => window.history.back()}
           className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200 cursor-pointer"
@@ -31,7 +31,7 @@ const AdminOrderDetail = () => {
 
         <div className="flex justify-between items-center flex-1">
           <div>
-            <h1 className="text-lg font-bold tracking-tight">
+            <h1 className="text-lg font-bold lg:font-semibold tracking-tight">
               Order #{orders[0].id}
             </h1>
             <p className="text-xs text-gray-500 font-medium">
@@ -40,7 +40,7 @@ const AdminOrderDetail = () => {
           </div>
 
           <span
-            className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
+            className={`inline-flex items-center px-3 py-1 rounded-full text-xs lg:text-sm lg:font-medium font-semibold ${
               statusStyles[orders[0].status.toLowerCase()] ||
               "bg-gray-100 text-gray-800"
             }`}
@@ -52,33 +52,34 @@ const AdminOrderDetail = () => {
       <div className="md:grid md:grid-cols-[60%_1fr] gap-4 md:items-start pt-6">
         <div className=" space-y-6 pb-6">
           <div className="p-5 border border-gray-200 bg-white rounded-2xl shadow-sm flex flex-col">
-  {/* Header & Meta */}
-  <div>
-    <h2 className="text-[10px] font-bold tracking-widest text-gray-400 uppercase">
-      Workflow
-    </h2>
-    <p className="text-base font-bold text-gray-900 mt-1 tracking-tighter">
-      Next step: <span className="text-gray-600 font-semibold">Mark as shipped</span>
-    </p>
-  </div>
+            {/* Header & Meta */}
+            <div>
+              <h2 className="text-[10px] font-bold tracking-widest text-gray-400 uppercase">
+                Workflow
+              </h2>
+              <p className="text-base font-bold text-gray-900 mt-1 tracking-tighter">
+                Next step:{" "}
+                <span className="text-gray-600 font-semibold">
+                  Mark as shipped
+                </span>
+              </p>
+            </div>
 
-  {/* Actions Wrapper: Side-by-side on desktop, stacked appropriately */}
-  <div className="mt-5 flex flex-wrap md:flex-row-reverse items-center justify-start md:justify-end gap-3">
-    
-    {/* DESKTOP ONLY: Primary Action Button */}
-    <button className="hidden md:inline-flex items-center justify-center px-5 py-2.5 bg-[#0b1329] hover:bg-[#162245] text-white text-sm font-semibold rounded-xl shadow-sm gap-1.5 transition-all active:scale-[0.98]">
-      <span>Mark as shipped</span>
-      <FiChevronRight className="size-4" />
-    </button>
+            {/* Actions Wrapper: Side-by-side on desktop, stacked appropriately */}
+            <div className="mt-5 flex flex-wrap md:flex-row-reverse items-center justify-start md:justify-end gap-3">
+              {/* DESKTOP ONLY: Primary Action Button */}
+              <button className="hidden md:inline-flex items-center justify-center px-5 py-2.5 bg-[#0b1329] hover:bg-[#162245] text-white text-sm font-semibold rounded-xl shadow-sm gap-1.5 transition-all active:scale-[0.98]">
+                <span>Mark as shipped</span>
+                <FiChevronRight className="size-4" />
+              </button>
 
-    {/* Secondary Action: Cancel Button (Cleaned up font weight and borders) */}
-    <button className="inline-flex items-center justify-center px-4 py-2.5 border border-gray-200 hover:bg-gray-50 text-gray-700 text-xs font-semibold rounded-xl shadow-sm gap-2 transition-colors">
-      <TbCancel className="size-4 text-red-500" />
-      <span>Cancel order</span>
-    </button>
-    
-  </div>
-</div>
+              {/* Secondary Action: Cancel Button (Cleaned up font weight and borders) */}
+              <button className="inline-flex items-center justify-center px-4 py-2.5 border border-gray-200 hover:bg-gray-50 text-gray-700 text-xs font-semibold rounded-xl shadow-sm gap-2 transition-colors">
+                <TbCancel className="size-4 text-red-500" />
+                <span>Cancel order</span>
+              </button>
+            </div>
+          </div>
           <div className="p-5 border border-gray-200 rounded-xl shadow-sm bg-white">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xs font-bold text-gray-400 uppercase tracking-wider">
@@ -174,16 +175,18 @@ const AdminOrderDetail = () => {
                     alt={item.name}
                     className="w-16 h-16 rounded-lg object-cover bg-gray-50 border border-gray-100"
                   />
-                  <div className="flex flex-col justify-center flex-1">
-                    <p className="text-sm font-bold text-gray-900 line-clamp-1">
-                      {item.name}
-                    </p>
-                    <div className="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                      <span>Size: {item.size}</span>
-                      <span className="text-gray-300">|</span>
-                      <span>Qty: {item.quantity}</span>
+                  <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center justify-center flex-1">
+                    <div >
+                      <p className="text-sm font-bold text-gray-900 line-clamp-1">
+                        {item.name}
+                      </p>
+                      <div className="flex items-center gap-2 text-xs text-gray-500 mt-1">
+                        <span>Size: {item.size}</span>
+                        <span className="text-gray-300">|</span>
+                        <span>Qty: {item.quantity}</span>
+                      </div>
                     </div>
-                    <p className="text-sm font-bold text-gray-900 mt-1">
+                    <p className="text-sm lg:text-lg lg:font-semibold font-bold text-gray-900 mt-1">
                       ₹{item.price.toLocaleString()}
                     </p>
                   </div>
@@ -215,7 +218,9 @@ const AdminOrderDetail = () => {
                         d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
                       />
                     </svg>
-                    <span className="break-all">amelia.hartwell@example.com</span>
+                    <span className="break-all">
+                      amelia.hartwell@example.com
+                    </span>
                   </div>
                   <div className="flex items-center gap-2 text-sm text-gray-600">
                     <svg
