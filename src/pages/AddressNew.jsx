@@ -165,7 +165,7 @@ const AddressNew = () => {
               </h3>
               <p className="text-md md:text-lg text-gray-500 inter tracking-tighter">
                 We'll detect your city and state
-              </p>{" "}
+              </p>
             </>
           ) : (
             <>

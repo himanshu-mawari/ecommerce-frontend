@@ -3,13 +3,13 @@ import { Outlet, Navigate } from "react-router-dom";
 
 const AdminGuard = () => {
   const user = useSelector((store) => store?.user?.user);
-  if (!user) {
-    return <Navigate to={"/admin/login"} replace />;
-  }
+  // if (!user) {
+  //   return <Navigate to={"/admin/login"} replace />;
+  // }
 
-  if(user && user.role !== "admin"){
-    return <Navigate to={"/"} replace />
-  }
+  // if(user && user.role !== "admin"){
+  //   return <Navigate to={"/"} replace />
+  // }
 
   return <Outlet />;
 };

@@ -1,55 +1,12 @@
-import { useState, useEffect } from "react";
 import { HiOutlinePlus } from "react-icons/hi2";
 
-const AdminProductForm = ({ initialData }) => {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
-  const [sizes, setSizes] = useState([]);
-  const [category, setCategory] = useState("men");
-  const [subCategory, setSubCategory] = useState("top");
-  const [images, setImages] = useState([]);
-  const [previews, setPreviews] = useState([]);
-  const initialSizes = [
-    { label: "S", stock: 0 },
-    { label: "M", stock: 0 },
-    { label: "L", stock: 0 },
-    { label: "XL", stock: 0 },
-  ];
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    if (initialData) {
-      setTitle(initialData?.name);
-      setDescription(initialData?.description);
-      setPrice(initialData?.price);
-      setSizes(initialData?.sizes);
-    } else {
-      setSizes(initialSizes);
-    }
-  }, [initialData]);
-
-  const handleStockChange = (selectedSize, value) => {
-    setSizes((prevSizes) =>
-      prevSizes.map((size) =>
-        size.label === selectedSize ? { ...size, stock: value } : size,
-      ),
-    );
-  };
-
-  const handleImage = (e) => {
-    const files = Array.from(e.target.files);
-
-    const newPreviews = files.map((file) => URL.createObjectURL(file));
-
-    if (files.length + images.length > 4) {
-      return;
-    }
-
-    setImages((prev) => [...prev, ...files]);
-    setPreviews((prev) => [...prev, ...newPreviews]);
-  };
-
+const AdminProductFields = ({
+  form,
+  handleChange,
+  handleStockChange,
+  handleImage,
+}) => {
+  console.log(form.previews);
   return (
     <div className="inter">
       <div className=" md:grid md:grid-cols-[60%_1fr] md:gap-4 md:items-start">
@@ -66,8 +23,9 @@ const AdminProductForm = ({ initialData }) => {
                 <label className="text-xs  font-medium ">Product Title</label>
                 <input
                   type="text"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
+                  name="title"
+                  value={form.title}
+                  onChange={handleChange}
                   placeholder="e.g. Slim Fit Cotton Shirt"
                   className="w-full border border-gray-300 rounded-lg px-3 py-2.5 mt-1 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300 transition-all"
                 />
@@ -77,8 +35,9 @@ const AdminProductForm = ({ initialData }) => {
                 <textarea
                   placeholder="Material, fit, and care instructions..."
                   rows={5}
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
+                  name="description"
+                  value={form.description}
+                  onChange={handleChange}
                   className="w-full border border-gray-300 rounded-lg px-3 py-2.5 mt-1 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300 transition-all"
                 />
               </div>
@@ -92,10 +51,10 @@ const AdminProductForm = ({ initialData }) => {
             </p>
             <div className="grid grid-cols-2 gap-4">
               {[0, 1, 2, 3].map((index) =>
-                previews[index] ? (
+                form.previews[index] ? (
                   <div key={index} className="aspect-square w-full relative">
                     <img
-                      src={previews[index]}
+                      src={form.previews[index]}
                       alt="preview"
                       className="w-full h-full object-cover object-top rounded-xl border border-gray-200"
                     />
@@ -143,8 +102,9 @@ const AdminProductForm = ({ initialData }) => {
                 </span>
                 <input
                   type="number"
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
+                  name="price"
+                  value={form.price}
+                  onChange={handleChange}
                   className="w-full pl-8 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-100"
                   placeholder="0.00"
                 />
@@ -155,17 +115,16 @@ const AdminProductForm = ({ initialData }) => {
           <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm">
             <h2 className="text-sm font-semibold  mb-0.5">Size Inventory</h2>
             <p className="text-xs text-gray-500 ">
-              {" "}
               Add stock quantity available for each size
             </p>
 
             <div className="space-y-2 mt-4">
-              {sizes.map((size) => (
+              {form.sizes.map((size) => (
                 <div
                   className="flex items-center justify-between bg-gray-50 p-2 rounded-xl"
                   key={size.label}
                 >
-                  <div className="flex items-center justify-center bg-black text-white text-[10px] font-bold size-8 rounded-lg uppercase">
+                  <div className="flex items-center justify-center bg-indigo-700 text-white text-[10px] font-bold size-8 rounded-lg uppercase">
                     {size.label}
                   </div>
                   <input
@@ -189,8 +148,9 @@ const AdminProductForm = ({ initialData }) => {
                 <label className="text-xs font-medium">Category</label>
                 <select
                   className="w-full mt-1 bg-gray-50 border border-gray-200 text-sm rounded-xl p-3 outline-none "
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
+                  name="category"
+                  value={form.category}
+                  onChange={handleChange}
                 >
                   <option value="men">Men</option>
                   <option value="women">Women</option>
@@ -202,8 +162,9 @@ const AdminProductForm = ({ initialData }) => {
                 <label className="text-xs font-medium">Sub Category</label>
                 <select
                   className="w-full mt-1 bg-gray-50 border border-gray-200 text-sm rounded-xl p-3 outline-none "
-                  value={subCategory}
-                  onChange={(e) => setSubCategory(e.target.value)}
+                  name="subCategory"
+                  value={form.subCategory}
+                  onChange={handleChange}
                 >
                   <option value="top">Top Wear</option>
                   <option value="bottom">Bottom Wear</option>
@@ -218,4 +179,4 @@ const AdminProductForm = ({ initialData }) => {
   );
 };
 
-export default AdminProductForm;
+export default AdminProductFields;
