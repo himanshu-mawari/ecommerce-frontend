@@ -8,6 +8,8 @@ import {
 } from "react-icons/hi2";
 import { Link } from "react-router-dom";
 import DeleteConfirmModal from "../components/DeleteConfirmModal";
+import FilterBottomSheet from "../components/FilterBottomSheet";
+import FilterRow from "../components/FilterRow";
 
 const AdminProductPage = () => {
   const [stockItems, setStockItems] = useState([
@@ -35,6 +37,7 @@ const AdminProductPage = () => {
   const [open, setOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isDesktopFilterOpen, setIsDesktopFilterOpen] = useState(false);
 
   const getStockStatus = (qty) => {
     if (qty === 0) return "bg-red-50 text-red-600 border-red-100";
@@ -113,8 +116,30 @@ const AdminProductPage = () => {
             </div>
 
             <button
-              onClick={() => setIsFilterOpen(true)}
-              className="flex items-center justify-center bg-white border border-gray-200 rounded-full h-10 w-10 md:h-auto md:w-auto md:rounded-xl px-0 md:px-4 py-0 md:py-3 gap-2 hover:bg-gray-50 active:scale-[0.98] transition-all text-gray-700 shrink-0 shadow-sm"
+              onClick={() => setIsFilterOpen(!isFilterOpen)}
+              className="lg:hidden flex items-center justify-center bg-white border border-gray-200 rounded-full h-10 w-10 md:h-auto md:w-auto md:rounded-xl px-0 md:px-4 py-0 md:py-3 gap-2 hover:bg-gray-50 active:scale-[0.98] transition-all text-gray-700 shrink-0 shadow-sm"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="2"
+                stroke="currentColor"
+                className="size-4 md:size-4.5 text-gray-600"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
+                />
+              </svg>
+              <span className="hidden md:inline text-[15px] font-medium text-gray-800">
+                Filters
+              </span>
+            </button>
+            <button
+              onClick={() => setIsDesktopFilterOpen(!isDesktopFilterOpen)}
+              className="hidden lg:flex items-center justify-center bg-white border border-gray-200 rounded-full h-10 w-10 md:h-auto md:w-auto md:rounded-xl px-0 md:px-4 py-0 md:py-3 gap-2 hover:bg-gray-50 active:scale-[0.98] transition-all text-gray-700 shrink-0 shadow-sm"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -136,6 +161,9 @@ const AdminProductPage = () => {
             </button>
           </div>
         </div>
+        <div>{
+          isDesktopFilterOpen && <FilterRow />
+   }   </div>
 
         <div className="space-y-5">
           {stockItems.map((item) => (
@@ -210,6 +238,9 @@ const AdminProductPage = () => {
           productName={selectedProduct?.name}
         />
       </div>
+      {isFilterOpen && (
+        <FilterBottomSheet isOpen={isFilterOpen} onClose={setIsFilterOpen} />
+      )}
     </div>
   );
 };

@@ -47,7 +47,7 @@ const FilterBottomSheet = ({ isOpen, onClose }) => {
             Status
           </h3>
           <div >
-            {["Pending", "Completed", "Cancelled"].map((item) => (
+            {["Pending", "Delivered", "Processing", "Shipped" ,"Cancelled"].map((item) => (
               <label
                 key={item}
                 className={`flex items-center poppins gap-2 py-2 rounded-2xl transition-all cursor-pointer ${
@@ -107,19 +107,19 @@ const FilterBottomSheet = ({ isOpen, onClose }) => {
         </section>
       </div>
 
-      <div className="p-2 border-t border-gray-100 grid grid-cols-2 gap-9 bg-white md:rounded-b-[2.5rem]">
+      <div className="p-2 border-t border-gray-200 grid grid-cols-2 gap-9 bg-white md:rounded-b-[2.5rem]">
         <button
           onClick={() => {
             setStatus("Pending");
             setStatus("Paid");
           }}
-          className="py-3 text-sm md:text-sm text-gray-700 font-normal hover:text-black active:scale-95 transition-all uppercase tracking-wide cursor-pointer"
+          className="py-3 text-sm md:text-md text-black active:scale-95 transition-all  tracking-wide rounded-lg bg-gray-100 cursor-pointer active-scale-95 duration-100"
         >
           Reset All
         </button>
         <button
           onClick={() => onClose(false)}
-          className="py-3 text-sm md:text-md bg-indigo-600 hover:bg-indigo-700 text-white font-light rounded-lg shadow-lg shadow-indigo-100 active:scale-95 transition-all cursor-pointer"
+          className="py-3 text-sm md:text-md bg-indigo-600 hover:bg-indigo-700 text-white font-normal rounded-lg shadow-lg shadow-indigo-100 active:scale-95 duration-100 transition-all cursor-pointer"
         >
           Apply Filters
         </button>
