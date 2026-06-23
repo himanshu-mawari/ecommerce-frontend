@@ -8,8 +8,8 @@ import {
 } from "react-icons/hi2";
 import { Link } from "react-router-dom";
 import DeleteConfirmModal from "../components/DeleteConfirmModal";
-import FilterBottomSheet from "../components/FilterBottomSheet";
-import FilterRow from "../components/FilterRow";
+import FilterProductBottomSheet from "../components/FilterProductBottomSheet";
+import ProductFilterBar from "../components/ProductFilterBar";
 
 const AdminProductPage = () => {
   const [stockItems, setStockItems] = useState([
@@ -162,7 +162,7 @@ const AdminProductPage = () => {
           </div>
         </div>
         <div>{
-          isDesktopFilterOpen && <FilterRow />
+          isDesktopFilterOpen && <ProductFilterBar/>
    }   </div>
 
         <div className="space-y-5">
@@ -239,7 +239,7 @@ const AdminProductPage = () => {
         />
       </div>
       {isFilterOpen && (
-        <FilterBottomSheet isOpen={isFilterOpen} onClose={setIsFilterOpen} />
+        <FilterProductBottomSheet isOpen={isFilterOpen} onClose={setIsFilterOpen} />
       )}
     </div>
   );

@@ -4,7 +4,7 @@ import { CiClock1 } from "react-icons/ci";
 import { MdOutlineCancel } from "react-icons/md";
 import { orders, statusStyles } from "../data/orderDetail";
 import FilterBottomSheet from "../components/FilterBottomSheet";
-import FilterRow from "../components/FilterRow"
+import OrderFilterBar from "../components/OrderFilterBar"
 
 const AdminOrderPage = () => {
   const navigate = useNavigate();
@@ -142,7 +142,7 @@ const AdminOrderPage = () => {
           </div>
         </div>
         <div>
-          {isDesktopFilterOpen && <FilterRow/>}
+          {isDesktopFilterOpen && <OrderFilterBar/>}
         </div>
 
         <div className="flex flex-col gap-3 md:hidden">
