@@ -1,35 +1,28 @@
 import React, { useState } from "react";
 
-const ProductFilterBar = () => {
+const ProductFilterBar = ({
+  draftFilter,
+  handleDraftFilterState,
+  handleApplyDraftFilter,
+  handleApply
+}) => {
   const [openDropdown, setOpenDropdown] = useState(null);
 
-  const [selectedCategory, setSelectedCategory] = useState("All Categories");
-  const [selectedSubCategory, setSelectedSubCategory] =
-    useState("All Sub-Categories");
-  const [selectedStock, setSelectedStock] = useState("All Stock");
-
-  const categories = ["All Categories", "Men", "Women", "Kids"];
-  const subCategories = [
-    "All Sub-Categories",
-    "Topwear",
-    "Bottomwear",
-    "Wintewear",
-  ];
-  const stockOptions = ["All Stock", "Low Stock", "Out of Stock"];
+  const categories = ["All", "Men", "Women", "Kids"];
+  const subCategories = ["All", "Topwear", "Bottomwear", "Wintewear"];
+  const stockOptions = ["All", "Low Stock", "Out of Stock"];
 
   const handleToggle = (menuName) => {
     setOpenDropdown(openDropdown === menuName ? null : menuName);
   };
 
   const handleReset = () => {
-    setSelectedCategory("All Categories");
-    setSelectedSubCategory("All Sub-Categories");
-    setSelectedStock("All Stock");
     setOpenDropdown(null);
   };
 
-  const handleApply = () => {
-    console.log({ selectedCategory, selectedSubCategory, selectedStock });
+  const handleApplyFilter = () => {
+    handleApplyDraftFilter();
+    handleApply()
     setOpenDropdown(null);
   };
 
@@ -45,7 +38,7 @@ const ProductFilterBar = () => {
             onClick={() => handleToggle("category")}
             className="flex w-full justify-between items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 rounded-lg shadow-sm text-sm text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-100 transition-all cursor-pointer"
           >
-            <span className="truncate">{selectedCategory}</span>
+            <span className="truncate">{draftFilter.category}</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -65,13 +58,13 @@ const ProductFilterBar = () => {
           {openDropdown === "category" && (
             <div className="absolute z-50 left-0 right-0 mt-1 bg-white border border-gray-100 rounded-lg shadow-xl p-1.5">
               {categories.map((category) => {
-                const isSelected = selectedCategory === category;
+                const isSelected = draftFilter.category === category;
                 return (
                   <button
                     key={category}
                     type="button"
                     onClick={() => {
-                      setSelectedCategory(category);
+                      handleDraftFilterState("category", category);
                       setOpenDropdown(null);
                     }}
                     className={`flex items-center justify-between w-full px-3 py-2 text-sm rounded-lg text-left transition-colors ${isSelected ? "bg-gray-100 font-medium text-gray-900" : "text-gray-700 hover:bg-gray-50"}`}
@@ -109,7 +102,7 @@ const ProductFilterBar = () => {
             onClick={() => handleToggle("subCategory")}
             className="flex w-full justify-between items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 rounded-lg shadow-sm text-sm text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-100 transition-all cursor-pointer"
           >
-            <span className="truncate">{selectedSubCategory}</span>
+            <span className="truncate">{draftFilter.subCategory}</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -129,13 +122,13 @@ const ProductFilterBar = () => {
           {openDropdown === "subCategory" && (
             <div className="absolute z-50 left-0 right-0 mt-1 bg-white border border-gray-100 rounded-lg shadow-xl p-1.5">
               {subCategories.map((sub) => {
-                const isSelected = selectedSubCategory === sub;
+                const isSelected = draftFilter.subCategory === sub;
                 return (
                   <button
                     key={sub}
                     type="button"
                     onClick={() => {
-                      setSelectedSubCategory(sub);
+                      handleDraftFilterState("subCategory", sub);
                       setOpenDropdown(null);
                     }}
                     className={`flex items-center justify-between w-full px-3 py-2 text-sm rounded-lg text-left transition-colors ${isSelected ? "bg-gray-100 font-medium text-gray-900" : "text-gray-700 hover:bg-gray-50"}`}
@@ -173,7 +166,7 @@ const ProductFilterBar = () => {
             onClick={() => handleToggle("stock")}
             className="flex w-full justify-between items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 rounded-lg shadow-sm text-sm text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-100 transition-all cursor-pointer"
           >
-            <span className="truncate">{selectedStock}</span>
+            <span className="truncate">{draftFilter.stockStatus}</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -193,13 +186,13 @@ const ProductFilterBar = () => {
           {openDropdown === "stock" && (
             <div className="absolute z-50 left-0 right-0 mt-1 bg-white border border-gray-100 rounded-lg shadow-xl p-1.5">
               {stockOptions.map((stock) => {
-                const isSelected = selectedStock === stock;
+                const isSelected = draftFilter.stockStatus === stock;
                 return (
                   <button
                     key={stock}
                     type="button"
                     onClick={() => {
-                      setSelectedStock(stock);
+                      handleDraftFilterState("stockStatus", stock);
                       setOpenDropdown(null);
                     }}
                     className={`flex items-center justify-between w-full px-3 py-2 text-sm rounded-lg text-left transition-colors ${isSelected ? "bg-gray-100 font-medium text-gray-900" : "text-gray-700 hover:bg-gray-50"}`}
@@ -239,7 +232,7 @@ const ProductFilterBar = () => {
         </button>
         <button
           type="button"
-          onClick={handleApply}
+          onClick={handleApplyFilter}
           className="w-full sm:w-auto text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-500 active:scale-95 px-6 py-2 rounded-lg transition-all shadow-sm cursor-pointer"
         >
           Apply
@@ -247,6 +240,6 @@ const ProductFilterBar = () => {
       </div>
     </div>
   );
-}
+};
 
 export default ProductFilterBar;

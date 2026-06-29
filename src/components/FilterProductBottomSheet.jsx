@@ -1,14 +1,19 @@
-import React, { useState } from "react";
 import { X } from "lucide-react";
 
-const FilterBottomSheet = ({ isOpen, onClose }) => {
-  const [selectedCategory, setSelectedCategory] = useState("All");
-  const [selectedSubCategory, setSelectedSubCategory] = useState("All");
-  const [selectedStockStatus, setSelectedStockStatus] = useState("All");
+const FilterBottomSheet = ({
+  isOpen,
+  onClose,
+ draftFilter,
+ handleDraftFilterState,
+ handleApplyDraftFilter,
+ handleApply
+}) => {
 
   const categories = ["All", "Men", "Women", "Kids"];
   const subCategories = ["All", "Topwear", "Bottomwear", "Wintewear"];
   const stockOptions = ["All", "Low Stock", "Out of Stock"];
+
+
 
   return (
     <>
@@ -55,9 +60,9 @@ const FilterBottomSheet = ({ isOpen, onClose }) => {
                 </h1>
                 <div className="flex gap-2 mt-2">
                   {categories.map((category) => {
-                    const isSelected = selectedCategory === category;
+                    const isSelected = draftFilter.category === category;
                     return (
-                      <button onClick={() => setSelectedCategory(category)}>
+                      <button onClick={() => handleDraftFilterState("category" , category)}>
                         <div
                           className={`inline-block text-sm border border-gray-300 px-5 py-1.5 rounded-full ${isSelected ? "bg-black text-white " : "text-gray-700 hover:bg-gray-50"}`}
                         >
@@ -76,9 +81,9 @@ const FilterBottomSheet = ({ isOpen, onClose }) => {
                 </h1>
                 <div className="flex overflow-x-auto gap-2 mt-2 scrollbar-none">
                   {subCategories.map((category) => {
-                    const isSelected = selectedSubCategory === category;
+                    const isSelected = draftFilter.subCategory === category;
                     return (
-                      <button onClick={() => setSelectedSubCategory(category)}>
+                      <button onClick={() => handleDraftFilterState("subCategory" , category)}>
                         <div
                           className={`inline-block text-sm border border-gray-300 px-5 py-1.5 rounded-full ${isSelected ? "bg-black text-white" : "text-gray-700 hover:bg-gray-50"}`}
                         >
@@ -97,9 +102,9 @@ const FilterBottomSheet = ({ isOpen, onClose }) => {
                 </h1>
                 <div className="flex gap-2 mt-2">
                   {stockOptions.map((status) => {
-                    const isSelected = selectedStockStatus === status;
+                    const isSelected = draftFilter.stockStatus === status;
                     return (
-                      <button onClick={() => setSelectedStockStatus(status)}>
+                      <button onClick={() => handleDraftFilterState("stockStatus" , status)}>
                         <div
                           className={`inline-block text-sm border border-gray-300  px-5 py-1.5 rounded-full ${isSelected ? "bg-black text-white " : "text-gray-700 hover:bg-gray-50"}`}
                         >
@@ -115,17 +120,16 @@ const FilterBottomSheet = ({ isOpen, onClose }) => {
 
           <div className="p-2 border-t border-gray-200 grid grid-cols-2 gap-9 bg-white md:rounded-b-[2.5rem]">
             <button
-              onClick={() => {
-                setSelectedCategory("All");
-                setSelectedSubCategory("All");
-                setSelectedStockStatus("All");
-              }}
+             
               className="py-3 text-sm md:text-md text-black active:scale-95 transition-all  tracking-wide rounded-lg bg-gray-100 cursor-pointer active-scale-95 duration-100"
             >
               Reset All
             </button>
             <button
-              onClick={() => onClose(false)}
+              onClick={() => {
+                onClose(false)
+              handleApplyDraftFilter()
+            handleApply()}}
               className="py-3 text-sm md:text-md bg-indigo-600 hover:bg-indigo-700 text-white font-normal rounded-lg shadow-lg shadow-indigo-100 active:scale-95 duration-100 transition-all cursor-pointer"
             >
               Apply Filters

@@ -9,8 +9,7 @@ import {
 import { PiCurrencyInr } from "react-icons/pi";
 import { Link } from "react-router-dom";
 import { orders, statusStyles } from "../data/orderDetail";
-import  { useGetDashboardQuery } from "../services/AdminService";
-
+import { useGetDashboardQuery } from "../services/AdminService";
 
 const stockItems = [
   {
@@ -28,62 +27,68 @@ const stockItems = [
 ];
 
 const AdminDashboard = () => {
-    const { data, isLoading } = useGetDashboardQuery();
-    
-    const recentOrders = data?.recentOrders;
-    const lowStockProducts = data?.lowStockProducts;
-    console.log(recentOrders)
+  const { data, isLoading } = useGetDashboardQuery();
 
-    
-    const stats = [
-      {
-        label: "TOTAL PRODUCTS",
-        value: data?.stats?.totalProducts,
-        icon: <FiPackage />,
-        color: "text-cyan-500",
-        bg: "bg-cyan-50",
-      },
-      {
-        label: "TOTAL ORDERS",
-        value: data?.stats?.totalOrders,
-        icon: <CiShoppingCart />,
-        color: "text-purple-700",
-        bg: "bg-purple-50",
-      },
-      {
-        label: "PENDING ORDERS",
-        value: data?.stats?.pendingOrders,
-        icon: <CiClock1 />,
-        color: "text-orange-600",
-        bg: "bg-orange-50",
-      },
-      {
-        label: "COMPLETE ORDERS",
-        value: data?.stats?.completeOrders,
-        icon: <CiCircleCheck />,
-        color: "text-green-600",
-        bg: "bg-green-50",
-      },
-      {
-        label: "TOTAL REVENUE",
-        value: `₹ ${data?.stats?.totalRevenue}`,
-        icon: <CiCircleCheck />,
-        color: "text-lime-600",
-        bg: "bg-lime-50",
-      },
-    ];
-    
-    const getInitials = (fullName) => {
-      const words = fullName.trim().split(/\s+/);
-    
-      const firstInitial = words[0].charAt(0).toUpperCase();
-    
-      const lastInitial =
-        words.length > 1 ? words[words.length - 1].charAt(0).toUpperCase() : "";
-      return firstInitial + lastInitial;
-    };
+  const recentOrders = data?.recentOrders;
+  const lowStockProducts = data?.lowStockProducts;
 
-    if(isLoading) return(<div>Hey software developer wait until data comes , i see you r very inpatience</div>)
+  const stats = [
+    {
+      label: "TOTAL PRODUCTS",
+      value: data?.stats?.totalProducts,
+      icon: <FiPackage />,
+      color: "text-cyan-500",
+      bg: "bg-cyan-50",
+    },
+    {
+      label: "TOTAL ORDERS",
+      value: data?.stats?.totalOrders,
+      icon: <CiShoppingCart />,
+      color: "text-purple-700",
+      bg: "bg-purple-50",
+    },
+    {
+      label: "PENDING ORDERS",
+      value: data?.stats?.pendingOrders,
+      icon: <CiClock1 />,
+      color: "text-orange-600",
+      bg: "bg-orange-50",
+    },
+    {
+      label: "COMPLETE ORDERS",
+      value: data?.stats?.completeOrders,
+      icon: <CiCircleCheck />,
+      color: "text-green-600",
+      bg: "bg-green-50",
+    },
+    {
+      label: "TOTAL REVENUE",
+      value: `₹ ${data?.stats?.totalRevenue}`,
+      icon: <CiCircleCheck />,
+      color: "text-lime-600",
+      bg: "bg-lime-50",
+    },
+  ];
+
+  const getInitials = (fullName) => {
+    const words = fullName.trim().split(/\s+/);
+
+    const firstInitial = words[0].charAt(0).toUpperCase();
+
+    const lastInitial =
+      words.length > 1 ? words[words.length - 1].charAt(0).toUpperCase() : "";
+    return firstInitial + lastInitial;
+  };
+
+  if (isLoading)
+    return (
+      <div>
+        Hey software developer wait until data comes , i see you r very
+        inpatience
+      </div>
+    );
+
+  console.log(lowStockProducts.map((product) => product.affectedSizes));
 
   return (
     <div className="px-4 py-6 sm:px-12 lg:px-6  min-h-screen space-y-6 pb-10 ">
@@ -202,10 +207,12 @@ const AdminDashboard = () => {
                   <div className="w-11 h-11 lg:w-8 lg:h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center font-semibold text-base lg:text-sm tracking-wide">
                     {getInitials(order?.shippingAddress?.name)}
                   </div>
-                  <div>
+                  <div className="min-w-0 flex-1">
                     <div className="flex flex-col items-baseline mb-0.5">
-                      <span className="lg:text-sm font-semibold">ORD-{order.orderId}</span>
-                      <span className="text-xs lg:text-[11px] text-gray-400 ">
+                      <span className="lg:text-sm font-semibold">
+                        ORD-{order.orderId}
+                      </span>
+                      <span className="text-xs lg:text-[11px] text-gray-400 max-w-18 truncate">
                         {order?.shippingAddress?.name}
                       </span>
                     </div>
@@ -213,7 +220,7 @@ const AdminDashboard = () => {
                 </div>
 
                 <div
-                  className={`hidden md:inline-flex items-center px-3 py-1 rounded-full text-xs lg:text-[10px] font-semibold ${
+                  className={`hidden md:inline-flex items-center px-3 py-1 rounded-full text-xs lg:text-[10px] font-semibold  ${
                     statusStyles[order.status.toLowerCase()] ||
                     "bg-gray-100 text-gray-800"
                   }`}
@@ -235,25 +242,34 @@ const AdminDashboard = () => {
               <h2 className="font-semibold ">Low Stock Alerts</h2>
             </div>
             <div className="p-4 space-y-4">
-              {lowStockProducts.map((item) => (
-                <div key={item.id} className="flex items-center gap-4">
-                  <img
-                    src={item?.images[0]?.url}
-                    alt={item.name}
-                    className="w-12 h-12 object-contain bg-gray-50 rounded-lg p-1"
-                  />
-                  <div className="flex-1">
-                    <h3 className="text-xs font-medium text-gray-900 leading-tight">
-                      {item?.name}
-                    </h3>
-                    <p
-                      className="text-xs mt-0.5 text-red-500"
-                    >
-                      {item?.count}
-                    </p>
+              {lowStockProducts.map((item) => {
+                console.log(item);
+                const { stock, size } = item?.affectedSizes[0] || "none";
+
+                return (
+                  <div key={item.id} className="flex items-center gap-4">
+                    <img
+                      src={item?.images[0]?.url}
+                      alt={item.name}
+                      className="w-14 h-14 object-contain bg-gray-50 rounded-lg p-1"
+                    />
+                    <div>
+                      <h3 className="text-xs font-medium text-gray-900 leading-tight">
+                        {item?.name}
+                      </h3>
+                      <p
+                        className={`text-[11px] inline-block px-3 py-0.5 rounded-full my-1  ${item?.status === "Out of Stock" ? "text-red-500 bg-red-50" : "text-orange-500 bg-orange-50 "} my-1.5 `}
+                      >
+                        {item?.status}
+                      </p>
+                      <div className="text-[10px] text-gray-500 flex gap-2">
+                        <p>size {size} ·</p>
+                        <p >{stock} units {stock !== 0 ? "remaining" : ""}</p>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
               <div className="flex justify-center w-full">
                 <button className="w-full lg:w-60 py-3 lg:py-2  bg-indigo-700 hover:bg-indigo-800 transition-all text-white rounded-xl font-medium shadow-sm active:scale-[0.98] cursor-pointer">
                   View inventory
@@ -273,7 +289,9 @@ const AdminDashboard = () => {
                 </div>
                 <p className="text-sm text-gray-600 leading-relaxed">
                   There are{" "}
-                  <span className="font-bold text-gray-900">{data?.stalePendingCount} orders</span>{" "}
+                  <span className="font-semibold text-gray-900">
+                    {data?.stalePendingCount} orders
+                  </span>{" "}
                   waiting to be processed.
                 </p>
               </div>

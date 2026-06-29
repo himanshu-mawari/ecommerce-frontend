@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CiEdit } from "react-icons/ci";
 import { AiOutlineDelete } from "react-icons/ai";
 import {
@@ -6,10 +6,14 @@ import {
   HiOutlineCheckCircle,
   HiExclamationTriangle,
 } from "react-icons/hi2";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import DeleteConfirmModal from "../components/DeleteConfirmModal";
 import FilterProductBottomSheet from "../components/FilterProductBottomSheet";
 import ProductFilterBar from "../components/ProductFilterBar";
+import { useGetProductPageDataQuery } from "../services/AdminService";
+import { Dot } from "lucide-react";
+import useDebounce from "../helpers/useDebounce";
+import EmptySearchState from "../components/EmptySearchState";
 
 const AdminProductPage = () => {
   const [stockItems, setStockItems] = useState([
@@ -34,14 +38,64 @@ const AdminProductPage = () => {
       img: "data:image/webp;base64,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",
     },
   ]);
+  const [searchParams, setSearchParams] = useSearchParams();
   const [open, setOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isDesktopFilterOpen, setIsDesktopFilterOpen] = useState(false);
 
-  const getStockStatus = (qty) => {
-    if (qty === 0) return "bg-red-50 text-red-600 border-red-100";
-    if (qty < 10) return "bg-amber-50 text-amber-600 border-amber-100";
+  const [inputValue, setInputValue] = useState("");
+
+  // const [selectedCategory, setSelectedCategory] = useState(
+  //   searchParams.get("category") || "All",
+  // );
+  // const [selectedSubCategory, setSelectedSubCategory] = useState(
+  //   searchParams.get("sub_category") || "All",
+  // );
+  // const [selectedStock, setSelectedStock] = useState(
+  //   searchParams.get("stock_status") || "All",
+  // );
+
+  const [draftFilter, setDraftFilter] = useState({
+    category:searchParams.get("category") || "All",
+    subCategory:searchParams.get("subCategory") || "All",
+    stockStatus: searchParams.get("stockStatus") ||"All",
+  });
+
+  const [activeFilter, setActiveFilter] = useState({
+    category:searchParams.get("category") || "",
+    subCategory:searchParams.get("subCategory") || "",
+    stockStatus:searchParams.get("stockStatus") || "",
+  });
+
+  const handleApply = () => {
+    setSearchParams({
+      category: draftFilter.category.toLowerCase(),
+      sub_category: draftFilter.subCategory.toLowerCase(),
+      stock_status: draftFilter.stockStatus.toLowerCase(),
+    });
+  };
+
+  console.log(searchParams.get("category"));
+
+  const debounceSearch = useDebounce(inputValue);
+
+  const queryParams = {
+  ...(debounceSearch && { q: debounceSearch }),
+  ...(activeFilter.category && { category: activeFilter.category }),
+  ...(activeFilter.subCategory && { sub_category: activeFilter.subCategory }),
+  ...(activeFilter.stockStatus && { stock_status: activeFilter.stockStatus}),
+}
+
+const { data, isLoading } = useGetProductPageDataQuery(queryParams)
+  const { totalCount, totalInStockCount } = data?.metadata ?? 0;
+  const displayProductData = data?.data;
+
+  const getStatusByValue = (value) => {
+    if (value === "Out of Stock")
+      return "bg-red-50 text-red-600 border-red-100";
+    else if (value === "Low Stock")
+      return "bg-amber-50 text-amber-600 border-amber-100";
     return "bg-emerald-50 text-emerald-600 border-emerald-100";
   };
 
@@ -51,12 +105,37 @@ const AdminProductPage = () => {
   };
 
   const handleProductDelete = () => {
-    console.log("hey");
     setStockItems((prev) =>
       prev.filter((item) => item._id !== selectedProduct._id),
     );
     setOpen(false);
   };
+
+  const handleDraftFilterState = (key, value) => {
+    setDraftFilter((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const cleanFilterValue = (value) => {
+    return value === "all" || value === "" ? "" : value;
+  };
+
+  const handleApplyDraftFilter = () => {
+    setActiveFilter({
+      category: cleanFilterValue(draftFilter.category.toLowerCase()),
+      subCategory: cleanFilterValue(draftFilter.subCategory.toLowerCase()),
+      stockStatus: cleanFilterValue(draftFilter.stockStatus.toLowerCase()),
+    });
+  };
+
+  if (isLoading) {
+    return (
+      <div>
+        Hey software developer wait until data comes , i see you r very
+        inpatience
+      </div>
+    );
+  }
+  console.log(activeFilter);
 
   return (
     <div className="max-w-md sm:max-w-full sm:px-12 lg:px-6 mx-auto px-4 py-6 min-h-screen inter">
@@ -74,11 +153,11 @@ const AdminProductPage = () => {
             <div className="flex flex-wrap gap-2">
               <span className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 px-3.5 py-1.5 lg:py-2.5 lg:rounded-xl text-xs md:text-sm font-semibold shadow-sm">
                 <HiOutlineCube className="size-3.5 text-gray-400" />
-                12 Total
+                {totalCount} Total
               </span>
               <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-100 bg-emerald-50 px-3.5 py-1.5 lg:py-2.5 lg:rounded-xl text-xs md:text-sm font-semibold text-emerald-700 shadow-sm">
                 <HiOutlineCheckCircle className="size-3.5 text-emerald-500" />
-                10 In Stock
+                {totalInStockCount} In Stock
               </span>
             </div>
             <Link to="/admin/products/add">
@@ -110,8 +189,12 @@ const AdminProductPage = () => {
               </span>
               <input
                 type="text"
+                value={inputValue}
+                onChange={(e) => {
+                  setInputValue(e.target.value);
+                }}
                 className="w-full border font-medium border-gray-200 rounded-full py-2.5 md:py-3 pl-11 pr-4 focus:outline-none focus:ring-2 focus:ring-indigo-300 text-sm md:text-[15px] text-gray-700 placeholder:text-gray-400"
-                placeholder="Search by order ID or name..."
+                placeholder="Search products..."
               />
             </div>
 
@@ -161,75 +244,102 @@ const AdminProductPage = () => {
             </button>
           </div>
         </div>
-        <div>{
-          isDesktopFilterOpen && <ProductFilterBar/>
-   }   </div>
-
-        <div className="space-y-5">
-          {stockItems.map((item) => (
-            <div
-              key={item._id}
-              className="bg-white border border-gray-200 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow"
-            >
-              {/* Top Section: Media + Title Details */}
-              <div className="flex gap-4 items-start pb-3">
-                <div className="size-16 shrink-0 bg-gray-50 rounded-lg border border-gray-100 overflow-hidden flex items-center justify-center">
-                  <img
-                    src={item.img}
-                    className="w-full h-full object-contain mix-blend-multiply"
-                    alt={item.name}
-                  />
-                </div>
-
-                <div className="flex-1 min-w-0">
-                  <div className="flex justify-between items-start gap-2">
-                    <h2 className="text-sm md:text-base font-bold text-gray-900 truncate leading-snug">
-                      {item.name}
-                    </h2>
-
-                    {/* Threshold Logic: Add icon if stock is critically low (e.g., < 10) */}
-                    <span
-                      className={`inline-flex items-center gap-1 text-[10px] md:text-xs font-bold px-2 py-0.5 md:py-1 rounded-full border whitespace-nowrap shadow-sm ${getStockStatus(item.stock)}`}
-                    >
-                      {item.stock <= 5 && (
-                        <HiExclamationTriangle className="text-amber-500 size-3 shrink-0 animate-pulse" />
-                      )}
-                      {item.stock} in stock
-                    </span>
+        <div>
+          {isDesktopFilterOpen && (
+            <ProductFilterBar
+              isOpen={isFilterOpen}
+              draftFilter={draftFilter}
+              handleDraftFilterState={handleDraftFilterState}
+              handleApplyDraftFilter={handleApplyDraftFilter}
+              handleApply={handleApply}
+            />
+          )}{" "}
+        </div>
+        {displayProductData?.length !== 0 ? (
+          <div className="space-y-5">
+            {displayProductData.map((item) => (
+              <div
+                key={item._id}
+                className="bg-white border border-gray-200 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow"
+              >
+                {/* Top Section: Media + Title Details */}
+                <div className="flex gap-4 items-center pb-3">
+                  <div className="size-16 shrink-0  overflow-hidden flex items-center justify-center">
+                    <img
+                      src={item.images[0].url}
+                      className="w-20 h-16 rounded-lg object-cover object-top mix-blend-multiply"
+                      alt={item.name}
+                    />
                   </div>
 
-                  <p className="text-[10px] md:text-xs text-gray-400 font-bold uppercase tracking-wider mt-1">
-                    {item.category}
-                  </p>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex justify-between items-start gap-6">
+                      <h2 className="text-sm md:text-base font-semibold text-gray-900 truncate leading-snug">
+                        {item.name}
+                      </h2>
+
+                      {/* Threshold Logic: Add icon if stock is critically low (e.g., < 10) */}
+                      <span className="text-base md:text-lg font-bold text-gray-900 tracking-tight">
+                        ₹{item.price.toLocaleString("en-IN")}
+                      </span>
+                    </div>
+                    <div className="flex items-center">
+                      <p className="text-[10px] md:text-xs text-gray-400 font-bold uppercase tracking-wider ">
+                        {item.category}
+                      </p>
+                      <Dot className="size-4 text-gray-400" />
+                      <p className="text-[10px] md:text-xs text-gray-400 font-bold uppercase tracking-wider ">
+                        {item.subCategory}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-              </div>
 
-              <div className="flex items-center justify-between pt-2">
-                <span className="text-base md:text-lg font-extrabold text-gray-900 tracking-tight">
-                  ₹{item.price.toLocaleString("en-IN")}
-                </span>
-
-                <div className="flex items-center gap-3">
-                  <Link to={`/admin/products/edit/${item._id}`}>
-                    <button
-                      className="p-2 rounded-lg hover:bg-indigo-50 active:bg-indigo-100 text-indigo-600 transition-colors cursor-pointer"
-                      title="Edit Product"
-                    >
-                      <CiEdit className="size-4 md:size-5.5" />
-                    </button>
-                  </Link>
-                  <button
-                    className="p-2 rounded-lg hover:bg-red-50 active:bg-red-100 text-red-500 transition-colors cursor-pointer"
-                    onClick={() => handleDeleteModal(item)}
-                    title="Delete Product"
+                <div className="flex items-center justify-between pb-1">
+                  <span
+                    className={`inline-flex items-center gap-1 text-[10px] md:text-xs font-bold px-4 py-1 md:py-1 rounded-full border whitespace-nowrap shadow-sm ${getStatusByValue(item.status)}`}
                   >
-                    <AiOutlineDelete className="size-4 md:size-5.5" />
-                  </button>
+                    {item.stock <= 5 && (
+                      <HiExclamationTriangle className="text-amber-500 size-3 shrink-0 animate-pulse" />
+                    )}
+                    {item.status}
+                  </span>
+                  <div className="flex items-center gap-3">
+                    <Link to={`/admin/products/edit/${item._id}`}>
+                      <button
+                        className="p-2 rounded-lg hover:bg-indigo-50 active:bg-indigo-100 text-indigo-600 transition-colors cursor-pointer"
+                        title="Edit Product"
+                      >
+                        <CiEdit className="size-4 md:size-5.5" />
+                      </button>
+                    </Link>
+                    <button
+                      className="p-2 rounded-lg hover:bg-red-50 active:bg-red-100 text-red-500 transition-colors cursor-pointer"
+                      onClick={() => handleDeleteModal(item)}
+                      title="Delete Product"
+                    >
+                      <AiOutlineDelete className="size-4 md:size-5.5" />
+                    </button>
+                  </div>
+                </div>
+                <div className="px-3  border-t pt-2 ">
+                  <div className="flex gap-3">
+                    {item.sizes.map((size) => (
+                      <div className="flex text-xs ">
+                        <p className="font-medium">{size.size}</p>:
+                        <p className="text-gray-500">{size.stock}</p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div>
+            <EmptySearchState value={inputValue} />
+          </div>
+        )}
 
         <DeleteConfirmModal
           isOpen={open}
@@ -239,7 +349,15 @@ const AdminProductPage = () => {
         />
       </div>
       {isFilterOpen && (
-        <FilterProductBottomSheet isOpen={isFilterOpen} onClose={setIsFilterOpen} />
+        <FilterProductBottomSheet
+          isOpen={isFilterOpen}
+          onClose={setIsFilterOpen}
+          draftFilter={draftFilter}
+          setActiveFilter={setActiveFilter}
+          handleDraftFilterState={handleDraftFilterState}
+          handleApplyDraftFilter={handleApplyDraftFilter}
+          handleApply={handleApply}
+        />
       )}
     </div>
   );
