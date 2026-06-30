@@ -3,17 +3,20 @@ import { X } from "lucide-react";
 const FilterBottomSheet = ({
   isOpen,
   onClose,
- draftFilter,
- handleDraftFilterState,
- handleApplyDraftFilter,
- handleApply
+  draftFilter,
+  handleDraftFilterState,
+  handleApplyDraftFilter,
+  handleApply,
 }) => {
-
   const categories = ["All", "Men", "Women", "Kids"];
   const subCategories = ["All", "Topwear", "Bottomwear", "Wintewear"];
-  const stockOptions = ["All", "Low Stock", "Out of Stock"];
+  // const stockOptions = ["All", "Low Stock", "Out of Stock"];
 
-
+  const stockOptions = [
+    { label: "All", value: "All" },
+    { label: "Low Stock", value: "low_stock" },
+    { label: "Out of Stock", value: "out_of_stock" },
+  ];
 
   return (
     <>
@@ -62,7 +65,11 @@ const FilterBottomSheet = ({
                   {categories.map((category) => {
                     const isSelected = draftFilter.category === category;
                     return (
-                      <button onClick={() => handleDraftFilterState("category" , category)}>
+                      <button
+                        onClick={() =>
+                          handleDraftFilterState("category", category)
+                        }
+                      >
                         <div
                           className={`inline-block text-sm border border-gray-300 px-5 py-1.5 rounded-full ${isSelected ? "bg-black text-white " : "text-gray-700 hover:bg-gray-50"}`}
                         >
@@ -83,7 +90,11 @@ const FilterBottomSheet = ({
                   {subCategories.map((category) => {
                     const isSelected = draftFilter.subCategory === category;
                     return (
-                      <button onClick={() => handleDraftFilterState("subCategory" , category)}>
+                      <button
+                        onClick={() =>
+                          handleDraftFilterState("subCategory", category)
+                        }
+                      >
                         <div
                           className={`inline-block text-sm border border-gray-300 px-5 py-1.5 rounded-full ${isSelected ? "bg-black text-white" : "text-gray-700 hover:bg-gray-50"}`}
                         >
@@ -102,13 +113,17 @@ const FilterBottomSheet = ({
                 </h1>
                 <div className="flex gap-2 mt-2">
                   {stockOptions.map((status) => {
-                    const isSelected = draftFilter.stockStatus === status;
+                    const isSelected = draftFilter.stockStatus === status.value;
                     return (
-                      <button onClick={() => handleDraftFilterState("stockStatus" , status)}>
+                      <button
+                        onClick={() =>
+                          handleDraftFilterState("stockStatus", status.value)
+                        }
+                      >
                         <div
                           className={`inline-block text-sm border border-gray-300  px-5 py-1.5 rounded-full ${isSelected ? "bg-black text-white " : "text-gray-700 hover:bg-gray-50"}`}
                         >
-                          {status}
+                          {status.label}
                         </div>
                       </button>
                     );
@@ -119,17 +134,15 @@ const FilterBottomSheet = ({
           </div>
 
           <div className="p-2 border-t border-gray-200 grid grid-cols-2 gap-9 bg-white md:rounded-b-[2.5rem]">
-            <button
-             
-              className="py-3 text-sm md:text-md text-black active:scale-95 transition-all  tracking-wide rounded-lg bg-gray-100 cursor-pointer active-scale-95 duration-100"
-            >
+            <button className="py-3 text-sm md:text-md text-black active:scale-95 transition-all  tracking-wide rounded-lg bg-gray-100 cursor-pointer active-scale-95 duration-100">
               Reset All
             </button>
             <button
               onClick={() => {
-                onClose(false)
-              handleApplyDraftFilter()
-            handleApply()}}
+                onClose(false);
+                handleApplyDraftFilter();
+                handleApply();    
+              }}
               className="py-3 text-sm md:text-md bg-indigo-600 hover:bg-indigo-700 text-white font-normal rounded-lg shadow-lg shadow-indigo-100 active:scale-95 duration-100 transition-all cursor-pointer"
             >
               Apply Filters

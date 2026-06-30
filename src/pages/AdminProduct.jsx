@@ -46,34 +46,32 @@ const AdminProductPage = () => {
 
   const [inputValue, setInputValue] = useState("");
 
-  // const [selectedCategory, setSelectedCategory] = useState(
-  //   searchParams.get("category") || "All",
-  // );
-  // const [selectedSubCategory, setSelectedSubCategory] = useState(
-  //   searchParams.get("sub_category") || "All",
-  // );
-  // const [selectedStock, setSelectedStock] = useState(
-  //   searchParams.get("stock_status") || "All",
-  // );
-
   const [draftFilter, setDraftFilter] = useState({
-    category:searchParams.get("category") || "All",
-    subCategory:searchParams.get("subCategory") || "All",
-    stockStatus: searchParams.get("stockStatus") ||"All",
+    category: searchParams.get("category") || "All",
+    subCategory: searchParams.get("subCategory") || "All",
+    stockStatus: searchParams.get("stockStatus") || "All",
   });
 
   const [activeFilter, setActiveFilter] = useState({
-    category:searchParams.get("category") || "",
-    subCategory:searchParams.get("subCategory") || "",
-    stockStatus:searchParams.get("stockStatus") || "",
+    category: searchParams.get("category") || "",
+    subCategory: searchParams.get("subCategory") || "",
+    stockStatus: searchParams.get("stockStatus") || "",
   });
 
   const handleApply = () => {
-    setSearchParams({
-      category: draftFilter.category.toLowerCase(),
-      sub_category: draftFilter.subCategory.toLowerCase(),
-      stock_status: draftFilter.stockStatus.toLowerCase(),
-    });
+    const filters = {
+      category: draftFilter.category,
+      sub_category: draftFilter.subCategory,
+      stock_status: draftFilter.stockStatus,
+    };
+
+    const params = Object.fromEntries(
+      Object.entries(filters)
+        .filter(([, value]) => value && value !== "All")
+        .map(([key, value]) => [key, value.toLowerCase()]),
+    );
+
+    setSearchParams(params);
   };
 
   console.log(searchParams.get("category"));
@@ -81,13 +79,13 @@ const AdminProductPage = () => {
   const debounceSearch = useDebounce(inputValue);
 
   const queryParams = {
-  ...(debounceSearch && { q: debounceSearch }),
-  ...(activeFilter.category && { category: activeFilter.category }),
-  ...(activeFilter.subCategory && { sub_category: activeFilter.subCategory }),
-  ...(activeFilter.stockStatus && { stock_status: activeFilter.stockStatus}),
-}
+    ...(debounceSearch && { q: debounceSearch }),
+    ...(activeFilter.category && { category: activeFilter.category }),
+    ...(activeFilter.subCategory && { sub_category: activeFilter.subCategory }),
+    ...(activeFilter.stockStatus && { stock_status: activeFilter.stockStatus }),
+  };
 
-const { data, isLoading } = useGetProductPageDataQuery(queryParams)
+  const { data, isLoading } = useGetProductPageDataQuery(queryParams);
   const { totalCount, totalInStockCount } = data?.metadata ?? 0;
   const displayProductData = data?.data;
 
@@ -247,7 +245,7 @@ const { data, isLoading } = useGetProductPageDataQuery(queryParams)
         <div>
           {isDesktopFilterOpen && (
             <ProductFilterBar
-              isOpen={isFilterOpen}
+            setIsDesktopFilterOpen={setIsDesktopFilterOpen}
               draftFilter={draftFilter}
               handleDraftFilterState={handleDraftFilterState}
               handleApplyDraftFilter={handleApplyDraftFilter}

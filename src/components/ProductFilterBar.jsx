@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 const ProductFilterBar = ({
+  setIsDesktopFilterOpen,
   draftFilter,
   handleDraftFilterState,
   handleApplyDraftFilter,
@@ -10,7 +11,13 @@ const ProductFilterBar = ({
 
   const categories = ["All", "Men", "Women", "Kids"];
   const subCategories = ["All", "Topwear", "Bottomwear", "Wintewear"];
-  const stockOptions = ["All", "Low Stock", "Out of Stock"];
+ 
+  const stockOptions = [
+    { label: "All", value: null },
+    { label: "Low Stock", value: "low_stock" },
+    { label: "Out of Stock", value: "out_of_stock" },
+  ];
+
 
   const handleToggle = (menuName) => {
     setOpenDropdown(openDropdown === menuName ? null : menuName);
@@ -24,6 +31,7 @@ const ProductFilterBar = ({
     handleApplyDraftFilter();
     handleApply()
     setOpenDropdown(null);
+    setIsDesktopFilterOpen(false)
   };
 
   return (
@@ -186,18 +194,18 @@ const ProductFilterBar = ({
           {openDropdown === "stock" && (
             <div className="absolute z-50 left-0 right-0 mt-1 bg-white border border-gray-100 rounded-lg shadow-xl p-1.5">
               {stockOptions.map((stock) => {
-                const isSelected = draftFilter.stockStatus === stock;
+                const isSelected = draftFilter.stockStatus === stock.label;
                 return (
                   <button
                     key={stock}
                     type="button"
                     onClick={() => {
-                      handleDraftFilterState("stockStatus", stock);
+                      handleDraftFilterState("stockStatus", stock.value);
                       setOpenDropdown(null);
                     }}
                     className={`flex items-center justify-between w-full px-3 py-2 text-sm rounded-lg text-left transition-colors ${isSelected ? "bg-gray-100 font-medium text-gray-900" : "text-gray-700 hover:bg-gray-50"}`}
                   >
-                    <span>{stock}</span>
+                    <span>{stock.label  }</span>
                     {isSelected && (
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
