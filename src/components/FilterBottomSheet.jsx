@@ -1,11 +1,14 @@
-import React, { useState } from "react";
 import { X, Calendar, ChevronDown } from "lucide-react";
 
-const FilterBottomSheet = ({ isOpen, onClose }) => {
-  const [paymentStatus, setPaymentStatus] = useState("All");
-  const [orderStatus, setOrderStatus] = useState("All");
-  const [selectedDuration, setSelectedDuration] = useState("All");
-
+const FilterBottomSheet = ({
+  isOpen,
+  onClose,
+  draftState,
+  setDraftState,
+  handleDraftState,
+  handleApplyDraftIntoActive,
+  handleApplyFilterIntoUrl,
+}) => {
   const paymentStatuses = ["All", "Paid", "Failed", "Pending"];
   const orderStatuses = [
     "All",
@@ -16,7 +19,24 @@ const FilterBottomSheet = ({ isOpen, onClose }) => {
     "Delivered",
     "Cancelled",
   ];
-  const durations = ["All", "Today", "Last 7 Days", "Last 30 Days"];
+  const times = [
+    { label: "All", value: "All" },
+    { label: "Today", value: "today" },
+    {
+      label: "Last 7 Days",
+      value: "last7days",
+    },
+    { label: "Last 30 Days", value: "last30days" },
+  ];
+
+  const handleReset = () => {
+    setDraftState({
+      orderStatus: "All",
+      paymentStatus: "All",
+      date: "All",
+    });
+    onClose(false);
+  };
 
   return (
     <>
@@ -63,9 +83,15 @@ const FilterBottomSheet = ({ isOpen, onClose }) => {
                 </h1>
                 <div className="flex gap-2 mt-2 overflow-x-auto scrollbar-none">
                   {orderStatuses.map((status) => {
-                    const isSelected = orderStatus === status;
+                    const isSelected =
+                      draftState.orderStatus.toLowerCase() ===
+                      status.toLowerCase();
                     return (
-                      <button onClick={() => setOrderStatus(status)}>
+                      <button
+                        onClick={() => {
+                          handleDraftState("orderStatus", status);
+                        }}
+                      >
                         <div
                           className={`inline-block text-sm border border-gray-300 px-5 py-1.5 rounded-full ${isSelected ? "bg-black text-white " : "text-gray-700 hover:bg-gray-50"}`}
                         >
@@ -84,9 +110,16 @@ const FilterBottomSheet = ({ isOpen, onClose }) => {
                 </h1>
                 <div className="flex gap-2 mt-2 ">
                   {paymentStatuses.map((status) => {
-                    const isSelected = paymentStatus === status;
+                    const isSelected =
+                      draftState.paymentStatus.toLowerCase() ===
+                      status.toLowerCase();
+                    console.log(isSelected);
                     return (
-                      <button onClick={() => setPaymentStatus(status)}>
+                      <button
+                        onClick={() => {
+                          handleDraftState("paymentStatus", status);
+                        }}
+                      >
                         <div
                           className={`inline-block text-sm border border-gray-300 px-5 py-1.5 rounded-full ${isSelected ? "bg-black text-white" : "text-gray-700 hover:bg-gray-50"}`}
                         >
@@ -104,14 +137,18 @@ const FilterBottomSheet = ({ isOpen, onClose }) => {
                 <h1 className="text-sm font-semibold text-gray-600">Date</h1>
                 <div className="w-full overflow-x-auto scrollbar-none overscroll-x-contain">
                   <div className="flex gap-2 mt-2 flex-nowrap w-max">
-                    {durations.map((duration) => {
-                      const isSelected = selectedDuration === duration;
+                    {times.map((duration) => {
+                      const isSelected = draftState.date === duration.value;
                       return (
-                        <button onClick={() => setSelectedDuration(duration)}>
+                        <button
+                          onClick={() => {
+                            handleDraftState("date", duration.value);
+                          }}
+                        >
                           <div
                             className={`inline-block text-sm border border-gray-300 w-au px-5 py-1.5 rounded-full ${isSelected ? "bg-black text-white " : "text-gray-700 hover:bg-gray-50"}`}
                           >
-                            {duration}
+                            {duration.label}
                           </div>
                         </button>
                       );
@@ -124,17 +161,17 @@ const FilterBottomSheet = ({ isOpen, onClose }) => {
 
           <div className="p-2 border-t border-gray-200 grid grid-cols-2 gap-9 bg-white md:rounded-b-[2.5rem]">
             <button
-              onClick={() => {
-                setSelectedDuration("All");
-                setPaymentStatus("All");
-                setOrderStatus("All");
-              }}
+              onClick={handleReset}
               className="py-3 text-sm md:text-md text-black active:scale-95 transition-all  tracking-wide rounded-lg bg-gray-100 cursor-pointer active-scale-95 duration-100"
             >
               Reset All
             </button>
             <button
-              onClick={() => onClose(false)}
+              onClick={() => {
+                handleApplyFilterIntoUrl();
+                handleApplyDraftIntoActive();
+                onClose(false);
+              }}
               className="py-3 text-sm md:text-md bg-indigo-600 hover:bg-indigo-700 text-white font-normal rounded-lg shadow-lg shadow-indigo-100 active:scale-95 duration-100 transition-all cursor-pointer"
             >
               Apply Filters

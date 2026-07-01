@@ -18,8 +18,17 @@ export const adminApi = baseApi.injectEndpoints({
       }),
       transformResponse:(response) => response.data,
       providesTags:["AdminProduct"]
+    }),
+    getOrderPageData: builder.query({
+      query:({q , order_status , payment_status , date }) => ({
+        url: "/api/orders/all-orders",
+        method: "GET",
+        params:{q , order_status , payment_status , date}
+      }),
+      transformResponse:(response) => response.data,
+      providesTags:["AdminOrder"]
     })
   }),
 });
 
-export const { useGetDashboardQuery , useGetProductPageDataQuery } = adminApi;
+export const { useGetDashboardQuery , useGetProductPageDataQuery , useGetOrderPageDataQuery} = adminApi;

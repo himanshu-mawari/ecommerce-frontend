@@ -1,22 +1,97 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { CiClock1 } from "react-icons/ci";
 import { MdOutlineCancel } from "react-icons/md";
-import { orders, statusStyles } from "../data/orderDetail";
+import { statusStyles } from "../data/orderDetail";
 import FilterBottomSheet from "../components/FilterBottomSheet";
-import OrderFilterBar from "../components/OrderFilterBar"
+import OrderFilterBar from "../components/OrderFilterBar";
+import { useGetOrderPageDataQuery } from "../services/AdminService";
+import useDebounce from "../helpers/useDebounce";
 
 const AdminOrderPage = () => {
   const navigate = useNavigate();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isDesktopFilterOpen, setIsDesktopFilterOpen] = useState(false);
-  const [pageNumber, setPageNumber] = useState(1);
-  const page_size = 6;
+  const [inputValue, setInputValue] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const debounceSearch = useDebounce(inputValue);
 
-  const paginatedOrderList = orders.slice(
-    (pageNumber - 1) * page_size,
-    pageNumber * page_size,
-  );
+  const [draftState, setDraftState] = useState({
+    orderStatus: searchParams.get("order_status") || "All",
+    paymentStatus: searchParams.get("payment_status") || "All",
+    date: searchParams.get("date") || "All",
+  });
+  const [activeFilter, setActiveFilter] = useState({
+    orderStatus: searchParams.get("order_status") || "",
+    paymentStatus: searchParams.get("payment_status") || "",
+    date: searchParams.get("date") || "",
+  });
+
+  const queryParams = {
+    ...(debounceSearch ? { q: debounceSearch.toLowerCase() } : {}),
+    ...(activeFilter.orderStatus
+      ? { order_status: activeFilter.orderStatus.toLowerCase() }
+      : {}),
+    ...(activeFilter.paymentStatus
+      ? { payment_status: activeFilter.paymentStatus.toLowerCase() }
+      : {}),
+    ...(activeFilter.date ? { date: activeFilter.date.toLowerCase() } : {}),
+  };
+
+  const { data, isLoading } = useGetOrderPageDataQuery(queryParams);
+  const pendingOrders = data?.metadata?.totalPendingOrdersCount;
+  const cancelledOrders = data?.metadata?.totalCancelledOrdersCount;
+  const orders = data?.data || {};
+
+  const handleDateFormat = (mongoDate) => {
+    const dateObj = new Date(mongoDate);
+    return dateObj.toLocaleDateString("en-IN", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  };
+
+  const handleDraftState = (key, value) => {
+    setDraftState((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const cleanFilterValue = (value) => {
+    return value === "all" || value === "" ? "" : value;
+  };
+
+  const handleApplyDraftIntoActive = () => {
+    setActiveFilter({
+      orderStatus: cleanFilterValue(draftState.orderStatus.toLowerCase()),
+      paymentStatus: cleanFilterValue(draftState.paymentStatus.toLowerCase()),
+      date: cleanFilterValue(draftState.date.toLowerCase()),
+    });
+  };
+
+  const handleApplyFilterIntoUrl = () => {
+    const filters = {
+      order_status: draftState.orderStatus,
+      payment_status: draftState.paymentStatus,
+      date: draftState.date,
+    };
+
+    const params = Object.fromEntries(
+      Object.entries(filters)
+        .filter(([, value]) => value !== "All" && value)
+        .map(([key, value]) => [key, value.toLowerCase()]),
+    );
+
+    setSearchParams(params);
+  };
+
+  if (isLoading)
+    return (
+      <div>
+        Hey software developer wait until data comes , i see you r very
+        inpatience
+      </div>
+    );
+  console.log(draftState);
   return (
     <div className="px-4 py-6 md:px-10 md:py-8 lg:py-6 lg:px-6 inter max-w-7xl mx-auto space-y-6 md:space-y-8">
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
@@ -39,7 +114,7 @@ const AdminOrderPage = () => {
                 Pending
               </span>
               <p className="text-base font-bold text-gray-900 leading-tight">
-                4
+                {pendingOrders}
               </p>
             </div>
           </div>
@@ -53,7 +128,7 @@ const AdminOrderPage = () => {
                 Cancelled
               </span>
               <p className="text-base font-bold text-gray-900 leading-tight">
-                4
+                {cancelledOrders}
               </p>
             </div>
           </div>
@@ -62,9 +137,7 @@ const AdminOrderPage = () => {
 
       <div className="space-y-4">
         <div className="bg-white rounded-2xl mb-4 sticky top-4 z-10">
-          {/* Flex container: items stay side-by-side but space out dynamically */}
           <div className="w-full flex items-center gap-2 md:gap-3">
-            {/* Search Input Box */}
             <div className="relative flex-1 max-w-xl">
               <span className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
                 <svg
@@ -83,17 +156,17 @@ const AdminOrderPage = () => {
               </span>
               <input
                 type="text"
+                onChange={(e) => setInputValue(e.target.value)}
+                value={inputValue}
                 className="w-full  border border-gray-200 rounded-full py-2.5 md:py-3 pl-11 pr-4 focus:outline-none focus:ring-2 focus:ring-indigo-300 text-sm md:text-[15px] text-gray-700 placeholder:text-gray-400"
                 placeholder="Search by order ID or name..."
               />
             </div>
 
-            {/* Responsive Filters Button */}
             <button
               onClick={() => setIsFilterOpen(true)}
               className="lg:hidden flex items-center justify-center bg-white border border-gray-200 rounded-full h-10 w-10 md:h-auto md:w-auto md:rounded-xl px-0 md:px-4 py-0 md:py-3 gap-2 hover:bg-gray-50 active:scale-[0.98] transition-all text-gray-700 shrink-0 shadow-sm"
             >
-              {/* Filter Icon (Always Visible) */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -109,7 +182,6 @@ const AdminOrderPage = () => {
                 />
               </svg>
 
-              {/* Button Text (Hidden on Mobile, Visible on Desktop) */}
               <span className="hidden md:inline text-[15px] font-medium text-gray-800">
                 Filters
               </span>
@@ -118,7 +190,6 @@ const AdminOrderPage = () => {
               onClick={() => setIsDesktopFilterOpen(!isDesktopFilterOpen)}
               className="hidden lg:flex items-center justify-center bg-white border border-gray-200 rounded-full h-10 w-10 md:h-auto md:w-auto md:rounded-lg px-0 md:px-4 py-0 md:py-3 gap-2 hover:bg-gray-50 active:scale-[0.98] transition-all text-gray-700 shrink-0 "
             >
-              {/* Filter Icon (Always Visible) */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -134,7 +205,6 @@ const AdminOrderPage = () => {
                 />
               </svg>
 
-              {/* Button Text (Hidden on Mobile, Visible on Desktop) */}
               <span className="hidden md:inline text-[15px] font-medium text-gray-800">
                 Filters
               </span>
@@ -142,38 +212,46 @@ const AdminOrderPage = () => {
           </div>
         </div>
         <div>
-          {isDesktopFilterOpen && <OrderFilterBar/>}
+          {isDesktopFilterOpen && (
+            <OrderFilterBar
+              draftState={draftState}
+              setDraftState={setDraftState}
+              handleDraftState={handleDraftState}
+              handleApplyDraftIntoActive={handleApplyDraftIntoActive}
+              handleApplyFilterIntoUrl={handleApplyFilterIntoUrl}
+            />
+          )}
         </div>
 
         <div className="flex flex-col gap-3 md:hidden">
-          {paginatedOrderList.map((order) => (
+          {orders.map((order) => (
             <Link
-              to={`/admin/orders/${order.id}`}
-              key={order.id}
+              to={`/admin/orders/${order._id}`}
+              key={order._id}
               className="block"
             >
               <div className="bg-white border border-gray-100 p-4 rounded-xl shadow-sm active:bg-gray-50 hover:border-gray-300 transition-all">
                 <div className="flex justify-between items-start">
                   <div>
                     <h2 className="text-sm font-bold text-gray-900 tracking-tight">
-                      ORD-{order.id}
+                      ORD-{order.orderId}
                     </h2>
                     <div className="flex items-center gap-1.5 text-xs font-light text-gray-500 mt-0.5">
                       <span className="font-normal text-gray-800">
-                        {order.customer.name}
+                        {order.shippingAddress.name}
                       </span>
                       <span className="text-gray-300">•</span>
-                      <span>{order.placedAt}</span>
+                      <span>{handleDateFormat(order.createdAt)}</span>
                     </div>
                   </div>
                   <p className="text-sm font-bold text-gray-900">
-                    ₹{order.payment.total}
+                    ₹{order.totalAmount}
                   </p>
                 </div>
 
                 <div className="mt-2.5 pt-2.5 border-t border-gray-50 flex items-center justify-between gap-4">
                   <p className="text-xs font-light text-gray-500 truncate flex-1">
-                    {order.items[0].title}{" "}
+                    {order.items[0].name}{" "}
                     <span className="ml-1">+{order.items.length}</span>
                   </p>
                   <span
@@ -187,7 +265,7 @@ const AdminOrderPage = () => {
           ))}
         </div>
 
-        <div className="hidden md:block bg-white border border-gray-100 rounded-xl shadow-sm overflow-hidden">
+        <div className="hidden md:block bg-white border border-gray-100 rounded-xl shadow-sm overflow-hidden mt-8">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
@@ -207,7 +285,6 @@ const AdminOrderPage = () => {
                   <th className="px-6 py-3.5 text-[11px] font-bold text-gray-400 uppercase tracking-wider hidden lg:table-cell w-[18%]">
                     Date
                   </th>
-                  {/* 1. Added Action Header Column */}
                   <th className="px-6 py-3.5 text-[11px] font-bold text-gray-400 uppercase tracking-wider text-right w-[11%]">
                     Action
                   </th>
@@ -215,30 +292,29 @@ const AdminOrderPage = () => {
               </thead>
 
               <tbody className="divide-y divide-gray-50">
-                {paginatedOrderList.map((order) => (
+                {orders.map((order) => (
                   <tr
-                    key={order.id}
-                    onClick={() => navigate(`/admin/orders/${order.id}`)}
+                    key={order._id}
+                    onClick={() => navigate(`/admin/orders/${order._id}`)}
                     className="hover:bg-gray-50 transition-colors cursor-pointer group"
                   >
                     <td className="px-5 py-4">
                       <p className="font-bold text-gray-900 group-hover:text-black transition-colors text-sm">
-                        {order.id}
+                        ORD-{order?.orderId}
                       </p>
-                      <p className="text-xs text-gray-500 font-light mt-0.5">
-                        {order.customer?.name}
+                      <p className="text-xs text-gray-500 font-light mt-0.5  truncate">
+                        {order?.shippingAddress?.name}
                       </p>
                     </td>
 
                     <td className="px-6 py-4 font-semibold text-gray-900 text-sm">
-                      ₹{order.payment?.total}
+                      ₹{order?.totalAmount}
                     </td>
 
                     <td className="px-6 py-4 text-sm font-light text-gray-500 hidden md:table-cell">
                       <div className="flex flex-col items-start gap-1 max-w-36 w-full">
-                        {/* Added optional chaining just in case an item array comes up empty */}
                         <span className="truncate w-full">
-                          {order.items?.[0]?.title || "No items"}
+                          {order.items?.[0]?.name || "No items"}
                         </span>
 
                         {order.items?.length > 1 && (
@@ -261,10 +337,9 @@ const AdminOrderPage = () => {
                     </td>
 
                     <td className="px-3 py-4 text-sm font-light text-gray-500 hidden lg:table-cell">
-                      {order.placedAt}
+                      {handleDateFormat(order.createdAt)}
                     </td>
 
-                    {/* 2. Added Action Data Column with interactive Button */}
                     <td className="px-6 py-4 text-right ">
                       <button
                         type="button"
@@ -281,7 +356,15 @@ const AdminOrderPage = () => {
         </div>
       </div>
       {isFilterOpen && (
-        <FilterBottomSheet isOpen={isFilterOpen} onClose={setIsFilterOpen} />
+        <FilterBottomSheet
+          isOpen={isFilterOpen}
+          onClose={setIsFilterOpen}
+          draftState={draftState}
+          setDraftState={setDraftState}
+          handleDraftState={handleDraftState}
+          handleApplyDraftIntoActive={handleApplyDraftIntoActive}
+          handleApplyFilterIntoUrl={handleApplyFilterIntoUrl}
+        />
       )}
     </div>
   );

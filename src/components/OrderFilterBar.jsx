@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 
-const OrderFilterBar = () => {
+const OrderFilterBar = ({
+  draftState,
+  setDraftState,
+  handleDraftState,
+  handleApplyDraftIntoActive,
+  handleApplyFilterIntoUrl,
+}) => {
   const [openDropdown, setOpenDropdown] = useState(null);
 
-  const [orderStatus, setOrderStatus] = useState("All Status");
-  const [paymentStatus, setPaymentStatus] = useState("All Status");
-  const [duration, setDuration] = useState("All");
-
-  const paymentStatuses = ["All Status", "Paid", "Failed", "Pending"];
+  const paymentStatuses = ["All", "Paid", "Failed", "Pending"];
   const orderStatuses = [
-    "All Status",
+    "All",
     "Pending",
     "Confirmed",
     "Packed",
@@ -17,19 +19,32 @@ const OrderFilterBar = () => {
     "Delivered",
     "Cancelled",
   ];
-  const times = ["All", "Today", "Last 7 Days", "Last 30 Days"];
+  const times = [
+    { label: "All", value: "All" },
+    { label: "Today", value: "today" },
+    {
+      label: "Last 7 Days",
+      value: "last7days",
+    },
+    { label: "Last 30 Days", value: "last30days" },
+  ];
 
   const handleToggle = (menuName) => {
     setOpenDropdown(openDropdown === menuName ? null : menuName);
   };
 
   const handleReset = () => {
-    setOrderStatus("All");
-    setPaymentStatus("All");
+    setDraftState({
+      orderStatus: "All",
+      paymentStatus: "All",
+      date: "All",
+    });
     setOpenDropdown(null);
   };
 
   const handleApply = () => {
+    handleApplyFilterIntoUrl();
+    handleApplyDraftIntoActive();
     setOpenDropdown(null);
   };
 
@@ -45,7 +60,7 @@ const OrderFilterBar = () => {
             onClick={() => handleToggle("category")}
             className="flex w-full justify-between items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 rounded-lg shadow-sm text-sm text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-100 transition-all cursor-pointer"
           >
-            <span className="truncate">{orderStatus}</span>
+            <span className="truncate">{draftState.orderStatus}</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -65,13 +80,13 @@ const OrderFilterBar = () => {
           {openDropdown === "category" && (
             <div className="absolute z-50 left-0 right-0 mt-1 bg-white border border-gray-100 rounded-lg shadow-xl p-1.5">
               {orderStatuses.map((status) => {
-                const isSelected = orderStatus === status;
+                const isSelected = draftState.orderStatus === status;
                 return (
                   <button
                     key={status}
                     type="button"
                     onClick={() => {
-                      setOrderStatus(status);
+                      handleDraftState("orderStatus", status);
                       setOpenDropdown(null);
                     }}
                     className={`flex items-center justify-between w-full px-3 py-2 text-sm rounded-lg text-left transition-colors ${isSelected ? "bg-gray-100 font-medium text-gray-900" : "text-gray-700 hover:bg-gray-50"}`}
@@ -106,10 +121,13 @@ const OrderFilterBar = () => {
           </label>
           <button
             type="button"
-            onClick={() => handleToggle("subCategory")}
+            onClick={() => {
+              handleToggle("subCategory");
+              handleDraftState("orderStatus", status);
+            }}
             className="flex w-full justify-between items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 rounded-lg shadow-sm text-sm text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-100 transition-all cursor-pointer"
           >
-            <span className="truncate">{paymentStatus}</span>
+            <span className="truncate">{draftState.paymentStatus}</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -129,13 +147,13 @@ const OrderFilterBar = () => {
           {openDropdown === "subCategory" && (
             <div className="absolute z-50 left-0 right-0 mt-1 bg-white border border-gray-100 rounded-lg shadow-xl p-1.5">
               {paymentStatuses.map((status) => {
-                const isSelected = paymentStatus === status;
+                const isSelected = draftState.paymentStatus === status;
                 return (
                   <button
                     key={status}
                     type="button"
                     onClick={() => {
-                      setPaymentStatus(status);
+                      handleDraftState("paymentStatus", status);
                       setOpenDropdown(null);
                     }}
                     className={`flex items-center justify-between w-full px-3 py-2 text-sm rounded-lg text-left transition-colors ${isSelected ? "bg-gray-100 font-medium text-gray-900" : "text-gray-700 hover:bg-gray-50"}`}
@@ -170,18 +188,20 @@ const OrderFilterBar = () => {
           <label className="text-sm text-gray-500">Date</label>
           <div className="flex bg-gray-50 border border-gray-200 px-1 py-2 rounded-xl w-fit">
             {times.map((time) => {
-              const isSelected = duration === time;
+              const isSelected = draftState.date === time.value;
               return (
                 <button
-                  key={time}
-                  onClick={() => setDuration(time)}
+                  key={time.label}
+                  onClick={() => {
+                    handleDraftState("date", time.value);
+                  }}
                   className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200  ${
                     isSelected
                       ? "bg-black text-white shadow-sm" // Active state
                       : "text-gray-500 hover:text-gray-900" // Inactive state
                   }`}
                 >
-                  {time}
+                  {time.label}
                 </button>
               );
             })}
