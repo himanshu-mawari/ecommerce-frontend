@@ -20,7 +20,7 @@ const Home = () => {
       </div>
 
       <div className="flex flex-col items-center mt-14">
-        <div className="flex flex-col md:flex-row md:items-center md:pb-3 lg:justify-center">
+      <div className="flex flex-col md:flex-row md:items-center md:pb-3 lg:justify-center">
           <h1 className="text-4xl md:text-3xl lg:text-5xl text-gray-500 mr-2 text-center md:font-medium tracking-wide">
             LATEST
           </h1>
