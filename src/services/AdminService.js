@@ -8,27 +8,50 @@ export const adminApi = baseApi.injectEndpoints({
         method: "GET",
       }),
       transformResponse: (response) => response.data,
-      providesTags: ["Dashboard"]
+      providesTags: ["Dashboard"],
     }),
     getProductPageData: builder.query({
-      query:({q , category , sub_category , stock_status}) => ({
-        url: "/api/products/admin/list",
-        method: "GET",
-        params:{q, category , sub_category , stock_status}
-      }),
-      transformResponse:(response) => response.data,
-      providesTags:["AdminProduct"]
+      query: (params) => {
+        const cleanParams = Object.fromEntries(
+          Object.entries(params).filter(
+            ([, value]) =>
+              value !== undefined && value !== "" && value !== null,
+          ),
+        );
+
+        const hasParams = Object.keys(cleanParams).length > 0;
+        return {
+          url: "/api/products/admin/list",
+          method: "GET",
+          ...(hasParams && { params: cleanParams }),
+        };
+      },
+      transformResponse: (response) => response.data,
+      providesTags: ["AdminProduct"],
     }),
     getOrderPageData: builder.query({
-      query:({q , order_status , payment_status , date }) => ({
-        url: "/api/orders/all-orders",
-        method: "GET",
-        params:{q , order_status , payment_status , date}
-      }),
-      transformResponse:(response) => response.data,
-      providesTags:["AdminOrder"]
-    })
+      query: (params) => {
+        const cleanParams = Object.fromEntries(
+          Object.entries(params).filter(
+            ([, value]) =>
+              value !== undefined && value !== "" && value !== null,
+          ),
+        );
+        const hasParams = Object.keys(cleanParams).length > 0;
+        return {
+          url: "/api/orders/all-orders",
+          method: "GET",
+          ...(hasParams && { params: cleanParams }),
+        };
+      },
+      transformResponse: (response) => response.data,
+      providesTags: ["AdminOrder"],
+    }),
   }),
 });
 
-export const { useGetDashboardQuery , useGetProductPageDataQuery , useGetOrderPageDataQuery} = adminApi;
+export const {
+  useGetDashboardQuery,
+  useGetProductPageDataQuery,
+  useGetOrderPageDataQuery,
+} = adminApi;

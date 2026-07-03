@@ -6,7 +6,9 @@ const OrderFilterBar = ({
   handleDraftState,
   handleApplyDraftIntoActive,
   handleApplyFilterIntoUrl,
+  setIsDesktopFilterOpen
 }) => {
+
   const [openDropdown, setOpenDropdown] = useState(null);
 
   const paymentStatuses = ["All", "Paid", "Failed", "Pending"];
@@ -29,6 +31,10 @@ const OrderFilterBar = ({
     { label: "Last 30 Days", value: "last30days" },
   ];
 
+  // const getValueByKey = {
+  //   low_stock:Low Stock
+  // }
+
   const handleToggle = (menuName) => {
     setOpenDropdown(openDropdown === menuName ? null : menuName);
   };
@@ -40,12 +46,14 @@ const OrderFilterBar = ({
       date: "All",
     });
     setOpenDropdown(null);
+    setIsDesktopFilterOpen(false)
   };
 
   const handleApply = () => {
     handleApplyFilterIntoUrl();
     handleApplyDraftIntoActive();
     setOpenDropdown(null);
+    setIsDesktopFilterOpen(false)
   };
 
   return (
@@ -81,6 +89,7 @@ const OrderFilterBar = ({
             <div className="absolute z-50 left-0 right-0 mt-1 bg-white border border-gray-100 rounded-lg shadow-xl p-1.5">
               {orderStatuses.map((status) => {
                 const isSelected = draftState.orderStatus === status;
+                console.log(draftState.orderStatus , status)
                 return (
                   <button
                     key={status}
@@ -123,7 +132,6 @@ const OrderFilterBar = ({
             type="button"
             onClick={() => {
               handleToggle("subCategory");
-              handleDraftState("orderStatus", status);
             }}
             className="flex w-full justify-between items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 rounded-lg shadow-sm text-sm text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-100 transition-all cursor-pointer"
           >

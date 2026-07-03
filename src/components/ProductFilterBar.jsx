@@ -5,33 +5,42 @@ const ProductFilterBar = ({
   draftFilter,
   handleDraftFilterState,
   handleApplyDraftFilter,
-  handleApply
+handleApply,
 }) => {
   const [openDropdown, setOpenDropdown] = useState(null);
 
   const categories = ["All", "Men", "Women", "Kids"];
   const subCategories = ["All", "Topwear", "Bottomwear", "Wintewear"];
- 
+
   const stockOptions = [
     { label: "All", value: null },
     { label: "Low Stock", value: "low_stock" },
     { label: "Out of Stock", value: "out_of_stock" },
   ];
 
+  const mapStockValue = {
+    low_stock: "Low Stock",
+    out_of_stock: "Out of Stock",
+  };
 
   const handleToggle = (menuName) => {
     setOpenDropdown(openDropdown === menuName ? null : menuName);
   };
 
   const handleReset = () => {
+     handleDraftFilterState({
+      orderStatus: "All",
+      paymentStatus: "All",
+      date: "All",
+    });
     setOpenDropdown(null);
   };
 
   const handleApplyFilter = () => {
     handleApplyDraftFilter();
-    handleApply()
+    handleApply();
     setOpenDropdown(null);
-    setIsDesktopFilterOpen(false)
+    setIsDesktopFilterOpen(false);
   };
 
   return (
@@ -67,6 +76,7 @@ const ProductFilterBar = ({
             <div className="absolute z-50 left-0 right-0 mt-1 bg-white border border-gray-100 rounded-lg shadow-xl p-1.5">
               {categories.map((category) => {
                 const isSelected = draftFilter.category === category;
+
                 return (
                   <button
                     key={category}
@@ -130,7 +140,8 @@ const ProductFilterBar = ({
           {openDropdown === "subCategory" && (
             <div className="absolute z-50 left-0 right-0 mt-1 bg-white border border-gray-100 rounded-lg shadow-xl p-1.5">
               {subCategories.map((sub) => {
-                const isSelected = draftFilter.subCategory === sub;
+                const isSelected =
+                  draftFilter.subCategory.toLowerCase() === sub.toLowerCase();
                 return (
                   <button
                     key={sub}
@@ -174,7 +185,9 @@ const ProductFilterBar = ({
             onClick={() => handleToggle("stock")}
             className="flex w-full justify-between items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 rounded-lg shadow-sm text-sm text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-100 transition-all cursor-pointer"
           >
-            <span className="truncate">{draftFilter.stockStatus}</span>
+            <span className="truncate">
+              {mapStockValue[draftFilter.stockStatus]}
+            </span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -194,7 +207,7 @@ const ProductFilterBar = ({
           {openDropdown === "stock" && (
             <div className="absolute z-50 left-0 right-0 mt-1 bg-white border border-gray-100 rounded-lg shadow-xl p-1.5">
               {stockOptions.map((stock) => {
-                const isSelected = draftFilter.stockStatus === stock.label;
+                const isSelected = draftFilter.stockStatus === stock.value;
                 return (
                   <button
                     key={stock}
@@ -205,7 +218,7 @@ const ProductFilterBar = ({
                     }}
                     className={`flex items-center justify-between w-full px-3 py-2 text-sm rounded-lg text-left transition-colors ${isSelected ? "bg-gray-100 font-medium text-gray-900" : "text-gray-700 hover:bg-gray-50"}`}
                   >
-                    <span>{stock.label  }</span>
+                    <span>{stock.label}</span>
                     {isSelected && (
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

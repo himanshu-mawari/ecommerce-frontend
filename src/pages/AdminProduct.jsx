@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CiEdit } from "react-icons/ci";
 import { AiOutlineDelete } from "react-icons/ai";
 import {
@@ -14,6 +14,7 @@ import { useGetProductPageDataQuery } from "../services/AdminService";
 import { Dot } from "lucide-react";
 import useDebounce from "../helpers/useDebounce";
 import EmptySearchState from "../components/EmptySearchState";
+import Pagination from "../components/Pagination";
 
 const AdminProductPage = () => {
   const [stockItems, setStockItems] = useState([
@@ -43,19 +44,22 @@ const AdminProductPage = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isDesktopFilterOpen, setIsDesktopFilterOpen] = useState(false);
+  const currentPage = Number(searchParams.get("page")) || 1;
 
   const [inputValue, setInputValue] = useState("");
+  const capitalize = (str) =>
+    str ? str.charAt(0).toUpperCase() + str.slice(1) : str;
 
   const [draftFilter, setDraftFilter] = useState({
-    category: searchParams.get("category") || "All",
-    subCategory: searchParams.get("subCategory") || "All",
-    stockStatus: searchParams.get("stockStatus") || "All",
+    category: capitalize(searchParams.get("category")) || "All",
+    subCategory: capitalize(searchParams.get("sub_category")) || "All",
+    stockStatus: searchParams.get("stock_status") || "All",
   });
 
   const [activeFilter, setActiveFilter] = useState({
     category: searchParams.get("category") || "",
-    subCategory: searchParams.get("subCategory") || "",
-    stockStatus: searchParams.get("stockStatus") || "",
+    subCategory: searchParams.get("sub_category") || "",
+    stockStatus: searchParams.get("stock_status") || "",
   });
 
   const handleApply = () => {
@@ -65,16 +69,20 @@ const AdminProductPage = () => {
       stock_status: draftFilter.stockStatus,
     };
 
-    const params = Object.fromEntries(
-      Object.entries(filters)
-        .filter(([, value]) => value && value !== "All")
-        .map(([key, value]) => [key, value.toLowerCase()]),
-    );
+    setSearchParams((prev) => {
+      const params = new URLSearchParams(prev);
 
-    setSearchParams(params);
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value && value !== "All") {
+          params.set(key, value.toLowerCase());
+        } else {
+          params.delete(key);
+        }
+      });
+
+      return params;
+    });
   };
-
-  console.log(searchParams.get("category"));
 
   const debounceSearch = useDebounce(inputValue);
 
@@ -83,11 +91,14 @@ const AdminProductPage = () => {
     ...(activeFilter.category && { category: activeFilter.category }),
     ...(activeFilter.subCategory && { sub_category: activeFilter.subCategory }),
     ...(activeFilter.stockStatus && { stock_status: activeFilter.stockStatus }),
+    ...(currentPage !== 1 && { page: currentPage }),
   };
 
   const { data, isLoading } = useGetProductPageDataQuery(queryParams);
-  const { totalCount, totalInStockCount } = data?.metadata ?? 0;
   const displayProductData = data?.data;
+  const { totalPages, pageSize, totalProductCount } = data?.metadata || {};
+  const start = (currentPage - 1) * pageSize + 1;
+  const end = Math.min(currentPage * pageSize, totalProductCount);
 
   const getStatusByValue = (value) => {
     if (value === "Out of Stock")
@@ -125,6 +136,16 @@ const AdminProductPage = () => {
     });
   };
 
+  const goToPage = (page) => {
+    setSearchParams((prev) => {
+      const params = new URLSearchParams(prev);
+      if (page === 1) return;
+
+      params.set("page", page);
+      return params;
+    });
+  };
+
   if (isLoading) {
     return (
       <div>
@@ -133,7 +154,6 @@ const AdminProductPage = () => {
       </div>
     );
   }
-  console.log(activeFilter);
 
   return (
     <div className="max-w-md sm:max-w-full sm:px-12 lg:px-6 mx-auto px-4 py-6 min-h-screen inter">
@@ -151,11 +171,11 @@ const AdminProductPage = () => {
             <div className="flex flex-wrap gap-2">
               <span className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 px-3.5 py-1.5 lg:py-2.5 lg:rounded-xl text-xs md:text-sm font-semibold shadow-sm">
                 <HiOutlineCube className="size-3.5 text-gray-400" />
-                {totalCount} Total
+                {data?.totalProducts} Total
               </span>
               <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-100 bg-emerald-50 px-3.5 py-1.5 lg:py-2.5 lg:rounded-xl text-xs md:text-sm font-semibold text-emerald-700 shadow-sm">
                 <HiOutlineCheckCircle className="size-3.5 text-emerald-500" />
-                {totalInStockCount} In Stock
+                {data?.totalInStockProducts} In Stock
               </span>
             </div>
             <Link to="/admin/products/add">
@@ -245,7 +265,7 @@ const AdminProductPage = () => {
         <div>
           {isDesktopFilterOpen && (
             <ProductFilterBar
-            setIsDesktopFilterOpen={setIsDesktopFilterOpen}
+              setIsDesktopFilterOpen={setIsDesktopFilterOpen}
               draftFilter={draftFilter}
               handleDraftFilterState={handleDraftFilterState}
               handleApplyDraftFilter={handleApplyDraftFilter}
@@ -260,7 +280,6 @@ const AdminProductPage = () => {
                 key={item._id}
                 className="bg-white border border-gray-200 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow"
               >
-                {/* Top Section: Media + Title Details */}
                 <div className="flex gap-4 items-center pb-3">
                   <div className="size-16 shrink-0  overflow-hidden flex items-center justify-center">
                     <img
@@ -276,7 +295,6 @@ const AdminProductPage = () => {
                         {item.name}
                       </h2>
 
-                      {/* Threshold Logic: Add icon if stock is critically low (e.g., < 10) */}
                       <span className="text-base md:text-lg font-bold text-gray-900 tracking-tight">
                         ₹{item.price.toLocaleString("en-IN")}
                       </span>
@@ -346,6 +364,14 @@ const AdminProductPage = () => {
           productName={selectedProduct?.name}
         />
       </div>
+      <Pagination
+        start={start}
+        end={end}
+        totalProductCount={totalProductCount}
+        onPageChange={goToPage}
+        currentPage={currentPage}
+        totalPages={totalPages}
+      />
       {isFilterOpen && (
         <FilterProductBottomSheet
           isOpen={isFilterOpen}

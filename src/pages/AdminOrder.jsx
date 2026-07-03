@@ -7,6 +7,7 @@ import FilterBottomSheet from "../components/FilterBottomSheet";
 import OrderFilterBar from "../components/OrderFilterBar";
 import { useGetOrderPageDataQuery } from "../services/AdminService";
 import useDebounce from "../helpers/useDebounce";
+import Pagination from "../components/Pagination";
 
 const AdminOrderPage = () => {
   const navigate = useNavigate();
@@ -15,10 +16,13 @@ const AdminOrderPage = () => {
   const [inputValue, setInputValue] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
   const debounceSearch = useDebounce(inputValue);
+  const currentPage = Number(searchParams.get("page")) || 1;
+ const capitalize = (str) =>
+    str ? str.charAt(0).toUpperCase() + str.slice(1) : str;
 
   const [draftState, setDraftState] = useState({
-    orderStatus: searchParams.get("order_status") || "All",
-    paymentStatus: searchParams.get("payment_status") || "All",
+    orderStatus: capitalize(searchParams.get("order_status")) || "All",
+    paymentStatus: capitalize(searchParams.get("payment_status")) || "All",
     date: searchParams.get("date") || "All",
   });
   const [activeFilter, setActiveFilter] = useState({
@@ -36,12 +40,16 @@ const AdminOrderPage = () => {
       ? { payment_status: activeFilter.paymentStatus.toLowerCase() }
       : {}),
     ...(activeFilter.date ? { date: activeFilter.date.toLowerCase() } : {}),
+     ...(currentPage !== 1 && { page: currentPage }),
   };
 
   const { data, isLoading } = useGetOrderPageDataQuery(queryParams);
   const pendingOrders = data?.metadata?.totalPendingOrdersCount;
   const cancelledOrders = data?.metadata?.totalCancelledOrdersCount;
   const orders = data?.data || {};
+  const { pageSize, totalOrdersCount, totalPages } = data?.metadata || {};
+  const start = (currentPage - 1) * pageSize + 1 ||  0;
+  const end = Math.min(currentPage * pageSize, totalOrdersCount) || 0;
 
   const handleDateFormat = (mongoDate) => {
     const dateObj = new Date(mongoDate);
@@ -84,6 +92,16 @@ const AdminOrderPage = () => {
     setSearchParams(params);
   };
 
+  const goToPage = (page) => {
+    setSearchParams((prev) => {
+      const params = new URLSearchParams(prev);
+      if (page === 1) return;
+
+      params.set("page", page);
+      return params;
+    });
+  };
+
   if (isLoading)
     return (
       <div>
@@ -91,7 +109,6 @@ const AdminOrderPage = () => {
         inpatience
       </div>
     );
-  console.log(draftState);
   return (
     <div className="px-4 py-6 md:px-10 md:py-8 lg:py-6 lg:px-6 inter max-w-7xl mx-auto space-y-6 md:space-y-8">
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
@@ -219,6 +236,7 @@ const AdminOrderPage = () => {
               handleDraftState={handleDraftState}
               handleApplyDraftIntoActive={handleApplyDraftIntoActive}
               handleApplyFilterIntoUrl={handleApplyFilterIntoUrl}
+              setIsDesktopFilterOpen={setIsDesktopFilterOpen}
             />
           )}
         </div>
@@ -355,6 +373,14 @@ const AdminOrderPage = () => {
           </div>
         </div>
       </div>
+      <Pagination
+        start={start}
+        end={end}
+        totalProductCount={totalOrdersCount}
+        onPageChange={goToPage}
+        currentPage={currentPage}
+        totalPages={totalPages}
+      />
       {isFilterOpen && (
         <FilterBottomSheet
           isOpen={isFilterOpen}
