@@ -14,7 +14,7 @@ const Pagination = ({start , end , totalProductCount , onPageChange , currentPag
         <button
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="p-2 border border-gray-200 rounded-full text-gray-600 transition-all disabled:opacity-30 disabled:cursor-not-allowed hover:bg-gray-50 hover:border-gray-300"
+          className="p-2 border border-gray-200 rounded-full text-gray-600 transition-all disabled:opacity-30 disabled:cursor-not-allowed hover:bg-gray-50 hover:border-gray-300 cursor-pointer"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -37,7 +37,7 @@ const Pagination = ({start , end , totalProductCount , onPageChange , currentPag
             <button
               key={p}
               onClick={() => onPageChange(p)}
-              className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-semibold transition-all duration-200 ${
+              className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-semibold transition-all duration-200 cursor-pointer ${
                 currentPage === p
                   ? "bg-indigo-600 text-white shadow-sm"
                   : "text-gray-600 hover:bg-gray-50 border border-transparent hover:border-gray-200"
@@ -51,7 +51,7 @@ const Pagination = ({start , end , totalProductCount , onPageChange , currentPag
         <button
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className="p-2 border border-gray-200 rounded-full text-gray-600 transition-all disabled:opacity-30 disabled:cursor-not-allowed hover:bg-gray-50 hover:border-gray-300"
+          className="p-2 border border-gray-200 rounded-full text-gray-600 transition-all disabled:opacity-30 disabled:cursor-not-allowed hover:bg-gray-50 hover:border-gray-300 cursor-pointer "
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

@@ -47,6 +47,14 @@ export const adminApi = baseApi.injectEndpoints({
       transformResponse: (response) => response.data,
       providesTags: ["AdminOrder"],
     }),
+    getOrderDetailPageData: builder.query({
+      query: (orderId) => ({
+        url: `/api/orders/${orderId} `,
+        method: "GET",
+      }),
+      transformResponse: (response) => response.data,
+      providesTags: ["AdminOrder"],
+    }),
   }),
 });
 
@@ -54,4 +62,5 @@ export const {
   useGetDashboardQuery,
   useGetProductPageDataQuery,
   useGetOrderPageDataQuery,
+  useGetOrderDetailPageDataQuery,
 } = adminApi;
