@@ -56,11 +56,15 @@ const AdminProductPage = () => {
     stockStatus: searchParams.get("stock_status") || "All",
   });
 
+  console.log("Stock status :" + draftFilter.stockStatus )
+
   const [activeFilter, setActiveFilter] = useState({
     category: searchParams.get("category") || "",
     subCategory: searchParams.get("sub_category") || "",
     stockStatus: searchParams.get("stock_status") || "",
   });
+  // console.log("Active filter stock status value : " + activeFilter.stockStatus)
+
 
   const handleApply = () => {
     const filters = {

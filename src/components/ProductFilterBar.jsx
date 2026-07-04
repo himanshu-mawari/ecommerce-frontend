@@ -7,13 +7,14 @@ const ProductFilterBar = ({
   handleApplyDraftFilter,
 handleApply,
 }) => {
+  console.log("Product filter bar read the draft stock status value :" + draftFilter.stockStatus)
   const [openDropdown, setOpenDropdown] = useState(null);
 
   const categories = ["All", "Men", "Women", "Kids"];
   const subCategories = ["All", "Topwear", "Bottomwear", "Wintewear"];
 
   const stockOptions = [
-    { label: "All", value: null },
+    { label: "All", value: "All" },
     { label: "Low Stock", value: "low_stock" },
     { label: "Out of Stock", value: "out_of_stock" },
   ];
@@ -141,7 +142,7 @@ handleApply,
             <div className="absolute z-50 left-0 right-0 mt-1 bg-white border border-gray-100 rounded-lg shadow-xl p-1.5">
               {subCategories.map((sub) => {
                 const isSelected =
-                  draftFilter.subCategory.toLowerCase() === sub.toLowerCase();
+                  draftFilter.subCategory === sub;
                 return (
                   <button
                     key={sub}
@@ -186,7 +187,8 @@ handleApply,
             className="flex w-full justify-between items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 rounded-lg shadow-sm text-sm text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-100 transition-all cursor-pointer"
           >
             <span className="truncate">
-              {mapStockValue[draftFilter.stockStatus]}
+              {draftFilter.stockStatus === "All" ? draftFilter.stockStatus : mapStockValue[draftFilter.stockStatus]}
+              {/* {console.log(draftFilter.stockStatus === "all")} */}
             </span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -208,9 +210,10 @@ handleApply,
             <div className="absolute z-50 left-0 right-0 mt-1 bg-white border border-gray-100 rounded-lg shadow-xl p-1.5">
               {stockOptions.map((stock) => {
                 const isSelected = draftFilter.stockStatus === stock.value;
+                console.log("what is Selected stored finalise result :" + draftFilter.stockStatus , stock.value)
                 return (
                   <button
-                    key={stock}
+                    key={stock.value}
                     type="button"
                     onClick={() => {
                       handleDraftFilterState("stockStatus", stock.value);
