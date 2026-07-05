@@ -53,7 +53,18 @@ export const adminApi = baseApi.injectEndpoints({
         method: "GET",
       }),
       transformResponse: (response) => response.data,
-      providesTags: ["AdminOrder"],
+      providesTags: ["AdminOrderDetail"],
+    }),
+    changeOrderStatus: builder.mutation({
+      query: ({ orderId, status }) => {
+        console.log(status);
+        return {
+          url: `api/orders/${orderId}/status`,
+          method: "PATCH",
+          body: { status: status },
+        };
+      },
+      invalidatesTags: ["AdminOrderDetail"],
     }),
   }),
 });
@@ -63,4 +74,5 @@ export const {
   useGetProductPageDataQuery,
   useGetOrderPageDataQuery,
   useGetOrderDetailPageDataQuery,
+  useChangeOrderStatusMutation,
 } = adminApi;

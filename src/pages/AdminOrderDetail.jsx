@@ -8,17 +8,31 @@ import {
 } from "react-icons/fi";
 import { CiClock1, CiCircleCheck } from "react-icons/ci";
 import { statusStyles } from "../data/orderDetail";
-import { useGetOrderDetailPageDataQuery } from "../services/AdminService";
+import {
+  useGetOrderDetailPageDataQuery,
+  useChangeOrderStatusMutation,
+} from "../services/AdminService";
 import { useParams } from "react-router-dom";
 import { ORDER_STEPS } from "../helpers/constant";
 
 const AdminOrderDetail = () => {
   const { orderId } = useParams();
   const { data, isLoading } = useGetOrderDetailPageDataQuery(orderId);
-  const { orderId: id, createdAt, status, items: orderItems , subTotal , totalAmount , shippingFee} = data || {};
+  const {
+    orderId: id,
+    createdAt,
+    status,
+    items: orderItems,
+    subTotal,
+    totalAmount,
+    shippingFee,
+  } = data || {};
   const { name, phone, houseNo, street, district, pincode, state } =
     data?.shippingAddress || {};
-  const {method , status:paymentStatus}  = data?.paymentDetails || {};
+  const { method, status: paymentStatus } = data?.paymentDetails || {};
+
+  const [changeOrderStatus, { isLoading: isUpdating }] =
+    useChangeOrderStatusMutation(); // top-level, correct
 
   const handleDateFormat = (mongoDate) => {
     const dateObj = new Date(mongoDate);
@@ -80,6 +94,15 @@ const AdminOrderDetail = () => {
       dateField: "deliveredAt",
     },
     cancelled: { label: "Cancelled", icon: TbCancel, dateField: "cancelledAt" },
+  };
+
+  const handleOrderStatusChange = async (newStatus) => {
+    try {
+      console.log(newStatus);
+      await changeOrderStatus({ orderId, status: newStatus }).unwrap();
+    } catch (err) {
+      console.error("failure :" + err.message);
+    }
   };
 
   if (isLoading) return <h1>hey dev be patient!!😌🫵🏻</h1>;
@@ -157,7 +180,10 @@ const AdminOrderDetail = () => {
             {(nextStep || !["delivered", "cancelled"].includes(status)) && (
               <div className="mt-5 flex flex-wrap md:flex-row-reverse items-center justify-start md:justify-end gap-3">
                 {nextStep && (
-                  <button className="hidden md:inline-flex items-center justify-center px-5 py-2.5 bg-[#0b1329] hover:bg-[#162245] text-white text-sm font-semibold rounded-xl shadow-sm gap-1.5 transition-all active:scale-[0.98]">
+                  <button
+                    className="hidden md:inline-flex items-center justify-center px-5 py-2.5 bg-[#0b1329] hover:bg-[#162245] text-white text-sm font-semibold rounded-xl shadow-sm gap-1.5 transition-all active:scale-[0.98]"
+                    onClick={() => handleOrderStatusChange(nextStep)}
+                  >
                     <span>Mark as {nextStep}</span>
                     <FiChevronRight className="size-4" />
                   </button>
@@ -177,7 +203,9 @@ const AdminOrderDetail = () => {
               <h2 className="text-xs font-bold text-gray-400 uppercase tracking-wider">
                 Payment Summary
               </h2>
-              <span className={`bg-green-100  px-3 py-0.5 rounded-full text-xs font-bold uppercase ${statusStyles[paymentStatus]}`}>
+              <span
+                className={`bg-green-100  px-3 py-0.5 rounded-full text-xs font-bold uppercase ${statusStyles[paymentStatus]}`}
+              >
                 {paymentStatus}
               </span>
             </div>
