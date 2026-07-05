@@ -1,30 +1,35 @@
 import { useState, useEffect } from "react";
 import AdminProductFields from "../components/AdminProductFields";
 import { useParams, useNavigate } from "react-router-dom";
+import { useAddProductMutation } from "../services/AdminService";
 
 const AdminProductForm = () => {
   const initialSizes = [
-    { label: "S", stock: 0 },
-    { label: "M", stock: 0 },
-    { label: "L", stock: 0 },
-    { label: "XL", stock: 0 },
+    { size: "S", stock: 50 },
+    { size: "M", stock: 50 },
+    { size: "L", stock: 50 },
+    { size: "XL", stock: 50 },
+    { size: "XXL", stock: 50 },
   ];
 
   const [form, setForm] = useState({
-    title: "",
-    description: "",
-    price: "",
+    title: "Boys Goal Print Half Sleeve Tee ",
+    description:
+      "Keep your little champion comfortable in this soft cotton tee featuring a bold GOAL graphic print. Perfect for casual wear, playtime, and everyday adventures.",
+    price: "899",
     sizes: initialSizes,
-    category: "men",
-    subCategory: "top",
+    category: "kids",
+    subCategory: "topwear",
+    collectionType: null,
     images: [],
     previews: [],
   });
 
-
   const { productId } = useParams();
   const isEdit = Boolean(productId);
   const navigate = useNavigate();
+
+  const [addProduct] = useAddProductMutation();
 
   const stockItems = [
     {
@@ -70,15 +75,14 @@ const AdminProductForm = () => {
         title: selectedProduct.title,
         description: selectedProduct.description,
         price: selectedProduct.price,
-        sizes: selectedProduct.sizes.map(size => ({...size})),
-        previews:[],
-        images:[selectedProduct.img]
+        sizes: selectedProduct.sizes.map((size) => ({ ...size })),
+        previews: [],
+        images: [selectedProduct.img],
       });
     }
   }, [productId]);
 
   const handleChange = (e) => {
-    
     const { name, value } = e.target;
 
     setForm((prev) => ({
@@ -107,12 +111,48 @@ const AdminProductForm = () => {
 
     setForm((prev) => ({
       ...prev,
-      images: [...prev.images , ...files],
-      previews: [...prev.previews , ...newPreviews]
+      images: [...prev.images, ...files],
+      previews: [...prev.previews, ...newPreviews],
     }));
-
-
   };
+
+  const handleProductAdd = async () => {
+    try {
+      if (!isEdit) {
+        const formData = new FormData();
+
+        formData.append("name", form?.title);
+        formData.append("description", form?.description);
+        formData.append("category", form?.category);
+        formData.append("subCategory", form?.subCategory);
+        formData.append("price", form?.price);
+        if (form?.collectionType) {
+          formData.append("collectionType", form?.collectionType);
+        }
+        formData.append("sizes", JSON.stringify(form?.sizes));
+
+        form?.images.forEach((file, index) =>
+          formData.append(`image${index + 1}`, file),
+        );
+
+        await addProduct(formData).unwrap();
+        setForm({
+          title: "",
+          description: "",
+          price: "",
+          sizes: initialSizes,
+          category: "men",
+          subCategory: "top",
+          images: [],
+          previews: [],
+        });
+      }
+    } catch (err) {
+      console.error("Failure :" + err.message);
+    }
+  };
+
+  console.log(form);
 
   return (
     <div className="max-w-md mx-auto md:max-w-full px-5 md:px-12 lg:px-6 py-6  min-h-screen font-sans pb-32">
@@ -152,7 +192,10 @@ const AdminProductForm = () => {
       />
       <div className="fixed bottom-0 left-0 right-0 p-4 bg-white/80 backdrop-blur-lg border-t border-gray-100 z-50 lg:hidden">
         <div className="max-w-md mx-auto">
-          <button className="w-full bg-black text-white py-4 rounded-2xl font-bold text-md shadow-lg shadow-indigo-100 active:scale-[0.98] transition-all">
+          <button
+            className="w-full bg-indigo-700 text-white py-3.5 rounded-2xl font-bold text-md shadow-lg shadow-indigo-100 active:scale-[0.98] transition-all"
+            onClick={() => handleProductAdd()}
+          >
             Save Product
           </button>
         </div>

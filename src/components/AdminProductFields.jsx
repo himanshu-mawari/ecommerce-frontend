@@ -122,17 +122,17 @@ const AdminProductFields = ({
               {form.sizes.map((size) => (
                 <div
                   className="flex items-center justify-between bg-gray-50 p-2 rounded-xl"
-                  key={size.label}
+                  key={size.size}
                 >
                   <div className="flex items-center justify-center bg-indigo-700 text-white text-[10px] font-bold size-8 rounded-lg uppercase">
-                    {size.label}
+                    {size.size}
                   </div>
                   <input
                     type="number"
                     placeholder="Qty"
                     value={size.stock}
                     onChange={(e) =>
-                      handleStockChange(size.label, e.target.value)
+                      handleStockChange(size.size, e.target.value)
                     }
                     className="w-20 bg-white border border-gray-200 rounded-lg px-2 py-1.5 text-sm text-right focus:outline-none focus:border-indigo-300"
                   />
@@ -154,7 +154,7 @@ const AdminProductFields = ({
                 >
                   <option value="men">Men</option>
                   <option value="women">Women</option>
-                  <option value="kid">Kid</option>
+                  <option value="kids">Kids</option>
                 </select>
               </div>
 

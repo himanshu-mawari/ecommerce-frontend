@@ -49,23 +49,43 @@ export const adminApi = baseApi.injectEndpoints({
     }),
     getOrderDetailPageData: builder.query({
       query: (orderId) => ({
-        url: `/api/orders/${orderId} `,
+        url: `/api/orders/order-detail/${orderId}`,
         method: "GET",
       }),
       transformResponse: (response) => response.data,
       providesTags: ["AdminOrderDetail"],
     }),
     changeOrderStatus: builder.mutation({
-      query: ({ orderId, status }) => {
-        console.log(status);
-        return {
-          url: `api/orders/${orderId}/status`,
-          method: "PATCH",
-          body: { status: status },
-        };
-      },
+      query: ({ orderId, status }) => ({
+        url: `api/orders/${orderId}/status`,
+        method: "PATCH",
+        body: { status: status },
+      }),
       invalidatesTags: ["AdminOrderDetail"],
     }),
+    cancelOrder: builder.mutation({
+      query: ({ orderId }) => {
+        return {
+          url: `api/orders/${orderId}/admin-cancel`,
+          method: "PATCH",
+        };
+      },
+      invalidatesTags: ["AdminOrderDetail", "AdminOrder"],
+    }),
+
+
+    addProduct: builder.mutation({
+      query: (data) => {
+        console.log("inside add product query" , data)
+        return ({
+          url: `api/products/add`,
+          method: "POST",
+          body:data
+        });
+      },
+      providesTags: ["AdminProduct"],
+    }),
+
   }),
 });
 
@@ -75,4 +95,6 @@ export const {
   useGetOrderPageDataQuery,
   useGetOrderDetailPageDataQuery,
   useChangeOrderStatusMutation,
+  useCancelOrderMutation,
+  useAddProductMutation
 } = adminApi;

@@ -7,11 +7,10 @@ const AdminGuard = () => {
   //   return <Navigate to={"/admin/login"} replace />;
   // }
 
-  // if(user && user.role !== "admin"){
-  //   return <Navigate to={"/"} replace />
+  // if (user && user.role !== "admin") {
+  //   return <Navigate to={"/"} replace />;
   // }
 
   return <Outlet />;
 };
-
 export default AdminGuard;

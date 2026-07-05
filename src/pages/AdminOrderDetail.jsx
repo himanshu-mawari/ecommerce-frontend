@@ -11,13 +11,14 @@ import { statusStyles } from "../data/orderDetail";
 import {
   useGetOrderDetailPageDataQuery,
   useChangeOrderStatusMutation,
+  useCancelOrderMutation,
 } from "../services/AdminService";
 import { useParams } from "react-router-dom";
 import { ORDER_STEPS } from "../helpers/constant";
 
 const AdminOrderDetail = () => {
   const { orderId } = useParams();
-  const { data, isLoading } = useGetOrderDetailPageDataQuery(orderId);
+  const { data, isLoading, isError } = useGetOrderDetailPageDataQuery(orderId);
   const {
     orderId: id,
     createdAt,
@@ -31,8 +32,8 @@ const AdminOrderDetail = () => {
     data?.shippingAddress || {};
   const { method, status: paymentStatus } = data?.paymentDetails || {};
 
-  const [changeOrderStatus, { isLoading: isUpdating }] =
-    useChangeOrderStatusMutation(); // top-level, correct
+  const [changeOrderStatus] = useChangeOrderStatusMutation();
+  const [cancelOrder] = useCancelOrderMutation();
 
   const handleDateFormat = (mongoDate) => {
     const dateObj = new Date(mongoDate);
@@ -43,7 +44,8 @@ const AdminOrderDetail = () => {
     });
   };
 
-  const capitalize = (str) => str[0].toUpperCase(0) + str.slice(1);
+  const capitalize = (str) =>
+    str ? str[0].toUpperCase(0) + str.slice(1) : str;
 
   function getNextStep(orderStatus) {
     const currentIndex = ORDER_STEPS.indexOf(orderStatus);
@@ -105,9 +107,21 @@ const AdminOrderDetail = () => {
     }
   };
 
+  const handleCancelOrder = async (newStatus) => {
+    try {
+      console.log(newStatus);
+      await cancelOrder({ orderId, status: newStatus }).unwrap();
+    } catch (err) {
+      console.error("failure :" + err.message);
+    }
+  };
+
   if (isLoading) return <h1>hey dev be patient!!😌🫵🏻</h1>;
+  if (isError || !data) return <h1>Failed to load order.</h1>;
   const nextStep = getNextStep(status);
-  const steps = getTimelineSteps(status);
+  const steps = getTimelineSteps(status, data);
+
+  console.log(data);
   return (
     <div className="max-w-2xl lg:max-w-full mx-auto px-4 sm:px-0 lg:px-6 py-6 pb-24 inter">
       <div className="flex items-center gap-4 sm:gap-0 md:gap-1 w-full">
@@ -190,7 +204,10 @@ const AdminOrderDetail = () => {
                 )}
 
                 {!["delivered", "cancelled"].includes(status) && (
-                  <button className="inline-flex items-center justify-center px-4 py-2.5 border border-gray-200 hover:bg-gray-50 text-gray-700 text-xs font-semibold rounded-xl shadow-sm gap-2 transition-colors">
+                  <button
+                    className="inline-flex items-center justify-center px-4 py-2.5 border border-gray-200 hover:bg-gray-50 text-gray-700 text-xs font-semibold rounded-xl shadow-sm gap-2 transition-colors"
+                    onClick={() => handleCancelOrder("cancelled")}
+                  >
                     <TbCancel className="size-4 text-red-500" />
                     <span>Cancel order</span>
                   </button>
