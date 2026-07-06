@@ -85,10 +85,18 @@ export const adminApi = baseApi.injectEndpoints({
       invalidatesTags: ["AdminProduct"],
     }),
     updateProduct: builder.mutation({
-      query: ({data , productId}) => ({
+      query: ({ data, productId }) => ({
         url: `api/products/edit/${productId}`,
         method: "PATCH",
         body: data,
+      }),
+
+      invalidatesTags: ["AdminProduct"],
+    }),
+    deleteProduct: builder.mutation({
+      query: ({productId}) => ({
+        url: `api/products/remove/${productId}`,
+        method: "DELETE",
       }),
 
       invalidatesTags: ["AdminProduct"],
@@ -105,4 +113,5 @@ export const {
   useCancelOrderMutation,
   useAddProductMutation,
   useUpdateProductMutation,
+  useDeleteProductMutation,
 } = adminApi;
