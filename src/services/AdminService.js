@@ -73,19 +73,26 @@ export const adminApi = baseApi.injectEndpoints({
       invalidatesTags: ["AdminOrderDetail", "AdminOrder"],
     }),
 
-
     addProduct: builder.mutation({
       query: (data) => {
-        console.log("inside add product query" , data)
-        return ({
+        console.log("inside add product query", data);
+        return {
           url: `api/products/add`,
           method: "POST",
-          body:data
-        });
+          body: data,
+        };
       },
-      providesTags: ["AdminProduct"],
+      invalidatesTags: ["AdminProduct"],
     }),
+    updateProduct: builder.mutation({
+      query: ({data , productId}) => ({
+        url: `api/products/edit/${productId}`,
+        method: "PATCH",
+        body: data,
+      }),
 
+      invalidatesTags: ["AdminProduct"],
+    }),
   }),
 });
 
@@ -96,5 +103,6 @@ export const {
   useGetOrderDetailPageDataQuery,
   useChangeOrderStatusMutation,
   useCancelOrderMutation,
-  useAddProductMutation
+  useAddProductMutation,
+  useUpdateProductMutation,
 } = adminApi;

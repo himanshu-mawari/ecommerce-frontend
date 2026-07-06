@@ -6,7 +6,7 @@ const AdminProductFields = ({
   handleStockChange,
   handleImage,
 }) => {
-  console.log(form.previews);
+console.log(form.sizes.map(size => size.size + " : " +size.stock))
   return (
     <div className="inter">
       <div className=" md:grid md:grid-cols-[60%_1fr] md:gap-4 md:items-start">
@@ -54,7 +54,7 @@ const AdminProductFields = ({
                 form.previews[index] ? (
                   <div key={index} className="aspect-square w-full relative">
                     <img
-                      src={form.previews[index]}
+                      src={form.previews[index].url}
                       alt="preview"
                       className="w-full h-full object-cover object-top rounded-xl border border-gray-200"
                     />
