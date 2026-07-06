@@ -6,6 +6,10 @@ import CategorySkeleton from "../components/CollectionSkeleton.jsx";
 const Collection = () => {
   const { category } = useParams();
 
+  const takeCategory = {
+    "shop-all" : "Shop All"
+  }
+
   let filters = {};
 
   if (category === "shop-all") {
@@ -18,7 +22,7 @@ const Collection = () => {
 
   const { data, isLoading, error } = useGetProductsQuery(filters);
 
-  const products = data?.data || [];
+  const products = data?.data || {};
 
   if (isLoading)
     return (
@@ -28,10 +32,14 @@ const Collection = () => {
     );
   if (error) return <p>Error...</p>;
 
+  const capitalizeFirstAlphabet = (str) => {
+    return str[0].toUpperCase() + str.slice(1)
+  }
+
   return (
     <div className="px-4 md:px-8 lg:px-14 xl:px-24 border-t border-gray-300">
       <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-semibold pt-8 pb-8">
-        {category}
+        {category === "shop-all" ? takeCategory[category] :  capitalizeFirstAlphabet(category)  }
       </h1>
 
       <div className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-4 gap-6">
