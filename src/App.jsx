@@ -30,6 +30,7 @@ import AdminProductPage from "./pages/AdminProduct.jsx";
 import AdminProductForm from "./pages/AdminProductForm.jsx";
 import AdminOrder from "./pages/AdminOrder.jsx";
 import AdminOrderDetail from "./pages/AdminOrderDetail.jsx";
+import Aboutus from "./pages/Aboutus.jsx";
 
 const router = createBrowserRouter([
   {
@@ -53,6 +54,7 @@ const router = createBrowserRouter([
       { path: "/order-success/:orderId", element: <OrderSuccess /> },
       { path: "/orders", element: <Order /> },
       { path: "/orders/:orderId", element: <OrderDetail /> },
+      { path: "/about-us", element: <Aboutus /> },
       { path: "*", element: <Error /> },
     ],
   },

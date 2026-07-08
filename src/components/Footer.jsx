@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 const Footer = () => {
   const linkStyle = "relative w-fit cursor-pointer group hover:text-black pb-1";
   const underlineStyle =
@@ -41,8 +42,10 @@ const Footer = () => {
             </h1>
             <ul className="text-sm text-gray-600 flex flex-col gap-2">
               <li className={linkStyle}>
+              <Link to="/about-us">
                 About Us
                 <span className={underlineStyle}></span>
+              </Link>
               </li>
               <li className={linkStyle}>
                 Contact Us
