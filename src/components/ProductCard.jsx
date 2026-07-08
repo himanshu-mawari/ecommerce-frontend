@@ -17,7 +17,7 @@ const ProductCard = ({ data }) => {
         <div className="aspect-3/4 rounded-lg overflow-hidden">
           <img
             src={data.images[0].url}
-            className="w-full h-full object-cover transition-transform duration-300 hover:scale-105 "
+            className="w-full h-full object-cover object-top transition-transform duration-300 hover:scale-105 "
           />
         </div>
         <p className="text-sm pt-4 outfit text-gray-700 line-clamp-1 sm:line-clamp-2">

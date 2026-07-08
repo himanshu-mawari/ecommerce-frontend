@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { assets } from "../assets/assets.js";
 import { NavLink, Link, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   ChevronRight,
   HelpCircle,
@@ -20,9 +20,9 @@ const Navbar = () => {
   const [isDropDowm, setIsDropDown] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const cart = useSelector((store) => store.cart.items);
+  // const cart = useSelector((store) => store.cart.items);
 
-  const { data: cartData = [] , isLoading} = useGetCartQuery();
+  const { data: cartData = [] } = useGetCartQuery();
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -45,6 +45,7 @@ const Navbar = () => {
     dispatch(showToast("Logout successful"));
   };
 
+  
 
   return (
     <>
@@ -72,49 +73,6 @@ const Navbar = () => {
               >
                 {link.label}
               </NavLink>
-              <div>
-                {link.label.toUpperCase() === "WINTERS" ? (
-                  <div className="absolute top-full left-0 pt-2 hidden group-hover:block transition-all duration-300 z-50">
-                    <div className="flex flex-col w-44 bg-white shadow-[0px_15px_50px_rgba(0,0,0,0.15)] rounded-xl border border-gray-100 overflow-hidden animate-fadeIn">
-                      <NavLink
-                        to="/collections/winter-collection/men"
-                        onClick={() => {
-                          setIsOpen(false);
-                        }}
-                        className={({ isActive }) =>
-                          `px-5 py-3 text-sm flex items-center justify-between transition-all duration-200 group/item
-                          ${isActive ? "bg-gray-50 text-black font-semibold" : "text-gray-600 hover:bg-gray-50 hover:text-black"}`
-                        }
-                      >
-                        <span>Men</span>
-                        <span className="text-xs opacity-0 -translate-x-2 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all duration-200">
-                          →
-                        </span>
-                      </NavLink>
-
-                      <div className="h-1px w-[85%] bg-gray-100 mx-auto"></div>
-
-                      <NavLink
-                        to="/collections/winter-collection/women"
-                        onClick={() => {
-                          setIsOpen(false);
-                        }}
-                        className={({ isActive }) =>
-                          `px-5 py-3 text-sm flex items-center justify-between transition-all duration-200 group/item
-                          ${isActive ? "bg-gray-50 text-black font-semibold" : "text-gray-600 hover:bg-gray-50 hover:text-black"}`
-                        }
-                      >
-                        <span>Women</span>
-                        <span className="text-xs opacity-0 -translate-x-2 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all duration-200">
-                          →
-                        </span>
-                      </NavLink>
-                    </div>
-                  </div>
-                ) : (
-                  <div></div>
-                )}
-              </div>
             </li>
           ))}
         </ul>
@@ -334,7 +292,7 @@ const Navbar = () => {
                       viewBox="0 0 24 24"
                       strokeWidth="1.5"
                       stroke="currentColor"
-                      className="size-7" 
+                      className="size-7"
                     >
                       <path
                         strokeLinecap="round"

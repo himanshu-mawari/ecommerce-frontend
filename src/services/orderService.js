@@ -3,7 +3,7 @@ const orderApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     addOrder: builder.mutation({
       query: (orderData) => ({
-        url: "/api/order",
+        url: "/api/orders",
         method: "POST",
         body: orderData,
       }),
@@ -11,7 +11,7 @@ const orderApi = baseApi.injectEndpoints({
     }),
     getSingleOrder: builder.query({
       query: (orderId) => ({
-        url: `/api/order/${orderId}`,
+        url: `/api/orders/${orderId}`,
         method: "GET",
       }),
       transformResponse: (data) => data?.data,
@@ -19,7 +19,7 @@ const orderApi = baseApi.injectEndpoints({
     }),
     getUserOrder: builder.query({
       query: () => ({
-        url: "/api/order/user-orders",
+        url: "/api/orders/user-orders",
         method: "GET",
       }),
       transformResponse: (data) => data?.data,

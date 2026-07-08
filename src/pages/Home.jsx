@@ -39,7 +39,7 @@ const Home = () => {
 
         <div className="grid grid-cols-2 gap-6 sm:grid-cols-4 md:grid-cols-3 xl:grid-cols-4">
           {latest.map((productData) => (
-            <ProductCard key={productData._id} data={productData} />
+          <ProductCard key={productData._id} data={productData} />
           ))}
         </div>
       </div>

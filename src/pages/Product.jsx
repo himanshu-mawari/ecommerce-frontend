@@ -22,7 +22,12 @@ const Product = () => {
   const { data, isLoading } = useGetProductByIdQuery(id);
   const [addToCart] = useAddToCartMutation();
 
-  if (isLoading) return <div><ProductDetailSkeleton /></div>;
+  if (isLoading)
+    return (
+      <div>
+        <ProductDetailSkeleton />
+      </div>
+    );
 
   const activeProduct = data?.data;
   const formatPrice = (price) =>
@@ -50,27 +55,34 @@ const Product = () => {
     setToastMessage("Item added to cart");
     setShowToast(true);
   };
+
   return (
     <div className="border-t border-gray-200  px-3 w-full md:px-10">
-      <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-10">
-        <div className="flex flex-col md:flex-row-reverse gap-4 items-start justify-start">
-          <img
-            src={activeProduct.images[0].url}
-            className="w-full max-w-xs md:max-w-xl lg:max-w-lg xl:max-w-120 rounded-xl object-cover"
-          />
-
-          <div className="flex md:flex-col gap-2">
+      <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 lg:grid-cols-2 gap-10">
+        <div className="flex flex-col md:flex-row-reverse gap-4 items-start justify-start w-full">
+          <div className="w-full max-w-xs md:max-w-xl lg:max-w-lg  xl:max-w-120 lg:h-122.5 xl:h-[460px] overflow-hidden rounded-xl bg-gray-50">
             <img
               src={activeProduct.images[0].url}
-              alt="Thumbnail"
-              className="w-16 md:w-20 rounded-lg border border-gray-200 cursor-pointer hover:border-black"
+              alt="Active Product"
+              className="w-full h-full object-top object-cover"
             />
+          </div>
+
+          {/* Thumbnails Column */}
+          <div className="flex md:flex-col gap-2 shrink-0">
+            <div className="w-16 h-16 md:w-20 md:h-20 overflow-hidden rounded-lg border border-gray-200 cursor-pointer hover:border-black bg-gray-50">
+              <img
+                src={activeProduct.images[0].url}
+                alt="Thumbnail"
+                className="w-full h-full object-cover object-top"
+              />
+            </div>
           </div>
         </div>
 
         <div className="w-full max-w-2xl">
           <div className="pt-4">
-            <h1 className="text-2xl md:text-3xl  font-bold tracking-tight text-gray-900">
+            <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-gray-900">
               {activeProduct.name}
             </h1>
 
@@ -121,7 +133,7 @@ const Product = () => {
             <QuantitySelector quantity={quantity} setQuantity={setQuantity} />
           </div>
 
-          <div className="pt-2 pb-8">
+          <div className="pt-2">
             <button
               className="w-full md:w-md xl:w-full px-10 py-4 text-sm font-bold rounded-lg border text-black hover:bg-black hover:text-white active:scale-[0.98] transition-all uppercase tracking-widest cursor-pointer"
               onClick={() => handleAddProduct()}
@@ -129,12 +141,13 @@ const Product = () => {
               Add to Cart
             </button>
           </div>
-
+        </div>
           <div className="border-b py-3">
             <DescriptionAccordion description={activeProduct.description} />
           </div>
-        </div>
       </div>
+
+
       <div className="max-w-7xl mx-auto px-4 pt-20">
         <RelatedProduct productId={id} />
       </div>

@@ -26,13 +26,13 @@ const DescriptionAccordion = ({ description }) => {
       >
         <div className="overflow-hidden">
           <div className="py-5">
-            <h1 className="outfit font-medium">Product details</h1>
-            <p className="text-sm text-gray-600 pt-2 px-4 leading-relaxed">
+            <h1 className="outfit lg:text-xl font-medium">Product details</h1>
+            <p className="text-sm  text-gray-600 pt-2 px-4 leading-relaxed">
               {description}
             </p>
 
             <div className="py-4">
-              <h1 className="outfit font-medium uppercase tracking-tight">
+              <h1 className="outfit lg:text-xl font-medium uppercase tracking-tight">
                 Little things that matter much
               </h1>
 
