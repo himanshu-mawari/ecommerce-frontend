@@ -31,6 +31,7 @@ import AdminProductForm from "./pages/AdminProductForm.jsx";
 import AdminOrder from "./pages/AdminOrder.jsx";
 import AdminOrderDetail from "./pages/AdminOrderDetail.jsx";
 import Aboutus from "./pages/Aboutus.jsx";
+import Contactus from "./pages/Contactus.jsx";
 
 const router = createBrowserRouter([
   {
@@ -55,6 +56,7 @@ const router = createBrowserRouter([
       { path: "/orders", element: <Order /> },
       { path: "/orders/:orderId", element: <OrderDetail /> },
       { path: "/about-us", element: <Aboutus /> },
+      { path: "/contact-us", element: <Contactus /> },
       { path: "*", element: <Error /> },
     ],
   },
