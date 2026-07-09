@@ -51,6 +51,12 @@ const AddressList = () => {
     navigate("/payment");
   };
 
+  const addressLength = addresses.length || 0
+
+  if(addressLength){
+     navigate("/payment")
+  }
+
   return (
     <div className="max-w-2xl md:max-w-full mx-auto pb-8">
       <div className="sticky top-0 z-10 bg-white border-b border-gray-300 py-4 ml-0 px-5  md:px-8 lg:px-12 xl:px-24 flex gap-4 items-center">

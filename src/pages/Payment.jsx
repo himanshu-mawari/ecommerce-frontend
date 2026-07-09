@@ -14,7 +14,7 @@ const Payment =  () => {
   );
   const [isBagOpen, setIsBagOpen] = useState(false);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
-  const [method, setMethod] = useState();
+  const [method, setMethod] = useState("COD");
 
   const navigate = useNavigate();
   const dispatch = useDispatch();

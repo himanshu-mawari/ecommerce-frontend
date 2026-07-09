@@ -71,20 +71,17 @@ const Cart = () => {
     if (!user) {
       return navigate("/login?redirect=address/saved");
     }
-
-    if (!cartData.items.length) {
-      return <EmptyCart />;
-    }
     navigate("/address/saved");
   };
 
+  console.log("cartdata length :" , cartData.items.length)
   if (!cartData.items.length) {
     return <EmptyCart />;
   }
-
+  console.log(user)
   return (
     <div className="border-t border-gray-300">
-      <div className="max-w-7xl lg:max-w-full mx-auto lg:grid lg:grid-cols-12 lg:gap-28 lg:items-start px-4 md:px-8  lg:px-14 xl:px-28">
+      <div className="max-w-7xl lg:max-w-full mx-auto lg:grid lg:grid-cols-12 lg:gap-20 lg:items-start px-4 md:px-8  lg:px-14 xl:px-28">
         <div className="lg:col-span-8">
           <div className="">
             <div className="bg-white">
@@ -92,7 +89,7 @@ const Cart = () => {
                 <h1 className="text-3xl  font-semibold text-black mb-1">Bag</h1>
                 <div className="flex items-center text-gray-500">
                   <span className="font-medium text-lg lg:text-sm">
-                    {cartData.length} {cartData.length === 1 ? "item" : "items"}
+                    {cartData.items.length} {cartData.items.length === 1 ? "item" : "items"}
                   </span>
                   <span className="text-gray-300 text-lg  mx-2">|</span>
                   <span className="text-black font-semibold text-lg lg:text-sm">
