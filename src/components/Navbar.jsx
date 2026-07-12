@@ -13,6 +13,8 @@ import {
 import { removeUser } from "../store/userSlice.js";
 import { showToast } from "../store/toastSlice";
 import { useGetCartQuery } from "../services/cartService.js";
+import { FiHeart } from "react-icons/fi";
+import { UserRound, ShoppingCart, Search } from "lucide-react";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -45,8 +47,6 @@ const Navbar = () => {
     dispatch(showToast("Logout successful"));
   };
 
-  
-
   return (
     <>
       <div className="max-w-8xl mx-auto px-4 md:px-12 lg:px-14 xl:px-24 h-20 flex items-center justify-between">
@@ -77,24 +77,22 @@ const Navbar = () => {
           ))}
         </ul>
 
-        <div className="flex items-center gap-6">
-          <img
-            src={assets.searchIcon}
-            className="w-5 cursor-pointer active:scale-95  transition-transform"
+        <div className="flex items-center gap-4">
+          <Search
+            className="w-5.5 cursor-pointer active:scale-95  transition-transform"
             onClick={() => setIsSearchOpen(!isSearchOpen)}
-            alt="search toggle"
           />
-
+          <Link to="/wishlist">
+          <FiHeart className="w-5.5 h-5.5 active:scale-95" />
+          </Link>
           <div
-            className="relative  cursor-pointer active:scale-95"
+            className="relative hidden cursor-pointer active:scale-95"
             onMouseEnter={() =>
               window.innerWidth > 768 && setIsDropDown(!isDropDowm)
             }
             onMouseLeave={() => window.innerWidth > 768 && setIsDropDown(false)}
           >
-            <img
-              src={assets.profileIcon}
-              className="w-5"
+            <UserRound
               onClick={(e) => {
                 e.stopPropagation();
                 setIsDropDown(!isDropDowm);

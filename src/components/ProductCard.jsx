@@ -1,9 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FiHeart } from "react-icons/fi";
 import { FaHeart } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
+import {
+  useAddWishlistProductMutation,
+  useGetUserWishlistQuery,
+  useRemoveWishlistProductMutation
+} from "../services/userService";
+
 const ProductCard = ({ data, variant }) => {
-  const [liked, setLiked] = useState(false);
   const formatPrice = (price) =>
     new Intl.NumberFormat("en-IN", {
       style: "currency",
@@ -11,8 +16,41 @@ const ProductCard = ({ data, variant }) => {
       maximumFractionDigits: 0,
     }).format(price);
 
+  const [addWishlistProduct] = useAddWishlistProductMutation();
+  const { data: wishlist, isLoading } = useGetUserWishlistQuery();
+    const [removeWishlistProduct] = useRemoveWishlistProductMutation();
+  
+  let isWishlistProduct = false;
+  if (!isLoading) {
+    isWishlistProduct = wishlist.wishlist.some(
+      (product) => product._id === data._id,
+    );
+  }
+  const [liked, setLiked] = useState(isWishlistProduct || false);
+
+  useEffect(() => {
+    //  // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (!isLoading) {
+      setLiked(isWishlistProduct);
+    }
+  }, [isWishlistProduct, isLoading]);
+
+  const handleWishlist = async (productId) => {
+    try {
+      console.log(productId)
+      if(!isWishlistProduct){
+
+        await addWishlistProduct({ productId });
+      } else {
+        await removeWishlistProduct({productId})
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
   return (
-    <div >
+    <div>
       <div className="aspect-3/4 rounded-lg overflow-hidden">
         <NavLink to={`/product/${data._id}`}>
           <img
@@ -33,7 +71,10 @@ const ProductCard = ({ data, variant }) => {
         ) : (
           <button
             className="mt-1 cursor-pointer"
-            onClick={() => setLiked(!liked)}
+            onClick={() => {
+              setLiked(!liked);
+              handleWishlist(data._id);
+            }}
           >
             {liked ? <FaHeart /> : <FiHeart />}
           </button>

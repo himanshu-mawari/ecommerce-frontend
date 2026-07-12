@@ -7,7 +7,7 @@ export const userApi = baseApi.injectEndpoints({
         url: "api/user/profile",
         method: "GET",
       }),
-      transformResponse: (response) => response.user,
+      transformResponse: (data) => data.user,
       providesTags: ["User"],
     }),
 
@@ -19,7 +19,37 @@ export const userApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["User"],
     }),
+    getUserWishlist: builder.query({
+      query: () => ({
+        url: "api/user/wishlist/items",
+        method: "GET",
+      }),
+      transformResponse: (data) => data.data,
+      providesTags: ["UserWishlist"],
+    }),
+    addWishlistProduct: builder.mutation({
+      query: ({productId}) => ({
+        url: `api/user/wishlist/items`,
+        method: "POST",
+        body: {productId}
+      }),
+      transformResponse: (data) => data.data,
+      invalidatesTags: ["UserWishlist"],
+    }),
+    removeWishlistProduct: builder.mutation({
+      query: ({productId}) => ({
+        url: `api/user/wishlist/items/${productId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["UserWishlist"],
+    }),
   }),
 });
 
-export const { useGetUserProfileQuery, useUpdateUserProfileMutation } = userApi;
+export const {
+  useGetUserProfileQuery,
+  useUpdateUserProfileMutation,
+  useAddWishlistProductMutation,
+  useGetUserWishlistQuery,
+  useRemoveWishlistProductMutation
+} = userApi;
