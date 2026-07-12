@@ -8,7 +8,7 @@ const CategorySkeleton = () => {
         <Skeleton className="h-14 md:h-20 lg:h-24 xl:h-28 w-64 md:w-96 rounded-xl" />
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
           <div key={i} className="space-y-4">
             <Skeleton className="aspect-[3/4] w-full rounded-2xl" />

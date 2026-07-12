@@ -77,7 +77,7 @@ const Navbar = () => {
           ))}
         </ul>
 
-        <div className="flex items-center gap-6  ">
+        <div className="flex items-center gap-6">
           <img
             src={assets.searchIcon}
             className="w-5 cursor-pointer active:scale-95  transition-transform"
@@ -271,19 +271,19 @@ const Navbar = () => {
                 </NavLink>
               );
             })}
-            <div className="mt-auto px-8 py-8 flex flex-col pt-20 gap-6">
-              <div className="flex flex-col gap-6">
+            <div className=" px-8 py-8 flex flex-col mt-10">
+              <div className="flex flex-col gap-5">
                 <NavLink
                   to="/help"
-                  className="flex items-center gap-4 text-xl font-medium"
+                  className="flex items-center gap-3 text-md font-medium"
                 >
-                  <HelpCircle className="w-6 h-6 text-gray-500" />
+                  <HelpCircle className="w-5 h-5 text-gray-500" />
                   <span>Help</span>
                 </NavLink>
 
                 <NavLink
                   to="/cart"
-                  className="flex items-center gap-4 text-xl font-medium"
+                  className="flex items-center gap-3 text-md font-medium"
                 >
                   <div className="relative">
                     <svg
@@ -292,7 +292,7 @@ const Navbar = () => {
                       viewBox="0 0 24 24"
                       strokeWidth="1.5"
                       stroke="currentColor"
-                      className="size-7"
+                      className="size-5 text-gray-500"
                     >
                       <path
                         strokeLinecap="round"
@@ -301,7 +301,7 @@ const Navbar = () => {
                       />
                     </svg>
 
-                    <p className="absolute -top-1 -right-1 bg-black text-[9px] flex items-center justify-center text-white rounded-full w-4 h-4">
+                    <p className="absolute -top-1 -right-1 bg-black text-[8px] flex items-center justify-center text-white rounded-full w-3 h-3">
                       1
                     </p>
                   </div>
@@ -309,26 +309,26 @@ const Navbar = () => {
                   <span>Bag</span>
                 </NavLink>
                 <NavLink
-                  to="/favourites"
-                  className="flex items-center gap-4 text-xl font-medium"
+                  to="/wishlist"
+                  className="flex items-center gap-3 text-md font-medium"
                 >
-                  <Heart className="w-6 h-6 text-gray-500" />
+                  <Heart className="w-5 h-5 text-gray-500" />
                   <span>Favourites</span>
                 </NavLink>
 
                 <NavLink
                   to="/orders"
-                  className="flex items-center gap-4 text-xl font-medium"
+                  className="flex items-center gap-3 text-md font-medium"
                 >
-                  <Package className="w-6 h-6 text-gray-500" />
+                  <Package className="w-5 h-5 text-gray-500" />
                   <span>Orders</span>
                 </NavLink>
 
                 <button
-                  className="flex items-center gap-4 text-xl font-medium mt-2"
+                  className="flex items-center gap-3 text-md font-medium"
                   onClick={handleLogout}
                 >
-                  <LogOut className="w-6 h-6 text-gray-500" />
+                  <LogOut className="w-5 h-5 text-gray-500" />
                   <span>Logout</span>
                 </button>
               </div>

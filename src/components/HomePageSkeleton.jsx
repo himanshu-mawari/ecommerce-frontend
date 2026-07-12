@@ -23,7 +23,7 @@ const HomePageSkeleton = () => {
           <Skeleton className="h-4 w-3/4 md:w-1/2 mt-4 mb-10 md:mb-12 rounded" />
 
           {/* Product Grid */}
-          <div className="grid grid-cols-2 gap-6 sm:grid-cols-4 md:grid-cols-3 xl:grid-cols-4 w-full">
+          <div className="grid grid-cols-2 gap-6 sm:grid-cols-4 md:grid-cols-3 xl:grid-cols-3 w-full">
             {Array.from({ length: 4 }).map((_, i) => (
               <div key={i} className="flex flex-col gap-2">
                 <Skeleton className="aspect-[3/4] w-full rounded-md" />

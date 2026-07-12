@@ -67,6 +67,10 @@ const Payment =  () => {
     }
   };
 
+  if(!cartData.items.length){
+    navigate("/checkout")
+  }
+
   return (
     <div className="min-h-screen bg-gray-50/50">
       <div className="sticky top-0 z-10 bg-white border-b border-gray-300 py-4 ml-0 px-5  md:px-8 lg:px-12 xl:px-24 flex gap-4 items-center">
