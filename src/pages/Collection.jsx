@@ -1,10 +1,12 @@
 import ProductCard from "../components/ProductCard";
-import { useParams } from "react-router-dom";
+import { useParams , useSearchParams } from "react-router-dom";
 import { useGetProductsQuery } from "../services/productService.js";
 import CategorySkeleton from "../components/CollectionSkeleton.jsx";
 
 const Collection = () => {
   const { category } = useParams();
+  const [searchParams , setSearchParams] = useSearchParams();
+  console.log("Collection read the url value : q = " + searchParams.get("q"))
 
   const takeCategory = {
     "shop-all" : "Shop All"

@@ -38,7 +38,7 @@ const Navbar = () => {
   ];
 
   const handleSearch = (searchTerm) => {
-    navigate(`/collections/shop-all?search=${searchTerm}`);
+    navigate(`/collections/shop-all?q=${searchTerm}`);
   };
 
   const handleLogout = async () => {
@@ -80,7 +80,9 @@ const Navbar = () => {
         <div className="flex items-center gap-4">
           <Search
             className="w-5.5 cursor-pointer active:scale-95  transition-transform"
-            onClick={() => setIsSearchOpen(!isSearchOpen)}
+            onClick={() => {setIsSearchOpen(!isSearchOpen)
+              navigate("/collections/shop-all")
+            }}
           />
           <Link to="/wishlist">
           <FiHeart className="w-5.5 h-5.5 active:scale-95" />

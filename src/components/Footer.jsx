@@ -7,7 +7,7 @@ const Footer = () => {
   return (
     <div>
       <div className="pt-20 pb-10  px-7 md:px-24 lg:px-28">
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 xl:pb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-8 xl:pb-10">
           <div>
             <h1 className="monteserrat font-medium text-3xl tracking-tighter flex items-end">
               FOREVER

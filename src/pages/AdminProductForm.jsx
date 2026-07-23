@@ -28,6 +28,8 @@ const AdminProductForm = () => {
     previews: [],
   });
 
+  console.log(form.previews)
+
   const { productId } = useParams();
   const isEdit = Boolean(productId);
   const navigate = useNavigate();
@@ -172,6 +174,7 @@ const AdminProductForm = () => {
         handleChange={handleChange}
         handleStockChange={handleStockChange}
         handleImage={handleImage}
+        isEdit={isEdit}
       />
       <div className="fixed bottom-0 left-0 right-0 p-4 bg-white/80 backdrop-blur-lg border-t border-gray-100 z-50 lg:hidden">
         <div className="max-w-md mx-auto">
