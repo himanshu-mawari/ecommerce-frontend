@@ -5,7 +5,6 @@ const AdminProductFields = ({
   handleChange,
   handleStockChange,
   handleImage,
-  isEdit
 }) => {
   console.log(form)
   return (

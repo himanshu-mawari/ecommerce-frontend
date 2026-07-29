@@ -22,7 +22,7 @@ const Navbar = () => {
   const [isDropDowm, setIsDropDown] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  // const cart = useSelector((store) => store.cart.items);
+      // const cart = useSelector((store) => store.cart.items)
 
   const { data: cartData = [] } = useGetCartQuery();
 
@@ -80,12 +80,13 @@ const Navbar = () => {
         <div className="flex items-center gap-4">
           <Search
             className="w-5.5 cursor-pointer active:scale-95  transition-transform"
-            onClick={() => {setIsSearchOpen(!isSearchOpen)
-              navigate("/collections/shop-all")
+            onClick={() => {
+              setIsSearchOpen(!isSearchOpen);
+              navigate("/collections/shop-all");
             }}
           />
           <Link to="/wishlist">
-          <FiHeart className="w-5.5 h-5.5 active:scale-95" />
+            <FiHeart className="w-5.5 h-5.5 active:scale-95" />
           </Link>
           <div
             className="relative hidden cursor-pointer active:scale-95"

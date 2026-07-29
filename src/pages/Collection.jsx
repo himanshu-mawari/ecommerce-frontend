@@ -1,20 +1,26 @@
 import ProductCard from "../components/ProductCard";
-import { useParams , useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useGetProductsQuery } from "../services/productService.js";
 import CategorySkeleton from "../components/CollectionSkeleton.jsx";
+import useDebounce from "../helpers/useDebounce.js";
 
 const Collection = () => {
   const { category } = useParams();
-  const [searchParams , setSearchParams] = useSearchParams();
-  console.log("Collection read the url value : q = " + searchParams.get("q"))
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchText = searchParams.get("q");
+
+  const debounceSearch = useDebounce(searchText);
 
   const takeCategory = {
-    "shop-all" : "Shop All"
-  }
+    "shop-all": "Shop All",
+  };
 
   let filters = {};
+  if (debounceSearch) {
+    filters.debounceSearch = debounceSearch;
+  }
 
-  if (category === "shop-all") {
+  else if (category === "shop-all") {
     filters = {};
   } else if (["men", "women", "kids"].includes(category)) {
     filters.category = category;
@@ -24,7 +30,9 @@ const Collection = () => {
 
   const { data, isLoading, error } = useGetProductsQuery(filters);
 
+  
   const products = data?.data || {};
+  console.log(products)
 
   if (isLoading)
     return (
@@ -35,13 +43,15 @@ const Collection = () => {
   if (error) return <p>Error...</p>;
 
   const capitalizeFirstAlphabet = (str) => {
-    return str[0].toUpperCase() + str.slice(1)
-  }
+    return str[0].toUpperCase() + str.slice(1);
+  };
 
   return (
     <div className="px-4 md:px-8 lg:px-14 xl:px-24 border-t border-gray-300">
       <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-semibold pt-8 pb-8">
-        {category === "shop-all" ? takeCategory[category] :  capitalizeFirstAlphabet(category)  }
+        {category === "shop-all"
+          ? takeCategory[category]
+          : capitalizeFirstAlphabet(category)}
       </h1>
 
       <div className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-6">
