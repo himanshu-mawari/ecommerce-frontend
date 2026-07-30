@@ -3,6 +3,7 @@ import { useParams, useSearchParams } from "react-router-dom";
 import { useGetProductsQuery } from "../services/productService.js";
 import CategorySkeleton from "../components/CollectionSkeleton.jsx";
 import useDebounce from "../helpers/useDebounce.js";
+import EmptySearchState from "../components/EmptySearchState.jsx";
 
 const Collection = () => {
   const { category } = useParams();
@@ -18,9 +19,7 @@ const Collection = () => {
   let filters = {};
   if (debounceSearch) {
     filters.debounceSearch = debounceSearch;
-  }
-
-  else if (category === "shop-all") {
+  } else if (category === "shop-all") {
     filters = {};
   } else if (["men", "women", "kids"].includes(category)) {
     filters.category = category;
@@ -30,9 +29,8 @@ const Collection = () => {
 
   const { data, isLoading, error } = useGetProductsQuery(filters);
 
-  
   const products = data?.data || {};
-  console.log(products)
+  console.log(products);
 
   if (isLoading)
     return (
@@ -45,6 +43,14 @@ const Collection = () => {
   const capitalizeFirstAlphabet = (str) => {
     return str[0].toUpperCase() + str.slice(1);
   };
+
+  if (!products.length) {
+    return (
+      <div className="my-36 md:my-44">
+        <EmptySearchState value={debounceSearch} />
+      </div>
+    );
+  }
 
   return (
     <div className="px-4 md:px-8 lg:px-14 xl:px-24 border-t border-gray-300">
