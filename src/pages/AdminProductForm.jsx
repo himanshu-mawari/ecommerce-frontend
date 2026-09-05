@@ -98,7 +98,6 @@ const AdminProductForm = () => {
   };
 
   const handleProductAdd = async () => {
-    console.log("form state : " ,form)
     const formData = new FormData();
     
     formData.append("name", form?.title);
@@ -119,7 +118,6 @@ const AdminProductForm = () => {
     if (isEdit) {
       await updateProduct({ data: formData, productId }).unwrap();
       } else {
-        console.log("form state : " ,form)
         await addProduct(formData).unwrap();
         setForm({
           title: "",

@@ -100,7 +100,6 @@ const AdminOrderDetail = () => {
 
   const handleOrderStatusChange = async (newStatus) => {
     try {
-      console.log(newStatus);
       await changeOrderStatus({ orderId, status: newStatus }).unwrap();
     } catch (err) {
       console.error("failure :" + err.message);
@@ -109,7 +108,6 @@ const AdminOrderDetail = () => {
 
   const handleCancelOrder = async (newStatus) => {
     try {
-      console.log(newStatus);
       await cancelOrder({ orderId, status: newStatus }).unwrap();
     } catch (err) {
       console.error("failure :" + err.message);
@@ -121,7 +119,6 @@ const AdminOrderDetail = () => {
   const nextStep = getNextStep(status);
   const steps = getTimelineSteps(status, data);
 
-  console.log(data);
   return (
     <div className="max-w-2xl lg:max-w-full mx-auto px-4 sm:px-0 lg:px-6 py-6 pb-24 inter">
       <div className="flex items-center gap-4 sm:gap-0 md:gap-1 w-full">

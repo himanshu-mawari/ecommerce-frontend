@@ -26,7 +26,6 @@ const AdminLogin = () => {
 
     try {
       const res = await login({ email, password }).unwrap();
-      console.log(res.data)
       if (res.data.role === "admin") {
         dispatch(addUser(res?.data))
         dispatch(showToast("Admin login successful"));

@@ -7,7 +7,6 @@ const ProductFilterBar = ({
   handleApplyDraftFilter,
 handleApply,
 }) => {
-  console.log("Product filter bar read the draft stock status value :" + draftFilter.stockStatus)
   const [openDropdown, setOpenDropdown] = useState(null);
 
   const categories = ["All", "Men", "Women", "Kids"];
@@ -188,7 +187,6 @@ handleApply,
           >
             <span className="truncate">
               {draftFilter.stockStatus === "All" ? draftFilter.stockStatus : mapStockValue[draftFilter.stockStatus]}
-              {/* {console.log(draftFilter.stockStatus === "all")} */}
             </span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -210,7 +208,6 @@ handleApply,
             <div className="absolute z-50 left-0 right-0 mt-1 bg-white border border-gray-100 rounded-lg shadow-xl p-1.5">
               {stockOptions.map((stock) => {
                 const isSelected = draftFilter.stockStatus === stock.value;
-                console.log("what is Selected stored finalise result :" + draftFilter.stockStatus , stock.value)
                 return (
                   <button
                     key={stock.value}

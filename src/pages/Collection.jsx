@@ -30,7 +30,6 @@ const Collection = () => {
   const { data, isLoading, error } = useGetProductsQuery(filters);
 
   const products = data?.data || {};
-  console.log(products);
 
   if (isLoading)
     return (

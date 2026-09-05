@@ -89,7 +89,6 @@ const OrderFilterBar = ({
             <div className="absolute z-50 left-0 right-0 mt-1 bg-white border border-gray-100 rounded-lg shadow-xl p-1.5">
               {orderStatuses.map((status) => {
                 const isSelected = draftState.orderStatus === status;
-                console.log(draftState.orderStatus , status)
                 return (
                   <button
                     key={status}

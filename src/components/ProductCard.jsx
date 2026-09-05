@@ -40,7 +40,6 @@ const ProductCard = ({ data, variant }) => {
 
   const handleWishlist = async (productId) => {
     try {
-      console.log(productId);
       if (!isWishlistProduct) {
         await addWishlistProduct({ productId });
       } else {

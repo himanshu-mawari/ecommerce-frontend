@@ -10,7 +10,6 @@ const FilterRow = () => {
   };
 
   const handleApply = () => {
-    console.log("Applying filters:", { status, payment });
   };
 
   return (

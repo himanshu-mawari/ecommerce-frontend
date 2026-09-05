@@ -75,7 +75,6 @@ export const adminApi = baseApi.injectEndpoints({
 
     addProduct: builder.mutation({
       query: (data) => {
-        console.log("inside add product query", data);
         return {
           url: `api/products/add`,
           method: "POST",

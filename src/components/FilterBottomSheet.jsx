@@ -113,7 +113,6 @@ const FilterBottomSheet = ({
                     const isSelected =
                       draftState.paymentStatus.toLowerCase() ===
                       status.toLowerCase();
-                    console.log(isSelected);
                     return (
                       <button
                         onClick={() => {

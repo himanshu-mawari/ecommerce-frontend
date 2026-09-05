@@ -88,7 +88,6 @@ const AdminDashboard = () => {
       </div>
     );
 
-  console.log(lowStockProducts.map((product) => product.affectedSizes));
 
   return (
     <div className="px-4 py-6 sm:px-12 lg:px-6  min-h-screen space-y-6 pb-10 ">
@@ -243,7 +242,6 @@ const AdminDashboard = () => {
             </div>
             <div className="p-4 space-y-4">
               {lowStockProducts.map((item) => {
-                console.log(item);
                 const { stock, size } = item?.affectedSizes[0] || "none";
 
                 return (

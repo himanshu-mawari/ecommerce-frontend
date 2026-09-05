@@ -60,7 +60,7 @@ const Payment =  () => {
         dispatch(showToast("Order created successfully"))
         navigate(`/order-success/${data.data._id}`);
       } else {
-        console.log("Online payment flow");
+        console.error("Online payment flow");
       }
     } catch (err) {
       console.error(err);
