@@ -1,9 +1,9 @@
 import { useLocation, Navigate } from "react-router-dom";
-import { useGetUserProfileQuery } from "../services/userService.js";
+import useAuth from "../hooks/useAuth";
 
 const AuthGuard = ({ children }) => {
-  const { data: user, isLoading, isError } = useGetUserProfileQuery();
   const location = useLocation();
+  const {isLoading , user , isError} = useAuth();
 
   if (isLoading) return <div>Loading.....</div>;
   if (!user || isError) {

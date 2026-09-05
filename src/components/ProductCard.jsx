@@ -5,8 +5,9 @@ import { NavLink } from "react-router-dom";
 import {
   useAddWishlistProductMutation,
   useGetUserWishlistQuery,
-  useRemoveWishlistProductMutation
+  useRemoveWishlistProductMutation,
 } from "../services/userService";
+import useAuth from "../hooks/useAuth";
 
 const ProductCard = ({ data, variant }) => {
   const formatPrice = (price) =>
@@ -16,20 +17,22 @@ const ProductCard = ({ data, variant }) => {
       maximumFractionDigits: 0,
     }).format(price);
 
+  const { isAuthenticated } = useAuth();
   const [addWishlistProduct] = useAddWishlistProductMutation();
-  const { data: wishlist, isLoading } = useGetUserWishlistQuery();
-    const [removeWishlistProduct] = useRemoveWishlistProductMutation();
-  
+  const { data: wishlist, isLoading } = useGetUserWishlistQuery(undefined, {
+    skip: !isAuthenticated,
+  });
+  const [removeWishlistProduct] = useRemoveWishlistProductMutation();
+
   let isWishlistProduct = false;
   if (!isLoading) {
-    isWishlistProduct = wishlist.wishlist.some(
-      (product) => product._id === data._id,
-    );
+    isWishlistProduct =
+      wishlist?.wishlist?.some((product) => product._id === data._id) ?? false;
   }
   const [liked, setLiked] = useState(isWishlistProduct || false);
 
   useEffect(() => {
-    //  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     if (!isLoading) {
       setLiked(isWishlistProduct);
     }
@@ -37,12 +40,11 @@ const ProductCard = ({ data, variant }) => {
 
   const handleWishlist = async (productId) => {
     try {
-      console.log(productId)
-      if(!isWishlistProduct){
-
+      console.log(productId);
+      if (!isWishlistProduct) {
         await addWishlistProduct({ productId });
       } else {
-        await removeWishlistProduct({productId})
+        await removeWishlistProduct({ productId });
       }
     } catch (err) {
       console.error(err.message);

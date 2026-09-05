@@ -20,7 +20,6 @@ import Error from "./components/Error.jsx";
 import SignUp from "./pages/SignUp.jsx";
 import { hideToast } from "./store/toastSlice";
 import Toast from "./components/Toast.jsx";
-import { useGetUserProfileQuery } from "./services/userService";
 import AddressGuard from "./components/AddressGuard.jsx";
 import AdminLayout from "./Layouts/AdminLayout.jsx";
 import AdminLogin from "./components/AdminLogin.jsx";
@@ -50,7 +49,14 @@ const router = createBrowserRouter([
           </AuthGuard>
         ),
       },
-      { path: "/checkout", element: <Cart /> },
+      {
+        path: "/checkout",
+        element: (
+          <AuthGuard>
+            <Cart />
+          </AuthGuard>
+        ),
+      },
       { path: "/login", element: <Login /> },
       { path: "/signup", element: <SignUp /> },
       { path: "/order-success/:orderId", element: <OrderSuccess /> },
@@ -58,7 +64,14 @@ const router = createBrowserRouter([
       { path: "/orders/:orderId", element: <OrderDetail /> },
       { path: "/about-us", element: <Aboutus /> },
       { path: "/contact-us", element: <Contactus /> },
-      {path: "/wishlist" , element: <Wishlist />},
+      {
+        path: "/wishlist",
+        element: (
+          <AuthGuard>
+            <Wishlist />
+          </AuthGuard>
+        ),
+      },
       { path: "*", element: <Error /> },
     ],
   },
@@ -128,7 +141,7 @@ const router = createBrowserRouter([
 const App = () => {
   const dispatch = useDispatch();
   const { message, isVisible } = useSelector((store) => store.toast);
-  useGetUserProfileQuery();
+  
 
   return (
     <>

@@ -1,13 +1,10 @@
 import Hero from "../components/Hero.jsx";
 import ProductCard from "../components/ProductCard.jsx";
 import { assets } from "../assets/assets.js";
-import { useGetUserProfileQuery } from "../services/userService.js";
 import { useGetHomeProductsQuery } from "../services/productService.js";
 import HomePageSkeleton from "../components/HomePageSkeleton.jsx";
 
 const Home = () => {
-   useGetUserProfileQuery();
-
   const { data: homeData, isLoading } = useGetHomeProductsQuery();
 
   if (isLoading || !homeData?.data) return <HomePageSkeleton />;
@@ -20,7 +17,7 @@ const Home = () => {
       </div>
 
       <div className="flex flex-col items-center mt-14">
-      <div className="flex flex-col md:flex-row md:items-center md:pb-3 lg:justify-center">
+        <div className="flex flex-col md:flex-row md:items-center md:pb-3 lg:justify-center">
           <h1 className="text-4xl md:text-3xl lg:text-5xl text-gray-500 mr-2 text-center md:font-medium tracking-wide">
             LATEST
           </h1>
@@ -39,7 +36,7 @@ const Home = () => {
 
         <div className="grid grid-cols-2 gap-6 sm:grid-cols-4 md:grid-cols-3 xl:grid-cols-3">
           {latest.map((productData) => (
-          <ProductCard key={productData._id} data={productData} />
+            <ProductCard key={productData._id} data={productData} />
           ))}
         </div>
       </div>

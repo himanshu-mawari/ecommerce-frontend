@@ -12,8 +12,8 @@ import InputField from "../components/InputField";
 import { Link } from "react-router-dom";
 import Toast from "../components/Toast.jsx";
 import { useNavigate } from "react-router-dom";
-import { useGetUserProfileQuery } from "../services/userService.js";
 import { useGetAllAddressesQuery } from "../services/AddressService.js";
+import useAuth from "../hooks/useAuth.js";
 import { useGetUserOrderQuery } from "../services/orderService.js";
 import { useLogoutMutation } from "../services/authService.js";
 import { useUpdateUserProfileMutation } from "../services/userService.js";
@@ -24,7 +24,7 @@ const ProfilePage = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const navigate = useNavigate();
 
-  const { data: user, isLoading } = useGetUserProfileQuery();
+  const { user , isLoading } = useAuth();
   const { data: addresses, isLoading: addressLoading } =
     useGetAllAddressesQuery();
   const { data: orders, isLoading: orderLoading } = useGetUserOrderQuery();
@@ -67,9 +67,13 @@ const ProfilePage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = {name:formData.name, phone:formData.phone, email:formData.email}
+    const data = {
+      name: formData.name,
+      phone: formData.phone,
+      email: formData.email,
+    };
     await updateUserProfile(data);
-    dispatch(showToast("Profile update successfully"))
+    dispatch(showToast("Profile update successfully"));
     setIsEditOpen(false);
   };
 
@@ -190,7 +194,7 @@ const ProfilePage = () => {
                 >
                   <div className="flex items-center gap-4">
                     <Link
-                      to={`/orders/${order._id}`}
+                      to={`/orders/${order.orderId}`}
                       className="flex items-center justify-center gap-3"
                     >
                       <div className="w-16 h-16 bg-gray-100 rounded-xl overflow-hidden ">
@@ -206,7 +210,7 @@ const ProfilePage = () => {
                       </div>
                       <div>
                         <p className="text-sm font-bold line-clamp-1 md:w-auto">
-                          {order._id}
+                          ORD-{order.orderId}
                         </p>
                         <p className="text-xs text-gray-500">
                           ₹ {order.totalAmount}

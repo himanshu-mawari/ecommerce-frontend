@@ -6,16 +6,17 @@ import {
   useUpdateCartMutation,
   useRemoveCartItemMutation,
 } from "../services/cartService.js";
-import { useGetUserProfileQuery } from "../services/userService.js";
 import CheckoutSkeleton from "../components/CheckoutSkeleton.jsx";
+import useAuth from "../hooks/useAuth.js";
+
 const Cart = () => {
   const [localQuantity, setLocalQuantity] = useState([]);
+  const {isAuthenticated , user} = useAuth();
 
   const navigate = useNavigate();
 
-  const { data: user } = useGetUserProfileQuery();
 
-  const { data: cartData = [], isLoading } = useGetCartQuery();
+  const { data: cartData = [], isLoading } = useGetCartQuery(undefined , {skip: !isAuthenticated});
   const [removeCartItem] = useRemoveCartItemMutation();
   const [updateCart] = useUpdateCartMutation();
 
@@ -74,11 +75,9 @@ const Cart = () => {
     navigate("/address/saved");
   };
 
-  console.log("cartdata length :" , cartData.items.length)
   if (!cartData.items.length) {
     return <EmptyCart />;
   }
-  console.log(user)
   return (
     <div className="border-t border-gray-300">
       <div className="max-w-7xl lg:max-w-full mx-auto lg:grid lg:grid-cols-12 lg:gap-20 lg:items-start px-4 md:px-8  lg:px-14 xl:px-28">

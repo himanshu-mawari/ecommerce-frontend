@@ -5,23 +5,27 @@ import {
   useRemoveWishlistProductMutation,
 } from "../services/userService";
 import EmptyWishlist from "../components/EmptyWishlist";
+import useAuth from "../hooks/useAuth";
 
 const Wishlist = () => {
-  const { data: wishlist, isLoading } = useGetUserWishlistQuery();
+  const { isAuthenticated } = useAuth();
+  const { data: wishlist, isLoading } = useGetUserWishlistQuery(undefined, {
+    skip: !isAuthenticated,
+  });
   const [removeWishlistProduct] = useRemoveWishlistProductMutation();
 
   if (isLoading) {
     return <div>hey dev be patient , nature reward only to patient person</div>;
   }
-  const wishlistData = wishlist.wishlist;
+  const wishlistData = wishlist?.wishlist;
 
-  if (!wishlistData) {
+  if (!wishlistData || !wishlistData.length) {
     return <EmptyWishlist />;
   }
 
   const handleRemoveWishlist = async (productId) => {
     try {
-      await removeWishlistProduct({productId});
+      await removeWishlistProduct({ productId });
     } catch (err) {
       console.error(err.message);
     }
