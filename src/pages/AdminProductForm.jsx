@@ -21,14 +21,13 @@ const AdminProductForm = () => {
     description: "",
     price: "",
     sizes: initialSizes,
-    category: "",
-    subCategory: "",
+    category: "men",
+    subCategory: "topwear",
     collectionType: null,
     images: [],
     previews: [],
   });
 
-  console.log(form.previews)
 
   const { productId } = useParams();
   const isEdit = Boolean(productId);
@@ -99,8 +98,9 @@ const AdminProductForm = () => {
   };
 
   const handleProductAdd = async () => {
+    console.log("form state : " ,form)
     const formData = new FormData();
-
+    
     formData.append("name", form?.title);
     formData.append("description", form?.description);
     formData.append("category", form?.category);
@@ -110,16 +110,16 @@ const AdminProductForm = () => {
       formData.append("collectionType", form?.collectionType);
     }
     formData.append("sizes", JSON.stringify(form?.sizes));
-
+    
     form?.images.forEach((file, index) =>
       formData.append(`image${index + 1}`, file),
-    );
+  );
 
-    try {
-      if (isEdit) {
-        console.log(productId)
-        await updateProduct({ data: formData, productId }).unwrap();
+  try {
+    if (isEdit) {
+      await updateProduct({ data: formData, productId }).unwrap();
       } else {
+        console.log("form state : " ,form)
         await addProduct(formData).unwrap();
         setForm({
           title: "",
@@ -138,6 +138,7 @@ const AdminProductForm = () => {
   };
 
   if (isLoading) return <div>be patient</div>;
+
 
   return (
     <div className="max-w-md mx-auto md:max-w-full px-5 md:px-12 lg:px-6 py-6  min-h-screen font-sans pb-32">

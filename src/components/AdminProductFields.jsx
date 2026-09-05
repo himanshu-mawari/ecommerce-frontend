@@ -6,7 +6,6 @@ const AdminProductFields = ({
   handleStockChange,
   handleImage,
 }) => {
-  console.log(form)
   return (
     <div className="inter">
       <div className=" md:grid md:grid-cols-[60%_1fr] md:gap-4 md:items-start">
@@ -166,9 +165,9 @@ const AdminProductFields = ({
                   value={form.subCategory}
                   onChange={handleChange}
                 >
-                  <option value="top">Top Wear</option>
-                  <option value="bottom">Bottom Wear</option>
-                  <option value="winter">Winter Wear</option>
+                  <option value="topwear">Top Wear</option>
+                  <option value="bottomwear">Bottom Wear</option>
+                  <option value="winterwear">Winter Wear</option>
                 </select>
               </div>
             </div>
