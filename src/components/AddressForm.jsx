@@ -1,15 +1,13 @@
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { deleteAddress } from "../store/addressSlice.js";
 import InputField from "./InputField.jsx";
 
 const AddressForm = ({ form, handleChange, error, onSubmit, isEdit }) => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleRemove = () => {
-    dispatch(deleteAddress(form.id));
-    navigate("/address/saved");
+    // dispatch(deleteAddress(form.id));
+    // navigate("/address/saved");
   };
 
   const topFields = [
