@@ -10,18 +10,23 @@ import {
   useGetSingleAddressQuery,
   useUpdateAddressMutation,
   useAddAddressMutation,
-} from "../services/AddressService.js";
+} from "../services/addressService.js";
 import { useGetUserProfileQuery } from "../services/userService.js";
+import { selectAddress } from "../store/addressSlice";
+import { useDispatch } from "react-redux";
 
 const AddressNew = () => {
   const { id } = useParams();
+  const dispatch = useDispatch();
   const isEdit = Boolean(id);
 
-  const { data: address, isLoading } = useGetSingleAddressQuery({
-    addressId: id,
-  },{skip:!id});
-  const {data:userData} = useGetUserProfileQuery();
-
+  const { data: address, isLoading } = useGetSingleAddressQuery(
+    {
+      addressId: id,
+    },
+    { skip: !id },
+  );
+  const { data: userData } = useGetUserProfileQuery();
 
   const [form, setForm] = useState({
     pincode: "",
@@ -29,22 +34,17 @@ const AddressNew = () => {
     street: "",
     district: "",
     state: "",
-    name: userData.name ||"",
-    phone: userData.phone || "",
+    name: userData?.name || "",
+    phone: userData?.phone || "",
   });
   const [error, setErrors] = useState({});
-
-  const dispatch = useDispatch();
 
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const redirect = searchParams.get("redirect");
 
-  const user = useSelector((store) => store.user.user);
-
   const [addAddress] = useAddAddressMutation();
   const [updateAddress] = useUpdateAddressMutation();
-
 
   useEffect(() => {
     if (address) {
@@ -86,7 +86,7 @@ const AddressNew = () => {
     }
   }, [form.pincode]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const errors = {};
     if (!form.name) errors.name = "Name is required";
@@ -101,25 +101,30 @@ const AddressNew = () => {
       return;
     }
 
-    if (isEdit) {
-      updateAddress({
-        addressId: id,
-        ...form,
-      });
-    } else {
-      addAddress(form )
+    try {
+      if (isEdit) {
+        const updatedAddress = await updateAddress({
+          addressId: id,
+          ...form,
+        }).unwrap();
+        dispatch(selectAddress(updatedAddress?.data?._id));
+      } else {
+        const newAddress = await addAddress(form).unwrap();
+        dispatch(selectAddress(newAddress?.data?._id));
+      }
+    } catch (err) {
+      console.error(err.messages);
     }
-
     navigate(redirect || "/payment");
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-      setForm((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
 
     setErrors((prev) => ({
       ...prev,
@@ -151,7 +156,9 @@ const AddressNew = () => {
             </svg>
           </p>
         </Link>
-        <h1 className="text-lg md:text-xl font-semibold">{isEdit ? "Edit Address" : "Add New Address"} </h1>
+        <h1 className="text-lg md:text-xl font-semibold">
+          {isEdit ? "Edit Address" : "Add New Address"}{" "}
+        </h1>
       </div>
 
       <div className="px-5 md:px-8 xl:px-24 py-5">
