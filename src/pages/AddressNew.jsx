@@ -1,6 +1,4 @@
 import { useState, useEffect } from "react";
-import { addAddress, editAddress } from "../store/addressSlice.js";
-import { useDispatch, useSelector } from "react-redux";
 import {
   useNavigate,
   Link,

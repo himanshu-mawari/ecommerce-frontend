@@ -1,9 +1,10 @@
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { selectAddress } from "../store/addressSlice";
 import { useState } from "react";
 import Toast from "../components/Toast.jsx";
-import { useGetAllAddressesQuery } from "../services/AddressService.js";
+import { useGetAllAddressesQuery } from "../services/addressService.js";
 import { useGetCartQuery } from "../services/cartService.js";
 
 const AddressList = () => {
