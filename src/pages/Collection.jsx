@@ -1,9 +1,9 @@
 import ProductCard from "../components/ProductCard";
 import { useParams, useSearchParams } from "react-router-dom";
 import { useGetProductsQuery } from "../services/productService.js";
-import CategorySkeleton from "../components/CollectionSkeleton.jsx";
+import CollectionSkeleton from "../components/CollectionSkeleton.jsx";
 import useDebounce from "../helpers/useDebounce.js";
-import EmptySearchState from "../components/EmptySearchState.jsx";
+import EmptySearchState from "../components/EmptySearchState.jsx"; 
 
 const Collection = () => {
   const { category } = useParams();
@@ -34,7 +34,7 @@ const Collection = () => {
   if (isLoading)
     return (
       <div>
-        <CategorySkeleton />
+        <CollectionSkeleton />
       </div>
     );
   if (error) return <p>Error...</p>;

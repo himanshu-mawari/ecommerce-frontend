@@ -1,7 +1,7 @@
 import React from 'react';
 import Skeleton from './Skeleton'; 
 
-const CategorySkeleton = () => {
+const CollectionSkeleton = () => {
   return (
     <div className="px-4 md:px-8 lg:px-14 xl:px-24 border-t border-gray-300">
       <div className="pt-8 pb-8">
@@ -24,4 +24,4 @@ const CategorySkeleton = () => {
   );
 };
 
-export default CategorySkeleton;
+export default CollectionSkeleton;
