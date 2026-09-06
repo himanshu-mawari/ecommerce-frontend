@@ -1,4 +1,3 @@
-import React from "react";
 import ProductCard from "../components/ProductCard";
 import {
   useGetUserWishlistQuery,
@@ -6,22 +5,25 @@ import {
 } from "../services/userService";
 import EmptyWishlist from "../components/EmptyWishlist";
 import useAuth from "../hooks/useAuth";
+import CollectionSkeleton from "../components/CollectionSkeleton";
+import ErrorState from "../components/ErrorState";
+import useErrorHandler from "../hooks/useErrorHandler";
 
 const Wishlist = () => {
   const { isAuthenticated } = useAuth();
-  const { data: wishlist, isLoading } = useGetUserWishlistQuery(undefined, {
+  const {
+    data: wishlist,
+    isLoading,
+    isError,
+    error,
+    refetch,
+    isFetching,
+  } = useGetUserWishlistQuery(undefined, {
     skip: !isAuthenticated,
   });
   const [removeWishlistProduct] = useRemoveWishlistProductMutation();
 
-  if (isLoading) {
-    return <div>hey dev be patient , nature reward only to patient person</div>;
-  }
   const wishlistData = wishlist?.wishlist;
-
-  if (!wishlistData || !wishlistData.length) {
-    return <EmptyWishlist />;
-  }
 
   const handleRemoveWishlist = async (productId) => {
     try {
@@ -31,7 +33,20 @@ const Wishlist = () => {
     }
   };
 
-  return (
+  const { message, showRetry } = useErrorHandler(error, "Wishlist");
+
+  return isLoading ? (
+    <CollectionSkeleton />
+  ) : isError ? (
+    <ErrorState
+      message={message}
+      onRetry={refetch}
+      showRetry={showRetry}
+      isRetrying={isFetching}
+    />
+  ) : !wishlistData?.length ? (
+    <EmptyWishlist />
+  ) : (
     <div className="px-4 md:px-8 lg:px-14 xl:px-24 border-t">
       <div className="py-8 xl:py-10">
         <h1 className="text-5xl md:text-6xl lg:text-7xl  font-semibold">
