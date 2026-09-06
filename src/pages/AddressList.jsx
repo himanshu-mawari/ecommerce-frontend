@@ -1,6 +1,6 @@
-import { useEffect } from "react";
+import { useEffect , useLayoutEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate , useLocation} from "react-router-dom";
 import { selectAddress } from "../store/addressSlice";
 import { useState } from "react";
 import Toast from "../components/Toast.jsx";
@@ -12,8 +12,14 @@ const AddressList = () => {
   const [toastMessage, setToastMessage] = useState("");
   const [isBagOpen, setIsBagOpen] = useState(false);
   const [isPriceOpen, setIsPriceOpen] = useState(false);
+  
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation()
+
+  const isManualVisit = location?.state?.manual === true
+
   const selectedAddressId = useSelector(
     (store) => store.address.selectedAddressId,
   );
@@ -21,7 +27,21 @@ const AddressList = () => {
   const { data: addresses, isLoading } = useGetAllAddressesQuery();
   const { data: cartData } = useGetCartQuery();
 
-  if (isLoading) return <div>Loading</div>;
+  useLayoutEffect(() => {
+    if(isManualVisit) return;
+    if (!addresses?.length) return;
+
+    const stillExists = addresses.some(
+      (addr) => addr._id === selectedAddressId,
+    );
+
+    if (selectedAddressId && stillExists) {
+      navigate("/payment");
+    } else if (!selectedAddressId || !stillExists) {
+      dispatch(selectAddress(addresses[0]._id));
+      navigate("/payment");
+    }
+  }, [addresses, selectedAddressId , isManualVisit]);
 
   const handleRadioChange = (id) => {
     dispatch(selectAddress(id));
@@ -52,12 +72,7 @@ const AddressList = () => {
     navigate("/payment");
   };
 
-  const addressLength = addresses.length || 0
-
-  if(addressLength){
-     navigate("/payment")
-  }
-
+  if (isLoading) return <div>Loading</div>;
   return (
     <div className="max-w-2xl md:max-w-full mx-auto pb-8">
       <div className="sticky top-0 z-10 bg-white border-b border-gray-300 py-4 ml-0 px-5  md:px-8 lg:px-12 xl:px-24 flex gap-4 items-center">
