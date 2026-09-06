@@ -1,14 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import Toast from "../components/Toast";
-import { useGetAllAddressesQuery } from "../services/addressService";
+import { useGetSingleAddressQuery } from "../services/addressService";
 import { useGetCartQuery } from "../services/cartService";
 import { useAddOrderMutation } from "../services/orderService";
 import { showToast } from "../store/toastSlice";
 import { useDispatch } from "react-redux";
 
-const Payment =  () => {
+const Payment = () => {
   const selectedAddressId = useSelector(
     (store) => store.address.selectedAddressId,
   );
@@ -19,15 +18,18 @@ const Payment =  () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { data: addresses, isLoading } =  useGetAllAddressesQuery();
-  const { data: cartData , isLoading:cartLoading } = useGetCartQuery();
+  const { data: selectedAddress, isLoading } = useGetSingleAddressQuery(
+    { addressId: selectedAddressId },
+    { skip: !selectedAddressId },
+  );
+  const { data: cartData, isLoading: cartLoading } = useGetCartQuery();
   const [createOrder] = useAddOrderMutation();
 
-  if (isLoading || cartLoading) return <div></div>;
-
-  const selectedAddress = addresses.find(
-    (addr) => addr._id === selectedAddressId,
-  );
+  useEffect(() => {
+    if (!selectedAddress && !isLoading) {
+      navigate("/address/saved", { replace: true });
+    }
+  }, [selectedAddress,isLoading]);
 
   const formatPrice = (price) =>
     new Intl.NumberFormat("en-IN", {
@@ -35,29 +37,29 @@ const Payment =  () => {
     }).format(price);
 
   const handleChangeAddress = () => {
-    navigate("/address/saved");
+    (navigate("/address/saved", { state: { manual: true } }))
   };
 
   const handlePlaceOrder = async () => {
     if (!selectedAddress) {
-      dispatch(showToast("Select Address"))
+      dispatch(showToast("Select Address"));
       return;
     }
-    
+
     if (!method) {
-      dispatch(showToast("Select a payment method"))
+      dispatch(showToast("Select a payment method"));
       return;
     }
     try {
       const orderData = {
-        shippingAddressId: selectedAddress._id,
+        shippingAddressId: selectedAddressId,
         paymentMethod: method,
       };
 
       if (method === "COD") {
         const data = await createOrder(orderData).unwrap();
 
-        dispatch(showToast("Order created successfully"))
+        dispatch(showToast("Order created successfully"));
         navigate(`/order-success/${data.data._id}`);
       } else {
         console.error("Online payment flow");
@@ -67,8 +69,10 @@ const Payment =  () => {
     }
   };
 
-  if(!cartData.items.length){
-    navigate("/checkout")
+  if (isLoading || cartLoading) return <div></div>;
+
+  if (!cartData.items.length) {
+    navigate("/checkout");
   }
 
   return (
@@ -105,23 +109,30 @@ const Payment =  () => {
                 Delivery Address
               </h2>
               <div className="bg-white md:p-8 rounded-3xl border border-gray-300 p-5 shadow-sm">
-                <h2 className="mb-3 text-lg font-semibold text-gray-900">
-                  Deliver to <span>{selectedAddress?.name?.split(" ")[0]}</span>
-                  , {selectedAddress?.pincode}
-                </h2>
-                <div className="mb-6 space-y-1 text-md text-gray-600 leading-5 font-medium">
-                  <p className="truncate">122 {selectedAddress?.street}</p>
-                  <p className="uppercase">
-                    {selectedAddress?.district}-{selectedAddress?.pincode}
-                  </p>
-                  <p>{selectedAddress?.phoneNumber || "+91-9873490461"}</p>
-                </div>
-                <button
-                  className="w-full md:w-auto px-8 rounded-full border border-gray-300 py-3 text-md font-semibold    transition-all hover:bg-gray-100 cursor-pointer"
-                  onClick={() => handleChangeAddress()}
-                >
-                  Change or Add Address
-                </button>
+                {selectedAddress ? (
+                  <>
+                    <h2 className="mb-3 text-lg font-semibold text-gray-900">
+                      Deliver to{" "}
+                      <span>{selectedAddress?.name?.split(" ")[0]}</span>,{" "}
+                      {selectedAddress?.pincode}
+                    </h2>
+                    <div className="mb-6 space-y-1 text-md text-gray-600 leading-5 font-medium">
+                      <p className="truncate"> {selectedAddress?.street}</p>
+                      <p className="uppercase">
+                        {selectedAddress?.district}-{selectedAddress?.pincode}
+                      </p>
+                      <p>{selectedAddress?.phoneNumber}</p>
+                    </div>
+                    <button
+                      className="w-full md:w-auto px-8 rounded-full border border-gray-300 py-3 text-md font-semibold    transition-all hover:bg-gray-100 cursor-pointer"
+                      onClick={() => handleChangeAddress()}
+                    >
+                      Change or Add Address
+                    </button>
+                  </>
+                ) : (
+                  <div className=""></div>
+                )}
               </div>
             </section>
 
@@ -151,21 +162,32 @@ const Payment =  () => {
                       </span>
                     </div>
                   </label>
-                  <label className="flex items-center gap-4 p-6 cursor-pointer hover:bg-gray-50 transition-colors">
+                  <label
+                    className={`flex items-start gap-4 p-6 transition-colors rounded-xl border border-transparent ${
+                      true /* disabled state */
+                        ? "opacity-50 cursor-not-allowed bg-gray-50/50"
+                        : "cursor-pointer hover:bg-gray-50"
+                    }`}
+                  >
                     <input
                       type="radio"
                       name="payment"
                       value="ONLINE"
                       checked={method === "ONLINE"}
-                      onChange={(e) => {
-                        setMethod(e.target.value);
-                      }}
-                      className="w-5 h-5 accent-black cursor-pointer"
+                      onChange={(e) => setMethod(e.target.value)}
+                      disabled
+                      aria-disabled="true"
+                      className="mt-1 w-5 h-5 accent-black cursor-not-allowed"
                     />
-                    <div>
-                      <span className="font-semibold block text-gray-900">
-                        Pay Online
-                      </span>
+                    <div className="flex flex-col gap-1 grow">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="font-semibold text-gray-900">
+                          Pay Online
+                        </span>
+                        <span className="text-[10px] font-bold tracking-wider uppercase bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full">
+                          Coming Soon
+                        </span>
+                      </div>
                       <span className="text-xs text-gray-500">
                         Cards, UPI, or Netbanking
                       </span>
@@ -337,7 +359,7 @@ const Payment =  () => {
             Confirm & {method === "COD" ? "Order" : "Pay"}
           </button>
         </div>
-     </div>
+      </div>
     </div>
   );
 };
