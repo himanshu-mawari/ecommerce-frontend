@@ -54,5 +54,5 @@ export const {
   useGetSingleAddressQuery,
   useUpdateAddressMutation,
   useAddAddressMutation,
-  useDeleteAddressMutation, // you forgot to export this
+  useDeleteAddressMutation, 
 } = addressApi;
