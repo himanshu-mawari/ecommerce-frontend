@@ -3,14 +3,33 @@ import ProductCard from "../components/ProductCard.jsx";
 import { assets } from "../assets/assets.js";
 import { useGetHomeProductsQuery } from "../services/productService.js";
 import HomePageSkeleton from "../components/HomePageSkeleton.jsx";
+import useErrorHandler from "../hooks/useErrorHandler.js";
+import ErrorState from "../components/ErrorState.jsx";
 
 const Home = () => {
-  const { data: homeData, isLoading } = useGetHomeProductsQuery();
+  const {
+    data: homeData,
+    isLoading,
+    isError,
+    error,
+    refetch,
+    isFetching,
+  } = useGetHomeProductsQuery();
 
-  if (isLoading || !homeData?.data) return <HomePageSkeleton />;
-  const { latest, bestSeller } = homeData.data;
+  const { latest, bestSeller } = homeData?.data ?? [];
 
-  return (
+  const { message, showRetry } = useErrorHandler(error, "Home page");
+
+  return isLoading ? (
+    <HomePageSkeleton />
+  ) : isError ? (
+    <ErrorState
+      message={message}
+      onRetry={refetch}
+      showRetry={showRetry}
+      isRetrying={isFetching}
+    />
+  ) : (
     <div className="px-4  sm:px-12 lg:px-28 ">
       <div>
         <Hero />
