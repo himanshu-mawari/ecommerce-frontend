@@ -40,20 +40,7 @@ const Collection = () => {
 
   const { message, showRetry } = useErrorHandler(error, "Products");
 
-  return isLoading ? (
-    <CollectionSkeleton />
-  ) : isError ? (
-    <ErrorState
-      message={message}
-      onRetry={refetch}
-      showRetry={showRetry}
-      isRetrying={isFetching}
-    />
-  ) : !products.length ? (
-    <div className="my-36 md:my-40">
-      <EmptySearchState value={debounceSearch} />
-    </div>
-  ) : (
+  return (
     <div className="px-4 md:px-8 lg:px-14 xl:px-24 border-t border-gray-300">
       <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-semibold pt-8 pb-8">
         {category === "shop-all"
@@ -61,11 +48,26 @@ const Collection = () => {
           : capitalizeFirstAlphabet(category)}
       </h1>
 
-      <div className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {products.map((p) => (
-          <ProductCard key={p._id} data={p} />
-        ))}
-      </div>
+      {isLoading ? (
+        <CollectionSkeleton />
+      ) : isError ? (
+        <ErrorState
+          message={message}
+          onRetry={refetch}
+          showRetry={showRetry}
+          isRetrying={isFetching}
+        />
+      ) : !products.length ? (
+        <div className="my-36 md:my-40">
+          <EmptySearchState value={debounceSearch} />
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {products.map((p) => (
+            <ProductCard key={p._id} data={p} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
