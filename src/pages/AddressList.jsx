@@ -147,13 +147,13 @@ const AddressList = () => {
                 Add New Address
               </h1>
             </Link>
-            {addresses.length ? (
+            {!addresses.length ? (
               <EmptyAddress />
             ) : (
               addresses.map((address) => (
                 <div
                   key={address._id}
-                  className={` flex gap-8 lg:gap-4 lg:px-8    py-6 lg:border border-t border-gray-300 cursor-pointer lg:rounded-xl transition-all ${
+                  className={` flex gap-8  lg:gap-4 lg:px-8    py-4 lg:border  border-gray-300 cursor-pointer lg:rounded-xl transition-all ${
                     address.id === selectedAddressId ? "bg-gray-50/50" : ""
                   }`}
                 >
