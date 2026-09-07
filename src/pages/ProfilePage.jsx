@@ -7,10 +7,9 @@ import {
   Mail,
 } from "lucide-react";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import InputField from "../components/InputField";
 import { Link } from "react-router-dom";
-import Toast from "../components/Toast.jsx";
 import { useNavigate } from "react-router-dom";
 import { useGetAllAddressesQuery } from "../services/AddressService.js";
 import useAuth from "../hooks/useAuth.js";
@@ -19,14 +18,23 @@ import { useLogoutMutation } from "../services/authService.js";
 import { useUpdateUserProfileMutation } from "../services/userService.js";
 import ProfilePageSkeleton from "../components/ProfilePageSkeleton.jsx";
 import { showToast } from "../store/toastSlice";
+import ErrorState from "../components/ErrorState";
+import useErrorHandler from "../hooks/useErrorHandler";
 
 const ProfilePage = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const navigate = useNavigate();
 
-  const { user , isLoading } = useAuth();
-  const { data: addresses, isLoading: addressLoading } =
-    useGetAllAddressesQuery();
+  const { user, isLoading } = useAuth();
+  const {
+    data: addresses,
+    isLoading: addressesLoading,
+    isError,
+    error,
+    refetch,
+    isFetching,
+  } = useGetAllAddressesQuery();
+  const mostRecentAddress = addresses?.[0];
   const { data: orders, isLoading: orderLoading } = useGetUserOrderQuery();
 
   const [logout] = useLogoutMutation();
@@ -38,22 +46,7 @@ const ProfilePage = () => {
     email: user?.email || "",
   });
 
-  const selectedAddressId = useSelector(
-    (store) => store.address.selectedAddressId,
-  );
-
   const dispatch = useDispatch();
-
-  if (isLoading || addressLoading || orderLoading)
-    return (
-      <div>
-        <ProfilePageSkeleton />
-      </div>
-    );
-
-  const activeAddress = addresses?.find(
-    (addr) => addr._id === selectedAddressId,
-  );
 
   const profileFields = [
     { name: "name", label: "Full Name", type: "text" },
@@ -82,7 +75,18 @@ const ProfilePage = () => {
     navigate("/");
     dispatch(showToast("Logout successful"));
   };
-  return (
+  const { message, showRetry } = useErrorHandler(error, "Profile");
+
+  return isLoading || addressesLoading || orderLoading ? (
+    <ProfilePageSkeleton />
+  ) : isError ? (
+    <ErrorState
+      message={message}
+      onRetry={refetch}
+      showRetry={showRetry}
+      isRetrying={isFetching}
+    />
+  ) : (
     <div className="max-w-7xl lg:max-w-full mx-auto bg-white min-h-screen font-sans px-4 md:px-12 lg:px-24 text-black pb-20 py-4 border-t border-gray-300">
       <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold pt-6 uppercase pb-8">
         My Profile
@@ -156,29 +160,43 @@ const ProfilePage = () => {
 
           <section className="pb-8 border-b border-gray-100">
             <h2 className="text-xl font-semibold mb-6">Shipping Addresses</h2>
-            <div className="grid grid-cols-1  gap-4">
-              <div className="p-6 border border-gray-200 rounded-2xl flex flex-col justify-between hover:shadow-md transition-shadow">
-                <div>
-                  <div className="flex items-center gap-2 mb-3">
-                    <MapPin size={20} className="text-black" />
-                    <span className="font-semibold uppercase text-xs tracking-widest text-gray-500">
-                      Default Address
-                    </span>
+            <div className="grid grid-cols-1 gap-4">
+              {mostRecentAddress ? (
+                <div className="p-6 border border-gray-200 rounded-2xl flex flex-col justify-between hover:shadow-md transition-shadow">
+                  <div>
+                    <div className="flex items-center gap-2 mb-3">
+                      <MapPin size={20} className="text-black" />
+                      <span className="font-semibold uppercase text-xs tracking-widest text-gray-500">
+                        Default Address
+                      </span>
+                    </div>
+                    <h3 className="font-bold text-lg mb-1">
+                      {mostRecentAddress?.state}
+                    </h3>
+                    <p className="text-gray-500 text-sm leading-relaxed mb-4">
+                      {mostRecentAddress?.street} <br />
+                      Phone: {mostRecentAddress?.phone}
+                    </p>
                   </div>
-                  <h3 className="font-bold text-lg mb-1">
-                    {activeAddress?.state}
-                  </h3>
-                  <p className="text-gray-500 text-sm leading-relaxed mb-4">
-                    {activeAddress?.street} <br />
-                    Phone: {activeAddress?.phone}
-                  </p>
+                  <Link to="/address/saved" className="inline-block">
+                    <button className="text-black font-semibold border-b border-black text-sm pb-1 hover:text-gray-500 hover:border-gray-500 transition-all cursor-pointer">
+                      Manage all addresses
+                    </button>
+                  </Link>
                 </div>
-                <Link to="/address/saved" className="inline-block">
-                  <button className="text-black font-semibold border-b border-black text-sm pb-1 hover:text-gray-500 hover:border-gray-500 transition-all cursor-pointer">
-                    Manage all addresses
-                  </button>
-                </Link>
-              </div>
+              ) : (
+                <div className="p-6 border border-dashed border-gray-200 rounded-2xl flex flex-col items-center justify-center text-center gap-3">
+                  <MapPin size={20} className="text-gray-400" />
+                  <p className="text-gray-500 text-sm">
+                    No shipping address saved yet
+                  </p>
+                  <Link to="/address/new">
+                    <button className="text-black font-semibold border-b border-black text-sm pb-1 hover:text-gray-500 hover:border-gray-500 transition-all cursor-pointer">
+                      Add an address
+                    </button>
+                  </Link>
+                </div>
+              )}
             </div>
           </section>
         </div>
