@@ -8,19 +8,27 @@ import {
 } from "../services/cartService.js";
 import CheckoutSkeleton from "../components/CheckoutSkeleton.jsx";
 import useAuth from "../hooks/useAuth.js";
+import ErrorState from "../components/ErrorState";
+import useErrorHandler from "../hooks/useErrorHandler";
 
 const Cart = () => {
   const [localQuantity, setLocalQuantity] = useState([]);
-  const {isAuthenticated , user} = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
   const navigate = useNavigate();
 
-
-  const { data: cartData = [], isLoading } = useGetCartQuery(undefined , {skip: !isAuthenticated});
+  const {
+    data: cartData = [],
+    isLoading,
+    isError,
+    error,
+    refetch,
+    isFetching,
+  } = useGetCartQuery(undefined, {
+    skip: !isAuthenticated,
+  });
   const [removeCartItem] = useRemoveCartItemMutation();
   const [updateCart] = useUpdateCartMutation();
-
-  if (isLoading) return <CheckoutSkeleton />;
 
   const formatPrice = (price) =>
     new Intl.NumberFormat("en-IN", {
@@ -75,39 +83,51 @@ const Cart = () => {
     navigate("/address/saved");
   };
 
-  if (!cartData.items.length) {
-    return <EmptyCart />;
-  }
-  return (
+  const { message, showRetry } = useErrorHandler(error, "Cart");
+
+  return isLoading ? (
+    <CheckoutSkeleton />
+  ) : isError ? (
+    <ErrorState
+      message={message}
+      onRetry={refetch}
+      showRetry={showRetry}
+      isRetrying={isFetching}
+    />
+  ) : !cartData?.items?.length ? (
+    <EmptyCart />
+  ) : (
     <div className="border-t border-gray-300">
       <div className="max-w-7xl lg:max-w-full mx-auto lg:grid lg:grid-cols-12 lg:gap-20 lg:items-start px-4 md:px-8  lg:px-14 xl:px-28">
         <div className="lg:col-span-8">
-          <div className="">
+          <div>
             <div className="bg-white">
               <div className="flex flex-col items-center md:items-start pt-8 pb-6 bg-white">
                 <h1 className="text-3xl  font-semibold text-black mb-1">Bag</h1>
+
                 <div className="flex items-center text-gray-500">
                   <span className="font-medium text-lg lg:text-sm">
-                    {cartData.items.length} {cartData.items.length === 1 ? "item" : "items"}
+                    {cartData?.items?.length}{" "}
+                    {cartData?.items?.length === 1 ? "item" : "items"}
                   </span>
                   <span className="text-gray-300 text-lg  mx-2">|</span>
                   <span className="text-black font-semibold text-lg lg:text-sm">
-                    ₹ {cartData.summary.subTotal}
+                    ₹ {cartData?.summary?.subTotal}
                   </span>
                 </div>
               </div>
 
               <div className="flex flex-col">
-                {cartData.items.map((item) => (
+                {cartData?.items?.map((item) => (
                   <div
-                    key={`${item._id}-${item.size}`}
+                    key={`${item?._id}-${item?.size}`}
                     className="py-8 border-t border-gray-200"
                   >
                     <div className="flex items-start gap-5 md:gap-8">
                       <div className="w-28 h-36 lg:w-32 lg:h-44 bg-gray-50 shrink-0 overflow-hidden rounded-xl border border-gray-100">
                         <img
-                          src={item.product.images[0].url}
-                          alt={item.name}
+                          src={item?.product?.images[0]?.url}
+                          alt={item?.name}
                           className="w-full h-full object-cover"
                         />
                       </div>
@@ -115,12 +135,12 @@ const Cart = () => {
                       <div className="flex flex-col flex-1 min-h-36">
                         <div className="flex items-baseline justify-between">
                           <span className="text-xl md:text-2xl font-medium text-black tabular-nums">
-                            ₹ {formatPrice(item.product.price)}
+                            ₹ {formatPrice(item?.product?.price)}
                           </span>
                         </div>
 
                         <h2 className="text-md md:text-lg font-medium mt-1 outfit leading-tight text-gray-900">
-                          {item.product.name}
+                          {item?.product?.name}
                         </h2>
 
                         <p className="text-gray-400 text-sm md:text-md mt-2 font-medium">
@@ -129,7 +149,7 @@ const Cart = () => {
 
                         <div className="mt-auto">
                           <span className="text-gray-500 text-md  font-semibold border-b border-gray-500 text-md cursor-pointer inline-block ">
-                            Size {item.size}
+                            Size {item?.size}
                           </span>
                         </div>
                       </div>
@@ -141,10 +161,10 @@ const Cart = () => {
                           onClick={() =>
                             item.quantity > 1
                               ? handleDecreaseQuantity(item)
-                              : handleRemoveCartItem(item._id)
+                              : handleRemoveCartItem(item?._id)
                           }
                         >
-                          {item.quantity > 1 ? (
+                          {item?.quantity > 1 ? (
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               fill="none"
@@ -178,7 +198,7 @@ const Cart = () => {
                         </button>
 
                         <span className="text-sm md:text-base lg:text-lg font-bold text-black">
-                          {localQuantity[item._id] ?? item.quantity}
+                          {localQuantity[item?._id] ?? item?.quantity}
                         </span>
 
                         <button
@@ -225,21 +245,21 @@ const Cart = () => {
               <div className="flex justify-between font-medium">
                 <span className="text-gray-500 ">Bag Total</span>
                 <span className="text-black font-semibold">
-                  ₹ {formatPrice(cartData.summary.subTotal)}
+                  ₹ {formatPrice(cartData?.summary?.subTotal)}
                 </span>
               </div>
 
               <div className="flex justify-between font-medium">
                 <span className="text-gray-500 ">Shipping</span>
                 <span className="text-black font-semibold">
-                  ₹ {cartData.summary.shippingFee}
+                  ₹ {cartData?.summary?.shippingFee}
                 </span>
               </div>
 
               <div className="border-t border-gray-200 pt-4 flex justify-between items-center">
                 <span className="font-semibold text-lg lg:text-xl">Total</span>
                 <span className="font-semibold text-xl lg:text-2xl text-black tabular-nums">
-                  ₹ {formatPrice(cartData.summary.total)}
+                  ₹ {formatPrice(cartData?.summary?.total)}
                 </span>
               </div>
             </div>
