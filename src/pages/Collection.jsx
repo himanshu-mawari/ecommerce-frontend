@@ -9,7 +9,7 @@ import useErrorHandler from "../hooks/useErrorHandler";
 
 const Collection = () => {
   const { category } = useParams();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const searchText = searchParams.get("q");
 
   const debounceSearch = useDebounce(searchText);
@@ -42,7 +42,7 @@ const Collection = () => {
 
   return isLoading ? (
     <CollectionSkeleton />
-  ) : !isError ? (
+  ) : isError ? (
     <ErrorState
       message={message}
       onRetry={refetch}
