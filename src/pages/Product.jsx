@@ -10,6 +10,8 @@ import Toast from "../components/Toast.jsx";
 import { useGetProductByIdQuery } from "../services/productService.js";
 import { useAddToCartMutation } from "../services/cartService.js";
 import ProductDetailSkeleton from "../components/ProductSkeleton.jsx";
+import ErrorState from "../components/ErrorState";
+import useErrorHandler from "../hooks/useErrorHandler";
 
 const Product = () => {
   const [showToast, setShowToast] = useState(false);
@@ -19,15 +21,15 @@ const Product = () => {
   const [quantity, setQuantity] = useState(1);
   const [error, setError] = useState("");
 
-  const { data, isLoading } = useGetProductByIdQuery(id);
+  const {
+    data,
+    isLoading,
+    isError,
+    error: productError,
+    refetch,
+    isFetching,
+  } = useGetProductByIdQuery(id);
   const [addToCart] = useAddToCartMutation();
-
-  if (isLoading)
-    return (
-      <div>
-        <ProductDetailSkeleton />
-      </div>
-    );
 
   const activeProduct = data?.data;
   const formatPrice = (price) =>
@@ -55,12 +57,22 @@ const Product = () => {
     setToastMessage("Item added to cart");
     setShowToast(true);
   };
+  const { message, showRetry } = useErrorHandler(productError, "Product details");
 
-  return (
+  return isLoading ? (
+    <ProductDetailSkeleton />
+  ) : isError ? (
+    <ErrorState
+      message={message}
+      onRetry={refetch}
+      showRetry={showRetry}
+      isRetrying={isFetching}
+    />
+  ) : (
     <div className="border-t border-gray-200  px-3 w-full md:px-10">
       <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 lg:grid-cols-2 gap-10">
         <div className="flex flex-col md:flex-row-reverse gap-4 items-start justify-start w-full">
-          <div className="w-full max-w-xs md:max-w-xl lg:max-w-lg  xl:max-w-120 lg:h-122.5 xl:h-[460px] overflow-hidden rounded-xl bg-gray-50">
+          <div className="w-full max-w-xs md:max-w-xl lg:max-w-lg  xl:max-w-120 lg:h-122.5 xl:h-115 overflow-hidden rounded-xl bg-gray-50">
             <img
               src={activeProduct.images[0].url}
               alt="Active Product"
@@ -142,11 +154,10 @@ const Product = () => {
             </button>
           </div>
         </div>
-          <div className="border-b py-3">
-            <DescriptionAccordion description={activeProduct.description} />
-          </div>
+        <div className="border-b py-3">
+          <DescriptionAccordion description={activeProduct.description} />
+        </div>
       </div>
-
 
       <div className="max-w-7xl mx-auto px-4 pt-20">
         <RelatedProduct productId={id} />
