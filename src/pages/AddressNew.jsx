@@ -112,10 +112,10 @@ const AddressNew = () => {
         const newAddress = await addAddress(form).unwrap();
         dispatch(selectAddress(newAddress?.data?._id));
       }
+      navigate(redirect || "/payment");
     } catch (err) {
       console.error(err.messages);
     }
-    navigate(redirect || "/payment");
   };
 
   const handleChange = (e) => {
