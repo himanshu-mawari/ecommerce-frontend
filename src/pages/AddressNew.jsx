@@ -92,7 +92,7 @@ const AddressNew = () => {
     if (!form.name) errors.name = "Name is required";
     if (!/^[0-9]{10}$/.test(form.phone))
       errors.phone = "Phone must be 10 digits";
-    if (!form.pincode) errors.pinCode = "Pin code is required";
+    if (!form.pincode) errors.pincode = "Pin code is required";
     if (!form.street) errors.street = "Street is required";
     if (!form.houseNo) errors.houseNo = "House / Flat / Office No is required";
 
