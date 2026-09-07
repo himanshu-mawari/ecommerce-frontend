@@ -4,7 +4,7 @@ import { Link, useNavigate , useLocation} from "react-router-dom";
 import { selectAddress } from "../store/addressSlice";
 import { useState } from "react";
 import Toast from "../components/Toast.jsx";
-import { useGetAllAddressesQuery } from "../services/addressService.js";
+import { useGetAllAddressesQuery } from "../services/AddressService.js";
 import { useGetCartQuery } from "../services/cartService.js";
 
 const AddressList = () => {
