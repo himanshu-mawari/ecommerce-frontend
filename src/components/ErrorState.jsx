@@ -32,7 +32,7 @@ const ErrorState = ({
             type="button"
             onClick={onRetry}
             disabled={isRetrying}
-            className="inline-flex items-center justify-center gap-2 rounded-none bg-black px-7 py-3 text-xs font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:bg-gray-800 active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex items-center justify-center gap-2 rounded-lg bg-black px-7 py-3 text-xs font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:bg-gray-800 active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
           >
             <RotateCcw
               className={`h-3.5 w-3.5 ${isRetrying ? "animate-spin" : ""}`}
