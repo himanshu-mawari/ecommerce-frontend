@@ -3,7 +3,7 @@ import Skeleton from './Skeleton';
 
 const OrdersSkeleton = () => {
   return (
-    <div className="min-h-screen border-t border-gray-300 py-8 pb-28 lg:pb-40 lg:pt-10 px-4 md:px-10 font-sans">
+    <div className="min-h-screen  py-8 pb-28 lg:pb-40 lg:pt-10 px-4 md:px-10 font-sans">
       <div className="max-w-5xl xl:max-w-7xl mx-auto flex flex-col gap-6 lg:gap-8">
         
         <div className="pb-2">

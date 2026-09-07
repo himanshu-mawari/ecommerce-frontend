@@ -3,7 +3,7 @@ import Skeleton from './Skeleton';
 
 const ProductDetailSkeleton = () => {
   return (
-    <div className="border-t border-gray-200 px-3 w-full md:px-10 font-sans">
+    <div className="px-3 w-full md:px-10 font-sans">
       <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 lg:grid-cols-2 gap-10">
         
         <div className="flex flex-col md:flex-row-reverse gap-4 items-start justify-start">

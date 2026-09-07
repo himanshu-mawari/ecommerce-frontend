@@ -3,7 +3,7 @@ import Skeleton from "./Skeleton";
 
 const ProfileSkeleton = () => {
   return (
-    <div className="max-w-7xl lg:max-w-full mx-auto bg-white min-h-screen px-4 md:px-12 lg:px-24 pb-20 py-4 border-t border-gray-300">
+    <div className="max-w-7xl lg:max-w-full mx-auto bg-white min-h-screen px-4 md:px-12 lg:px-24 pb-20 py-4 ">
       <div className="pt-6 pb-8">
         <Skeleton className="h-12 md:h-16 w-64 rounded-lg" />
       </div>

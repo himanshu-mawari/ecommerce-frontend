@@ -2,12 +2,10 @@ import Skeleton from "./Skeleton";
 const HomePageSkeleton = () => {
   return (
     <div className="px-4 sm:px-12 lg:px-28">
-      {/* Hero Section */}
       <div className="w-full h-[300px] md:h-[500px]">
         <Skeleton className="w-full h-full rounded-xl" />
       </div>
 
-      {/* Product Sections */}
       {[1, 2].map((section) => (
         <div key={section} className="flex flex-col items-center mt-14">
           {/* Section Title */}
@@ -19,10 +17,8 @@ const HomePageSkeleton = () => {
             </div>
           </div>
 
-          {/* Subtitle */}
           <Skeleton className="h-4 w-3/4 md:w-1/2 mt-4 mb-10 md:mb-12 rounded" />
 
-          {/* Product Grid */}
           <div className="grid grid-cols-2 gap-6 sm:grid-cols-4 md:grid-cols-3 xl:grid-cols-3 w-full">
             {Array.from({ length: 4 }).map((_, i) => (
               <div key={i} className="flex flex-col gap-2">
@@ -35,7 +31,6 @@ const HomePageSkeleton = () => {
         </div>
       ))}
 
-      {/* Policy Section */}
       <div className="flex flex-col md:flex-row justify-center py-24 md:py-20 lg:py-24 gap-12 lg:gap-40">
         {[1, 2, 3].map((item) => (
           <div key={item} className="flex flex-col items-center text-center">

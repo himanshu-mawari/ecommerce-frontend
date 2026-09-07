@@ -1,11 +1,10 @@
-import React from 'react';
-import Skeleton from './Skeleton'; // Adjust path as needed
+import React from "react";
+import Skeleton from "./Skeleton"; 
 
 const CheckoutSkeleton = () => {
   return (
-    <div className="border-t border-gray-300">
+    <div className="">
       <div className="max-w-7xl lg:max-w-full mx-auto lg:grid lg:grid-cols-12 lg:gap-28 lg:items-start px-4 md:px-8 lg:px-14 xl:px-28">
-        
         <div className="lg:col-span-8">
           <div className="bg-white">
             <div className="flex flex-col items-center md:items-start pt-8 pb-6">
@@ -27,7 +26,7 @@ const CheckoutSkeleton = () => {
                       <Skeleton className="h-7 w-24 mb-3 rounded-md" />
                       <Skeleton className="h-6 w-3/4 mb-2 rounded-md" />
                       <Skeleton className="h-4 w-20 mb-4 rounded-md" />
-                      
+
                       <div className="mt-auto">
                         <Skeleton className="h-5 w-16 rounded-sm" />
                       </div>
@@ -57,7 +56,7 @@ const CheckoutSkeleton = () => {
                 <Skeleton className="h-5 w-20 rounded-md" />
                 <Skeleton className="h-5 w-16 rounded-md" />
               </div>
-              
+
               <div className="border-t border-gray-200 pt-4 flex justify-between items-center">
                 <Skeleton className="h-7 w-16 rounded-md" />
                 <Skeleton className="h-8 w-24 rounded-md" />
