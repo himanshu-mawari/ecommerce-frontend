@@ -27,7 +27,7 @@ const AddressList = () => {
     (store) => store.address.selectedAddressId,
   );
 
-  let {
+  const {
     data: addresses,
     isLoading,
     isError,
@@ -119,7 +119,7 @@ const AddressList = () => {
           isRetrying={isFetching}
         />
       ) : (
-        <div className="lg:grid lg:grid-cols-12 gap-6 xl:px-16">
+        <div className="lg:grid lg:grid-cols-12 gap-6 xl:px-16 ">
           <div className="lg:col-span-8 px-5 md:px-8 lg:grid lg:grid-cols-2 lg:py-10 lg:gap-x-8 lg:gap-y-5">
             <Link
               to="/address/new"
