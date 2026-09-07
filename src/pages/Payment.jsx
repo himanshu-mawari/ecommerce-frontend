@@ -6,6 +6,8 @@ import { useGetCartQuery } from "../services/cartService";
 import { useAddOrderMutation } from "../services/orderService";
 import { showToast } from "../store/toastSlice";
 import { useDispatch } from "react-redux";
+import useErrorHandler from "../hooks/useErrorHandler";
+import ErrorState from "../components/ErrorState";
 
 const Payment = () => {
   const selectedAddressId = useSelector(
@@ -18,18 +20,38 @@ const Payment = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { data: selectedAddress, isLoading } = useGetSingleAddressQuery(
+  const {
+    data: selectedAddress,
+    isLoading,
+    isError: isAddressError,
+    error: addressError,
+    refetch: refetchAddress,
+    isFetching: isAddressFetching,
+  } = useGetSingleAddressQuery(
     { addressId: selectedAddressId },
     { skip: !selectedAddressId },
   );
-  const { data: cartData, isLoading: cartLoading } = useGetCartQuery();
+  const {
+    data: cartData,
+    isLoading: cartLoading,
+    isError: isCartError,
+    error: cartError,
+    refetch: refetchCart,
+    isFetching: isCartFetching,
+  } = useGetCartQuery();
   const [createOrder] = useAddOrderMutation();
 
   useEffect(() => {
     if (!selectedAddress && !isLoading) {
       navigate("/address/saved", { replace: true });
     }
-  }, [selectedAddress,isLoading]);
+  }, [selectedAddress, isLoading]);
+
+  useEffect(() => {
+    if (cartData && !cartData?.items?.length) {
+      navigate("/checkout", { replace: true });
+    }
+  }, [cartData]);
 
   const formatPrice = (price) =>
     new Intl.NumberFormat("en-IN", {
@@ -37,7 +59,7 @@ const Payment = () => {
     }).format(price);
 
   const handleChangeAddress = () => {
-    (navigate("/address/saved", { state: { manual: true } }))
+    navigate("/address/saved", { state: { manual: true } });
   };
 
   const handlePlaceOrder = async () => {
@@ -69,11 +91,38 @@ const Payment = () => {
     }
   };
 
-  if (isLoading || cartLoading) return <div></div>;
+  const { message: cartMessage, showRetry: cartShowRetry } = useErrorHandler(
+    cartError,
+    "Cart",
+  );
+  const { message: addressMessage, showRetry: addressShowRetry } =
+    useErrorHandler(addressError, "Address");
 
-  if (!cartData.items.length) {
-    navigate("/checkout");
-  }
+  if (isLoading || cartLoading)
+    return (
+      <div className="flex min-h-screen items-center justify-center p-4 sm:p-6 lg:p-8 xl:p-12">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-black border-t-transparent sm:h-10 sm:w-10 sm:border-3 md:h-12 md:w-12 md:border-4 2xl:h-16 2xl:w-16 2xl:border-[5px]" />
+      </div>
+    );
+
+  if (isCartError)
+    return (
+      <ErrorState
+        message={cartMessage}
+        onRetry={refetchCart}
+        showRetry={cartShowRetry}
+        isRetrying={isCartFetching}
+      />
+    );
+  if (isAddressError)
+    return (
+      <ErrorState
+        message={addressMessage}
+        onRetry={refetchAddress}
+        showRetry={addressShowRetry}
+        isRetrying={isAddressFetching}
+      />
+    );
 
   return (
     <div className="min-h-screen bg-gray-50/50">
