@@ -14,13 +14,22 @@ import {
 import { useGetUserProfileQuery } from "../services/userService.js";
 import { selectAddress } from "../store/addressSlice";
 import { useDispatch } from "react-redux";
+import useErrorHandler from "../hooks/useErrorHandler.js";
+import ErrorState from "../components/ErrorState.jsx";
 
 const AddressNew = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const isEdit = Boolean(id);
 
-  const { data: address, isLoading } = useGetSingleAddressQuery(
+  const {
+    data: address,
+    isLoading,
+    isError,
+    error: addressError,
+    refetch,
+    isFetching,
+  } = useGetSingleAddressQuery(
     {
       addressId: id,
     },
@@ -132,7 +141,8 @@ const AddressNew = () => {
     }));
   };
 
-  if (isLoading) return <div>Loading</div>;
+  const { message, showRetry } = useErrorHandler(addressError, "Edit infomation");
+
   return (
     <div className="pb-12 relative">
       <div className="sticky top-0 z-10 bg-white border-b border-gray-300 py-4 ml-0 px-5  md:px-8 lg:px-12 xl:px-24 flex gap-4 items-center">
@@ -160,40 +170,52 @@ const AddressNew = () => {
           {isEdit ? "Edit Address" : "Add New Address"}{" "}
         </h1>
       </div>
-
-      <div className="px-5 md:px-8 xl:px-24 py-5">
-        <div className="bg-[#f3f4f6] rounded-xl py-3 lg:py-5 lg:px-8  px-6 mb-6">
-          {form.state === "" && form.district === "" ? (
-            <>
-              <h3 className="text-lg md:text-xl tracking-tighter font-medium text-gray-900 ">
-                Enter your pincode below
-              </h3>
-              <p className="text-md md:text-lg text-gray-500 inter tracking-tighter">
-                We'll detect your city and state
-              </p>
-            </>
-          ) : (
-            <>
-              <h3 className="text-lg md:text-xl font-medium text-gray-900 ">
-                {form.state}, {form.district}
-              </h3>
-              <p className="text-md md:text-lg text-gray-500 inter tracking-tighter">
-                Location auto-detected
-              </p>
-            </>
-          )}
+      {isLoading && isEdit ? (
+        <div className="flex min-h-screen items-center justify-center p-4 sm:p-6 lg:p-8 xl:p-12">
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-black border-t-transparent sm:h-10 sm:w-10 sm:border-3 md:h-12 md:w-12 md:border-4 2xl:h-16 2xl:w-16 2xl:border-[5px]" />
         </div>
+      ) : isError && isEdit ? (
+        <ErrorState
+          message={message}
+          onRetry={refetch}
+          showRetry={showRetry}
+          isRetrying={isFetching}
+        />
+      ) : (
+        <div className="px-5 md:px-8 xl:px-24 py-5">
+          <div className="bg-[#f3f4f6] rounded-xl py-3 lg:py-5 lg:px-8  px-6 mb-6">
+            {form.state === "" && form.district === "" ? (
+              <>
+                <h3 className="text-lg md:text-xl tracking-tighter font-medium text-gray-900 ">
+                  Enter your pincode below
+                </h3>
+                <p className="text-md md:text-lg text-gray-500 inter tracking-tighter">
+                  We'll detect your city and state
+                </p>
+              </>
+            ) : (
+              <>
+                <h3 className="text-lg md:text-xl font-medium text-gray-900 ">
+                  {form.state}, {form.district}
+                </h3>
+                <p className="text-md md:text-lg text-gray-500 inter tracking-tighter">
+                  Location auto-detected
+                </p>
+              </>
+            )}
+          </div>
 
-        <div>
-          <AddressForm
-            form={form}
-            handleChange={handleChange}
-            error={error}
-            onSubmit={handleSubmit}
-            isEdit={isEdit}
-          />
+          <div>
+            <AddressForm
+              form={form}
+              handleChange={handleChange}
+              error={error}
+              onSubmit={handleSubmit}
+              isEdit={isEdit}
+            />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
