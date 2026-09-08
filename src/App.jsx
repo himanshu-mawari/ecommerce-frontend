@@ -112,7 +112,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/payment",
-        element: <Payment />,
+        element: (
+          <PaymentGuard>
+            <Payment />
+          </PaymentGuard>
+        ),
       },
       { path: "*", element: <Error /> },
     ],
@@ -141,7 +145,6 @@ const router = createBrowserRouter([
 const App = () => {
   const dispatch = useDispatch();
   const { message, isVisible } = useSelector((store) => store.toast);
-  
 
   return (
     <>

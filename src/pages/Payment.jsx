@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useLayoutEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useGetSingleAddressQuery } from "../services/addressService";
@@ -24,9 +24,6 @@ const Payment = () => {
     data: selectedAddress,
     isLoading,
     isError: isAddressError,
-    error: addressError,
-    refetch: refetchAddress,
-    isFetching: isAddressFetching,
   } = useGetSingleAddressQuery(
     { addressId: selectedAddressId },
     { skip: !selectedAddressId },
@@ -41,17 +38,17 @@ const Payment = () => {
   } = useGetCartQuery();
   const [createOrder] = useAddOrderMutation();
 
-  useEffect(() => {
-    if (!selectedAddress && !isLoading) {
-      navigate("/address/saved", { replace: true });
-    }
-  }, [selectedAddress, isLoading]);
-
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (cartData && !cartData?.items?.length) {
       navigate("/checkout", { replace: true });
     }
   }, [cartData]);
+
+  useLayoutEffect(() => {
+    if (isAddressError && !isLoading) {
+      navigate("/address/saved", { replace: true });
+    }
+  }, [isAddressError, isLoading]);
 
   const formatPrice = (price) =>
     new Intl.NumberFormat("en-IN", {
@@ -95,8 +92,6 @@ const Payment = () => {
     cartError,
     "Cart",
   );
-  const { message: addressMessage, showRetry: addressShowRetry } =
-    useErrorHandler(addressError, "Address");
 
   if (isLoading || cartLoading)
     return (
@@ -112,15 +107,6 @@ const Payment = () => {
         onRetry={refetchCart}
         showRetry={cartShowRetry}
         isRetrying={isCartFetching}
-      />
-    );
-  if (isAddressError)
-    return (
-      <ErrorState
-        message={addressMessage}
-        onRetry={refetchAddress}
-        showRetry={addressShowRetry}
-        isRetrying={isAddressFetching}
       />
     );
 
