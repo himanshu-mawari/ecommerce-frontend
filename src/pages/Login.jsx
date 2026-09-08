@@ -3,6 +3,8 @@ import { useDispatch } from "react-redux";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { showToast } from "../store/toastSlice";
 import { useLoginMutation } from "../services/authService.js";
+import { getSafeRedirect } from "../helpers/redirect";
+import { useSearchParams } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -12,9 +14,9 @@ const Login = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
-  const location = useLocation();
-  const redirect = new URLSearchParams(location.search).get("redirect");
+
+  const [searchParams] = useSearchParams();
+  const safeRedirect = getSafeRedirect(searchParams);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,10 +24,14 @@ const Login = () => {
     if (!email || !password) {
       return setError("please fill both field");
     }
-    await login({ email, password });
+    try {
+      await login({ email, password }).unwrap();
 
-    navigate(redirect ? `/${redirect}` : "/");
-    dispatch(showToast("Login successful"));
+      dispatch(showToast("Login successful"));
+      navigate(safeRedirect);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -79,7 +85,7 @@ const Login = () => {
           </button>
 
           <Link
-            to={`/signup?redirect=${redirect}`}
+            to={`/signup?redirect=${safeRedirect}`}
             className="flex items-center justify-center gap-2 mt-4"
           >
             <p className="text-center text-sm text-gray-600">

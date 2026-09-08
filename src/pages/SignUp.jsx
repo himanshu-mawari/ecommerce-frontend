@@ -3,6 +3,9 @@ import { useDispatch } from "react-redux";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { showToast } from "../store/toastSlice";
 import { useSignupMutation } from "../services/authService";
+import { getSafeRedirect } from "../helpers/redirect";
+import { useSearchParams } from "react-router-dom";
+ 
 
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -13,23 +16,26 @@ const SignUp = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const location = useLocation();
-  const redirect = new URLSearchParams(location.search).get("redirect");
+  const [searchParams] = useSearchParams();
+  const safeRedirect = getSafeRedirect(searchParams);
 
   const [signup] = useSignupMutation();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!name || !email || !password) {
       return setError("please fill both field");
     }
-
-    signup({ name, email, password });
-
-    navigate(redirect ? `/${redirect}` : "/");
-    dispatch(showToast("Signup successful. Complete your profile"));
+    try {
+      await signup({ name, email, password }).unwrap();
+      navigate(safeRedirect);
+      dispatch(showToast("Signup successful. Complete your profile"));
+    } catch (err) {
+      console.error(err);
+    }
   };
+
 
   return (
     <div className="py-20 flex items-center justify-center bg-gray-50 px-4 border-t border-gray-300">
@@ -94,7 +100,7 @@ const SignUp = () => {
           </button>
 
           <Link
-            to={`/login?redirect=${redirect}`}
+            to={"/login"}
             className="flex items-center justify-center gap-2 mt-4"
           >
             <p className="text-center text-sm text-gray-600">
