@@ -5,9 +5,9 @@ import { showToast } from "../store/toastSlice";
 import { useSignupMutation } from "../services/authService";
 
 const SignUp = () => {
-  const [name, setName] = useState("Himanshu");
-  const [email, setEmail] = useState("himanshumawari2006@gmail.com");
-  const [password, setPassword] = useState("Himanshu@123");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
   const dispatch = useDispatch();

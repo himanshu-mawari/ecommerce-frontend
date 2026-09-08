@@ -5,8 +5,8 @@ import { showToast } from "../store/toastSlice";
 import { useLoginMutation } from "../services/authService.js";
 
 const Login = () => {
-  const [email, setEmail] = useState("himanshu@gmail.com");
-  const [password, setPassword] = useState("Himanshu@123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [login] = useLoginMutation();
   const [error, setError] = useState("");
 
