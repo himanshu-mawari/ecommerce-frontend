@@ -11,7 +11,7 @@ import { useDispatch } from "react-redux";
 import InputField from "../components/InputField";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useGetAllAddressesQuery } from "../services/AddressService.js";
+import { useGetAllAddressesQuery } from "../services/addressService.js";
 import useAuth from "../hooks/useAuth.js";
 import { useGetUserOrderQuery } from "../services/orderService.js";
 import { useLogoutMutation } from "../services/authService.js";
