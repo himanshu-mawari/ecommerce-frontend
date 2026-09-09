@@ -34,14 +34,14 @@ export const userApi = baseApi.injectEndpoints({
         body: {productId}
       }),
       transformResponse: (data) => data.data,
-      invalidatesTags: ["UserWishlist"],
+      invalidatesTags: ["UserWishlist" , "User"],
     }),
     removeWishlistProduct: builder.mutation({
       query: ({productId}) => ({
         url: `api/user/wishlist/items/${productId}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["UserWishlist"],
+      invalidatesTags: ["UserWishlist" , "User"],
     }),
   }),
 });
