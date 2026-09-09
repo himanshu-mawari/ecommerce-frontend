@@ -8,6 +8,11 @@ import OrderFilterBar from "../components/OrderFilterBar";
 import { useGetOrderPageDataQuery } from "../services/AdminService";
 import useDebounce from "../helpers/useDebounce";
 import Pagination from "../components/Pagination";
+import AdminOrderSkeleton from "../components/AdminOrderSkeleton";
+import useErrorHandler from "../hooks/useErrorHandler";
+import ErrorState from "../components/ErrorState";
+import { PackageOpen, SearchX } from "lucide-react";
+import EmptyState from "../components/EmptyState";
 
 const AdminOrderPage = () => {
   const navigate = useNavigate();
@@ -17,7 +22,7 @@ const AdminOrderPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const debounceSearch = useDebounce(inputValue);
   const currentPage = Number(searchParams.get("page")) || 1;
- const capitalize = (str) =>
+  const capitalize = (str) =>
     str ? str.charAt(0).toUpperCase() + str.slice(1) : str;
 
   const [draftState, setDraftState] = useState({
@@ -40,15 +45,16 @@ const AdminOrderPage = () => {
       ? { payment_status: activeFilter.paymentStatus.toLowerCase() }
       : {}),
     ...(activeFilter.date ? { date: activeFilter.date.toLowerCase() } : {}),
-     ...(currentPage !== 1 && { page: currentPage }),
+    ...(currentPage !== 1 && { page: currentPage }),
   };
 
-  const { data, isLoading } = useGetOrderPageDataQuery(queryParams);
+  const { data, isLoading, isError, error, refetch, isFetching } =
+    useGetOrderPageDataQuery(queryParams);
   const pendingOrders = data?.metadata?.totalPendingOrdersCount;
   const cancelledOrders = data?.metadata?.totalCancelledOrdersCount;
   const orders = data?.data || {};
   const { pageSize, totalOrdersCount, totalPages } = data?.metadata || {};
-  const start = (currentPage - 1) * pageSize + 1 ||  0;
+  const start = (currentPage - 1) * pageSize + 1 || 0;
   const end = Math.min(currentPage * pageSize, totalOrdersCount) || 0;
 
   const handleDateFormat = (mongoDate) => {
@@ -102,13 +108,13 @@ const AdminOrderPage = () => {
     });
   };
 
-  if (isLoading)
-    return (
-      <div>
-        Hey software developer wait until data comes , i see you r very
-        inpatience
-      </div>
-    );
+  const { message, showRetry } = useErrorHandler(error, "Orders");
+
+  const hasActiveFilters = Object.values(activeFilter).some(
+    (value) => value !== "",
+  );
+  const showFilteredEmptyState = hasActiveFilters || inputValue !== "";
+
   return (
     <div className="px-4 py-6 md:px-10 md:py-8 lg:py-6 lg:px-6 inter max-w-7xl mx-auto space-y-6 md:space-y-8">
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
@@ -240,147 +246,177 @@ const AdminOrderPage = () => {
             />
           )}
         </div>
-
-        <div className="flex flex-col gap-3 md:hidden">
-          {orders.map((order) => (
-            <Link
-              to={`/admin/orders/${order._id}`}
-              key={order._id}
-              className="block"
-            >
-              <div className="bg-white border border-gray-100 p-4 rounded-xl shadow-sm active:bg-gray-50 hover:border-gray-300 transition-all">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h2 className="text-sm font-bold text-gray-900 tracking-tight">
-                      ORD-{order.orderId}
-                    </h2>
-                    <div className="flex items-center gap-1.5 text-xs font-light text-gray-500 mt-0.5">
-                      <span className="font-normal text-gray-800">
-                        {order.shippingAddress.name}
-                      </span>
-                      <span className="text-gray-300">•</span>
-                      <span>{handleDateFormat(order.createdAt)}</span>
-                    </div>
-                  </div>
-                  <p className="text-sm font-bold text-gray-900">
-                    ₹{order.totalAmount}
-                  </p>
-                </div>
-
-                <div className="mt-2.5 pt-2.5 border-t border-gray-50 flex items-center justify-between gap-4">
-                  <p className="text-xs font-light text-gray-500 truncate flex-1">
-                    {order.items[0].name}{" "}
-                    <span className="ml-1">+{order.items.length}</span>
-                  </p>
-                  <span
-                    className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${statusStyles[order.status.toLowerCase()]}`}
-                  >
-                    {order.status}
-                  </span>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-
-        <div className="hidden md:block bg-white border border-gray-100 rounded-xl shadow-sm overflow-hidden mt-8">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="border-b border-gray-100 bg-gray-50/75">
-                  <th className="px-6 py-3.5 text-[11px] font-bold text-gray-400 uppercase tracking-wider w-[19%]">
-                    Order
-                  </th>
-                  <th className="px-6 py-3.5 text-[11px] font-bold text-gray-400 uppercase tracking-wider w-[15%]">
-                    Amount
-                  </th>
-                  <th className="px-6 py-3.5 text-[11px] font-bold text-gray-400 uppercase tracking-wider hidden md:table-cell w-[25%]">
-                    Items
-                  </th>
-                  <th className="px-6 py-3.5 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
-                    Status
-                  </th>
-                  <th className="px-6 py-3.5 text-[11px] font-bold text-gray-400 uppercase tracking-wider hidden lg:table-cell w-[18%]">
-                    Date
-                  </th>
-                  <th className="px-6 py-3.5 text-[11px] font-bold text-gray-400 uppercase tracking-wider text-right w-[11%]">
-                    Action
-                  </th>
-                </tr>
-              </thead>
-
-              <tbody className="divide-y divide-gray-50">
-                {orders.map((order) => (
-                  <tr
-                    key={order._id}
-                    onClick={() => navigate(`/admin/orders/${order._id}`)}
-                    className="hover:bg-gray-50 transition-colors cursor-pointer group"
-                  >
-                    <td className="px-5 py-4">
-                      <p className="font-bold text-gray-900 group-hover:text-black transition-colors text-sm">
-                        ORD-{order?.orderId}
-                      </p>
-                      <p className="text-xs text-gray-500 font-light mt-0.5  truncate">
-                        {order?.shippingAddress?.name}
-                      </p>
-                    </td>
-
-                    <td className="px-6 py-4 font-semibold text-gray-900 text-sm">
-                      ₹{order?.totalAmount}
-                    </td>
-
-                    <td className="px-6 py-4 text-sm font-light text-gray-500 hidden md:table-cell">
-                      <div className="flex flex-col items-start gap-1 max-w-36 w-full">
-                        <span className="truncate w-full">
-                          {order.items?.[0]?.name || "No items"}
-                        </span>
-
-                        {order.items?.length > 1 && (
-                          <span className="text-xs text-gray-400 font-normal shrink-0">
-                            +{order.items.length - 1} more items
+        {isLoading ? (
+          <AdminOrderSkeleton />
+        ) : isError ? (
+          <ErrorState
+            message={message}
+            onRetry={refetch}
+            showRetry={showRetry}
+            isRetrying={isFetching}
+          />
+        ) : orders?.length === 0 ? (
+          showFilteredEmptyState ? (
+            <EmptyState
+              icon={SearchX}
+              title="No orders found"
+              description="No orders match your current search or filter criteria. Try clearing filters or using different keywords."
+              tone="neutral"
+            />
+          ) : (
+            <EmptyState
+              icon={PackageOpen}
+              title="No orders yet"
+              description="Orders will show up here once customers start buying."
+              tone="neutral"
+            />
+          )
+        ) : (
+          <>
+            <div className="flex flex-col gap-3 md:hidden">
+              {orders.map((order) => (
+                <Link
+                  to={`/admin/orders/${order._id}`}
+                  key={order._id}
+                  className="block"
+                >
+                  <div className="bg-white border border-gray-100 p-4 rounded-xl shadow-sm active:bg-gray-50 hover:border-gray-300 transition-all">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h2 className="text-sm font-bold text-gray-900 tracking-tight">
+                          ORD-{order.orderId}
+                        </h2>
+                        <div className="flex items-center gap-1.5 text-xs font-light text-gray-500 mt-0.5">
+                          <span className="font-normal text-gray-800">
+                            {order.shippingAddress.name}
                           </span>
-                        )}
+                          <span className="text-gray-300">•</span>
+                          <span>{handleDateFormat(order.createdAt)}</span>
+                        </div>
                       </div>
-                    </td>
+                      <p className="text-sm font-bold text-gray-900">
+                        ₹{order.totalAmount}
+                      </p>
+                    </div>
 
-                    <td className="px-6 py-4">
+                    <div className="mt-2.5 pt-2.5 border-t border-gray-50 flex items-center justify-between gap-4">
+                      <p className="text-xs font-light text-gray-500 truncate flex-1">
+                        {order.items[0].name}{" "}
+                        <span className="ml-1">+{order.items.length}</span>
+                      </p>
                       <span
-                        className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                          statusStyles[order.status?.toLowerCase()] ||
-                          "bg-gray-100 text-gray-800"
-                        }`}
+                        className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${statusStyles[order.status.toLowerCase()]}`}
                       >
                         {order.status}
                       </span>
-                    </td>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
 
-                    <td className="px-3 py-4 text-sm font-light text-gray-500 hidden lg:table-cell">
-                      {handleDateFormat(order.createdAt)}
-                    </td>
+            <div className="hidden md:block bg-white border border-gray-100 rounded-xl shadow-sm overflow-hidden mt-8">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="border-b border-gray-100 bg-gray-50/75">
+                      <th className="px-6 py-3.5 text-[11px] font-bold text-gray-400 uppercase tracking-wider w-[19%]">
+                        Order
+                      </th>
+                      <th className="px-6 py-3.5 text-[11px] font-bold text-gray-400 uppercase tracking-wider w-[15%]">
+                        Amount
+                      </th>
+                      <th className="px-6 py-3.5 text-[11px] font-bold text-gray-400 uppercase tracking-wider hidden md:table-cell w-[25%]">
+                        Items
+                      </th>
+                      <th className="px-6 py-3.5 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                        Status
+                      </th>
+                      <th className="px-6 py-3.5 text-[11px] font-bold text-gray-400 uppercase tracking-wider hidden lg:table-cell w-[18%]">
+                        Date
+                      </th>
+                      <th className="px-6 py-3.5 text-[11px] font-bold text-gray-400 uppercase tracking-wider text-right w-[11%]">
+                        Action
+                      </th>
+                    </tr>
+                  </thead>
 
-                    <td className="px-6 py-4 text-right ">
-                      <button
-                        type="button"
-                        className="text-xs font-semibold text-blue-600 bg-blue-50/0 group-hover:bg-blue-50 px-2.5 py-1.5 rounded-md transition-all duration-200 cursor-pointer"
+                  <tbody className="divide-y divide-gray-50">
+                    {orders.map((order) => (
+                      <tr
+                        key={order._id}
+                        onClick={() => navigate(`/admin/orders/${order._id}`)}
+                        className="hover:bg-gray-50 transition-colors cursor-pointer group"
                       >
-                        View
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+                        <td className="px-5 py-4">
+                          <p className="font-bold text-gray-900 group-hover:text-black transition-colors text-sm">
+                            ORD-{order?.orderId}
+                          </p>
+                          <p className="text-xs text-gray-500 font-light mt-0.5  truncate">
+                            {order?.shippingAddress?.name}
+                          </p>
+                        </td>
+
+                        <td className="px-6 py-4 font-semibold text-gray-900 text-sm">
+                          ₹{order?.totalAmount}
+                        </td>
+
+                        <td className="px-6 py-4 text-sm font-light text-gray-500 hidden md:table-cell">
+                          <div className="flex flex-col items-start gap-1 max-w-36 w-full">
+                            <span className="truncate w-full">
+                              {order.items?.[0]?.name || "No items"}
+                            </span>
+
+                            {order.items?.length > 1 && (
+                              <span className="text-xs text-gray-400 font-normal shrink-0">
+                                +{order.items.length - 1} more items
+                              </span>
+                            )}
+                          </div>
+                        </td>
+
+                        <td className="px-6 py-4">
+                          <span
+                            className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                              statusStyles[order.status?.toLowerCase()] ||
+                              "bg-gray-100 text-gray-800"
+                            }`}
+                          >
+                            {order.status}
+                          </span>
+                        </td>
+
+                        <td className="px-3 py-4 text-sm font-light text-gray-500 hidden lg:table-cell">
+                          {handleDateFormat(order.createdAt)}
+                        </td>
+
+                        <td className="px-6 py-4 text-right ">
+                          <button
+                            type="button"
+                            className="text-xs font-semibold text-blue-600 bg-blue-50/0 group-hover:bg-blue-50 px-2.5 py-1.5 rounded-md transition-all duration-200 cursor-pointer"
+                          >
+                            View
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </>
+        )}
       </div>
-      <Pagination
-        start={start}
-        end={end}
-        totalProductCount={totalOrdersCount}
-        onPageChange={goToPage}
-        currentPage={currentPage}
-        totalPages={totalPages}
-      />
+      {!isError && orders?.length > 0 && (
+        <Pagination
+          start={start}
+          end={end}
+          totalProductCount={totalOrdersCount}
+          onPageChange={goToPage}
+          currentPage={currentPage}
+          totalPages={totalPages}
+        />
+      )}
       {isFilterOpen && (
         <FilterBottomSheet
           isOpen={isFilterOpen}
