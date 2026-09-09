@@ -3,18 +3,6 @@ import Skeleton from "./Skeleton";
 export default function DashboardSkeleton() {
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-6 bg-gray-50/50 min-h-screen">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div className="space-y-2">
-          <Skeleton className="h-8 w-48 rounded-md" />
-          <Skeleton className="h-4 w-64 rounded-md" />
-        </div>
-        <div className="flex items-center gap-3">
-          <Skeleton className="h-10 w-32 rounded-lg" />
-          <Skeleton className="h-10 w-32 rounded-lg" />
-          <Skeleton className="h-10 w-32 rounded-lg" />
-        </div>
-      </div>
-
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
         {[...Array(5)].map((_, i) => (
           <div
