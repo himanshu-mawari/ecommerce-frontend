@@ -254,6 +254,7 @@ const AdminProductPage = () => {
               handleDraftFilterState={handleDraftFilterState}
               handleApplyDraftFilter={handleApplyDraftFilter}
               handleApply={handleApply}
+              setDraftFilter={setDraftFilter}
             />
           )}{" "}
         </div>

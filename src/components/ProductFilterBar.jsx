@@ -5,7 +5,8 @@ const ProductFilterBar = ({
   draftFilter,
   handleDraftFilterState,
   handleApplyDraftFilter,
-handleApply,
+  handleApply,
+  setDraftFilter,
 }) => {
   const [openDropdown, setOpenDropdown] = useState(null);
 
@@ -28,12 +29,13 @@ handleApply,
   };
 
   const handleReset = () => {
-     handleDraftFilterState({
-      orderStatus: "All",
-      paymentStatus: "All",
-      date: "All",
+    setDraftFilter({
+      category: "All",
+      subCategory: "All",
+      stockStatus: "All",
     });
     setOpenDropdown(null);
+    setIsDesktopFilterOpen(false);
   };
 
   const handleApplyFilter = () => {
@@ -140,8 +142,7 @@ handleApply,
           {openDropdown === "subCategory" && (
             <div className="absolute z-50 left-0 right-0 mt-1 bg-white border border-gray-100 rounded-lg shadow-xl p-1.5">
               {subCategories.map((sub) => {
-                const isSelected =
-                  draftFilter.subCategory === sub;
+                const isSelected = draftFilter.subCategory === sub;
                 return (
                   <button
                     key={sub}
@@ -186,7 +187,9 @@ handleApply,
             className="flex w-full justify-between items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 rounded-lg shadow-sm text-sm text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-100 transition-all cursor-pointer"
           >
             <span className="truncate">
-              {draftFilter.stockStatus === "All" ? draftFilter.stockStatus : mapStockValue[draftFilter.stockStatus]}
+              {draftFilter.stockStatus === "All"
+                ? draftFilter.stockStatus
+                : mapStockValue[draftFilter.stockStatus]}
             </span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
