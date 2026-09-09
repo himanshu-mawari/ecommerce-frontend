@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useNavigate, Link, useSearchParams } from "react-router-dom";
 import { showToast } from "../store/toastSlice";
 import { useLoginMutation } from "../services/authService.js";
-import { addUser } from "../store/userSlice.js";
+import { getSafeRedirect } from "../helpers/redirect.js";
 
 const AdminLogin = () => {
   const [email, setEmail] = useState("Himanshu@gmail.com");
@@ -13,10 +13,9 @@ const AdminLogin = () => {
   const [login, { isLoading }] = useLoginMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
 
-  const redirect = new URLSearchParams(location.search).get("redirect");
-
+  const [searchParams] = useSearchParams();
+  const redirect = getSafeRedirect(searchParams, "/admin/dashboard");
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -25,13 +24,11 @@ const AdminLogin = () => {
     }
 
     try {
-      const res = await login({ email, password }).unwrap();
-      if (res.data.role === "admin") {
-        dispatch(addUser(res?.data))
+      const user = await login({ email, password }).unwrap();
+      if (user?.role === "admin") {
         dispatch(showToast("Admin login successful"));
-        navigate(redirect ? `/${redirect}` : "/admin/dashboard");
+        navigate(redirect);
       } else {
-        dispatch(showToast("Admin access required"));
         navigate("/");
       }
     } catch (err) {
@@ -44,7 +41,6 @@ const AdminLogin = () => {
       <div className="max-w-md w-full bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
         <div className="max-w-md w-full bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
           <div className="pt-8 pb-4 px-6 text-center">
-            {/* Keep your exact typography */}
             <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
               Admin Login
             </h1>
@@ -82,7 +78,6 @@ const AdminLogin = () => {
               />
             </div>
 
-            {/* Error display keeps your original styling */}
             {error && <p className="text-sm text-red-500">{error}</p>}
 
             <button
