@@ -282,7 +282,7 @@ const AdminDashboard = () => {
                       );
                     })}
                     <Link
-                    to="/admin/products"
+                      to="/admin/products"
                       className="flex justify-center w-full"
                     >
                       <button className="w-full lg:w-60 py-3 lg:py-2  bg-indigo-700 hover:bg-indigo-800 transition-all text-white rounded-xl font-medium shadow-sm active:scale-[0.98] cursor-pointer">
@@ -319,11 +319,14 @@ const AdminDashboard = () => {
                         waiting to be processed.
                       </p>
                     </div>
-                    <div className="flex justify-center w-full">
+                    <Link
+                      to="/admin/orders?order_status=pending"
+                      className="flex justify-center w-full"
+                    >
                       <button className="w-full lg:w-60 py-3 lg:py-2  bg-indigo-700 hover:bg-indigo-800 transition-all text-white rounded-xl font-medium shadow-sm active:scale-[0.98] cursor-pointer">
                         Review now
                       </button>
-                    </div>
+                    </Link>
                   </div>
                 )}
               </div>
