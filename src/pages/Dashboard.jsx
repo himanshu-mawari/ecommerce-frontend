@@ -123,7 +123,7 @@ const AdminDashboard = () => {
           </div>
         </div>
       </header>
-      {isLoading ? (
+      { isLoading ? (
         <DashboardSkeleton />
       ) : isError ? (
         <ErrorState

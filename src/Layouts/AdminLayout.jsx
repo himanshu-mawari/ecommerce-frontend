@@ -7,13 +7,10 @@ const AdminLayout = () => {
   return (
     <div className="flex flex-col h-screen">
       <AdminHeader setSideBar={setSideBar} sideBar={sideBar} />
-      <div
-        className="flex flex-1 overflow-hidden"
-      >
+      <div className="flex flex-1 overflow-hidden">
         <AdminSidebar sideBar={sideBar} setSideBar={setSideBar} />
-        <div className="flex-1 overflow-y-auto ">
-
-        <Outlet />
+        <div className="flex-1 overflow-y-auto">
+          <Outlet />
         </div>
       </div>
     </div>
