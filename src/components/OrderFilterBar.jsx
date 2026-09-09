@@ -6,9 +6,8 @@ const OrderFilterBar = ({
   handleDraftState,
   handleApplyDraftIntoActive,
   handleApplyFilterIntoUrl,
-  setIsDesktopFilterOpen
+  setIsDesktopFilterOpen,
 }) => {
-
   const [openDropdown, setOpenDropdown] = useState(null);
 
   const paymentStatuses = ["All", "Paid", "Failed", "Pending"];
@@ -31,10 +30,6 @@ const OrderFilterBar = ({
     { label: "Last 30 Days", value: "last30days" },
   ];
 
-  // const getValueByKey = {
-  //   low_stock:Low Stock
-  // }
-
   const handleToggle = (menuName) => {
     setOpenDropdown(openDropdown === menuName ? null : menuName);
   };
@@ -46,14 +41,14 @@ const OrderFilterBar = ({
       date: "All",
     });
     setOpenDropdown(null);
-    setIsDesktopFilterOpen(false)
+    setIsDesktopFilterOpen(false);
   };
 
   const handleApply = () => {
     handleApplyFilterIntoUrl();
     handleApplyDraftIntoActive();
     setOpenDropdown(null);
-    setIsDesktopFilterOpen(false)
+    setIsDesktopFilterOpen(false);
   };
 
   return (
