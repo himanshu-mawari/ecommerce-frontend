@@ -6,8 +6,8 @@ import { useLoginMutation } from "../services/authService.js";
 import { getSafeRedirect } from "../helpers/redirect.js";
 
 const AdminLogin = () => {
-  const [email, setEmail] = useState("Himanshu@gmail.com");
-  const [password, setPassword] = useState("Himanshu@123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
   const [login, { isLoading }] = useLoginMutation();
@@ -24,7 +24,7 @@ const AdminLogin = () => {
     }
 
     try {
-      const user = await login({ email, password }).unwrap();
+      const { data: user } = await login({ email, password }).unwrap();
       if (user?.role === "admin") {
         dispatch(showToast("Admin login successful"));
         navigate(redirect);

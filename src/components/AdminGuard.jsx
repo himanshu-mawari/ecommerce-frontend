@@ -19,8 +19,6 @@ const AdminGuard = () => {
     return <Navigate to="/" replace />;
   }
 
- 
-
   return <Outlet />;
 };
 export default AdminGuard;
