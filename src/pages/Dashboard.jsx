@@ -60,7 +60,7 @@ const AdminDashboard = () => {
   ];
 
   const getInitials = (fullName) => {
-    if(!fullName) return;
+    if (!fullName) return;
     const words = fullName.trim().split(/\s+/);
 
     const firstInitial = words[0].charAt(0).toUpperCase();
@@ -122,7 +122,7 @@ const AdminDashboard = () => {
           </div>
         </div>
       </header>
-      { isLoading ? (
+      {isLoading ? (
         <DashboardSkeleton />
       ) : isError ? (
         <ErrorState
