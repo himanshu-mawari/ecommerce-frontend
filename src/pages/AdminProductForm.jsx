@@ -5,6 +5,8 @@ import {
   useAddProductMutation,
   useUpdateProductMutation,
 } from "../services/AdminService";
+import useErrorHandler from "../hooks/useErrorHandler";
+import ErrorState from "../components/ErrorState";
 import { useGetProductByIdQuery } from "../services/productService";
 
 const AdminProductForm = () => {
@@ -33,9 +35,10 @@ const AdminProductForm = () => {
   const navigate = useNavigate();
 
   const [addProduct] = useAddProductMutation();
-  const { data, isLoading } = useGetProductByIdQuery(productId, {
-    skip: !isEdit,
-  });
+  const { data, isLoading, isError, error, refetch, isFetching } =
+    useGetProductByIdQuery(productId, {
+      skip: !isEdit,
+    });
   const selectedProduct = data?.data;
   const [updateProduct] = useUpdateProductMutation();
 
