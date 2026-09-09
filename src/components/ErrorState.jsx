@@ -8,7 +8,7 @@ const ErrorState = ({
   isRetrying = false,
 }) => {
   return (
-    <div className="border-t">
+    <div >
     <div className="w-full px-4 md:px-8 lg:px-14 xl:px-24  sm:my-10 my-48 md:my-52 lg:my-32 ">
       <div className="mx-auto flex w-full max-w-xl flex-col items-center justify-center rounded-2xl border border-gray-200/80 bg-white p-6 text-center shadow-xs sm:p-12">
         {/* Icon Wrapper */}
