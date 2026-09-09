@@ -27,7 +27,7 @@ export const addressApi = baseApi.injectEndpoints({
         method: "GET",
       }),
       transformResponse: (data) => data.data,
-      providesTags: ["Address"], // FIXED
+      providesTags: ["Address"], 
     }),
 
     updateAddress: builder.mutation({
@@ -44,7 +44,7 @@ export const addressApi = baseApi.injectEndpoints({
         url: `/api/address/${addressId}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Address"], // FIXED
+      invalidatesTags: ["Address"], 
     }),
   }),
 });
