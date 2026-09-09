@@ -6,7 +6,6 @@ import {
   CiWarning,
 } from "react-icons/ci";
 import { ShoppingBag, CheckCircle2, Inbox } from "lucide-react";
-import { PiCurrencyInr } from "react-icons/pi";
 import { Link } from "react-router-dom";
 import { useGetDashboardQuery } from "../services/AdminService";
 import { STATUS_STYLES } from "../helpers/constant";
