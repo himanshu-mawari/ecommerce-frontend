@@ -10,6 +10,10 @@ import CheckoutSkeleton from "../components/CheckoutSkeleton.jsx";
 import useAuth from "../hooks/useAuth.js";
 import ErrorState from "../components/ErrorState";
 import useErrorHandler from "../hooks/useErrorHandler";
+import {
+  useAddWishlistProductMutation,
+  useRemoveWishlistProductMutation,
+} from "../services/userService";
 
 const Cart = () => {
   const [localQuantity, setLocalQuantity] = useState([]);
@@ -27,8 +31,11 @@ const Cart = () => {
   } = useGetCartQuery(undefined, {
     skip: !isAuthenticated,
   });
+
   const [removeCartItem] = useRemoveCartItemMutation();
   const [updateCart] = useUpdateCartMutation();
+  const [addWishlistProduct] = useAddWishlistProductMutation();
+  const [removeWishlistProduct] = useRemoveWishlistProductMutation();
 
   const formatPrice = (price) =>
     new Intl.NumberFormat("en-IN", {
@@ -85,6 +92,14 @@ const Cart = () => {
 
   const { message, showRetry } = useErrorHandler(error, "Cart");
 
+  const handleWishlist = async (productId, isWishlisted) => {
+    if (isWishlisted) {
+      await removeWishlistProduct({ productId });
+    } else {
+      await addWishlistProduct({ productId });
+    }
+  };
+
   return isLoading ? (
     <CheckoutSkeleton />
   ) : isError ? (
@@ -118,118 +133,138 @@ const Cart = () => {
               </div>
 
               <div className="flex flex-col">
-                {cartData?.items?.map((item) => (
-                  <div
-                    key={`${item?._id}-${item?.size}`}
-                    className="py-8 border-t border-gray-200"
-                  >
-                    <div className="flex items-start gap-5 md:gap-8">
-                      <div className="w-28 h-36 lg:w-32 lg:h-44 bg-gray-50 shrink-0 overflow-hidden rounded-xl border border-gray-100">
-                        <img
-                          src={item?.product?.images[0]?.url}
-                          alt={item?.name}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-
-                      <div className="flex flex-col flex-1 min-h-36">
-                        <div className="flex items-baseline justify-between">
-                          <span className="text-xl md:text-2xl font-medium text-black tabular-nums">
-                            ₹ {formatPrice(item?.product?.price)}
-                          </span>
+                {cartData?.items?.map((item) => {
+                  const productId = item?.product?._id;
+                  const isWishlisted = user?.wishlist?.includes(productId);
+                  return (
+                    <div
+                      key={`${item?._id}-${item?.size}`}
+                      className="py-8 border-t border-gray-200"
+                    >
+                      <div className="flex items-start gap-5 md:gap-8">
+                        <div className="w-28 h-36 lg:w-32 lg:h-44 bg-gray-50 shrink-0 overflow-hidden rounded-xl border border-gray-100">
+                          <img
+                            src={item?.product?.images[0]?.url}
+                            alt={item?.name}
+                            className="w-full h-full object-cover"
+                          />
                         </div>
 
-                        <h2 className="text-md md:text-lg font-medium mt-1 outfit leading-tight text-gray-900">
-                          {item?.product?.name}
-                        </h2>
+                        <div className="flex flex-col flex-1 min-h-36">
+                          <div className="flex items-baseline justify-between">
+                            <span className="text-xl md:text-2xl font-medium text-black tabular-nums">
+                              ₹ {formatPrice(item?.product?.price)}
+                            </span>
+                          </div>
 
-                        <p className="text-gray-400 text-sm md:text-md mt-2 font-medium">
-                          14 Day Return
-                        </p>
+                          <h2 className="text-md md:text-lg font-medium mt-1 outfit leading-tight text-gray-900">
+                            {item?.product?.name}
+                          </h2>
 
-                        <div className="mt-auto">
-                          <span className="text-gray-500 text-md  font-semibold border-b border-gray-500 text-md cursor-pointer inline-block ">
-                            Size {item?.size}
-                          </span>
+                          <p className="text-gray-400 text-sm md:text-md mt-2 font-medium">
+                            14 Day Return
+                          </p>
+
+                          <div className="mt-auto">
+                            <span className="text-gray-500 text-md  font-semibold border-b border-gray-500 text-md cursor-pointer inline-block ">
+                              Size {item?.size}
+                            </span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="flex items-center gap-3 mt-6">
-                      <div className="flex items-center justify-between border border-gray-200 rounded-full px-2 w-28 md:w-32 lg:w-36 bg-white shadow-sm transition-all">
+                      <div className="flex items-center gap-3 mt-6">
+                        <div className="flex items-center justify-between border border-gray-200 rounded-full px-2 w-28 md:w-32 lg:w-36 bg-white shadow-sm transition-all">
+                          <button
+                            className="text-black active:scale-75 transition-transform  flex items-center justify-center"
+                            onClick={() =>
+                              item.quantity > 1
+                                ? handleDecreaseQuantity(item)
+                                : handleRemoveCartItem(item?._id)
+                            }
+                          >
+                            {item?.quantity > 1 ? (
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth="1.5"
+                                stroke="currentColor"
+                                className="w-4 h-4 md:w-5 md:h-5  lg:h-6  cursor-pointer"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M5 12h14"
+                                />
+                              </svg>
+                            ) : (
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth="1.5"
+                                stroke="currentColor"
+                                className="w-4 h-4 md:w-5 md:h-5  lg:h-6 cursor-pointer"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                                />
+                              </svg>
+                            )}
+                          </button>
+
+                          <span className="text-sm md:text-base lg:text-lg font-bold text-black">
+                            {localQuantity[item?._id] ?? item?.quantity}
+                          </span>
+
+                          <button
+                            onClick={() => {
+                              handleIncreaseQuantity(item);
+                            }}
+                            className="text-black text-lg md:text-xl lg:text-2xl mb-1 active:scale-75 transition-transform p-1 cursor-pointer"
+                          >
+                            +
+                          </button>
+                        </div>
+
                         <button
-                          className="text-black active:scale-75 transition-transform  flex items-center justify-center"
+                          className="p-2 md:p-3 border border-gray-200 rounded-full active:bg-gray-100 shadow-sm flex items-center justify-center"
                           onClick={() =>
-                            item.quantity > 1
-                              ? handleDecreaseQuantity(item)
-                              : handleRemoveCartItem(item?._id)
+                            handleWishlist(productId, isWishlisted)
                           }
                         >
-                          {item?.quantity > 1 ? (
+                          {isWishlisted ? (
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
                               viewBox="0 0 24 24"
-                              strokeWidth="1.5"
-                              stroke="currentColor"
-                              className="w-4 h-4 md:w-5 md:h-5  lg:h-6  cursor-pointer"
+                              fill="currentColor"
+                              className="size-6"
                             >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M5 12h14"
-                              />
+                              <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
                             </svg>
                           ) : (
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               fill="none"
                               viewBox="0 0 24 24"
-                              strokeWidth="1.5"
+                              strokeWidth={1.5}
                               stroke="currentColor"
-                              className="w-4 h-4 md:w-5 md:h-5  lg:h-6 cursor-pointer"
+                              className="size-6"
                             >
                               <path
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
-                                d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                                d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
                               />
                             </svg>
                           )}
                         </button>
-
-                        <span className="text-sm md:text-base lg:text-lg font-bold text-black">
-                          {localQuantity[item?._id] ?? item?.quantity}
-                        </span>
-
-                        <button
-                          onClick={() => {
-                            handleIncreaseQuantity(item);
-                          }}
-                          className="text-black text-lg md:text-xl lg:text-2xl mb-1 active:scale-75 transition-transform p-1 cursor-pointer"
-                        >
-                          +
-                        </button>
                       </div>
-
-                      <button className="p-2 md:p-3 border border-gray-200 rounded-full active:bg-gray-100 shadow-sm flex items-center justify-center">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth="1.5"
-                          stroke="currentColor"
-                          className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
-                          />
-                        </svg>
-                      </button>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>
