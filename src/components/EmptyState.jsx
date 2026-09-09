@@ -6,8 +6,8 @@ const EmptyState = ({
   description,
   tone = "neutral",
   layout = "vertical",
+  action,
 }) => {
-  // Styles mapping based on tone
   const toneStyles = {
     neutral: {
       iconBg: "bg-gray-100",
@@ -33,13 +33,19 @@ const EmptyState = ({
 
   if (layout === "horizontal") {
     return (
-      <div className={`flex items-center gap-3 p-4 ${style.container}`}>
-        <div className={`p-2 rounded-lg shrink-0 ${style.iconBg}`}>
-          <Icon className={`size-6 ${style.iconColor}`} />
+      <div
+        className={`flex items-center gap-3 p-3.5 sm:p-4 ${style.container}`}
+      >
+        <div className={`p-1.5 sm:p-2 rounded-lg shrink-0 ${style.iconBg}`}>
+          <Icon className={`size-5 sm:size-6 ${style.iconColor}`} />
         </div>
         <div className="text-left">
-          <p className={`text-sm font-semibold ${style.titleColor}`}>{title}</p>
-          <p className={`text-xs ${style.descColor}`}>{description}</p>
+          <p className={`text-xs sm:text-sm font-semibold ${style.titleColor}`}>
+            {title}
+          </p>
+          <p className={`text-[11px] sm:text-xs ${style.descColor}`}>
+            {description}
+          </p>
         </div>
       </div>
     );
@@ -47,15 +53,20 @@ const EmptyState = ({
 
   return (
     <div
-      className={`flex flex-col items-center justify-center py-8 px-4 text-center ${style.container}`}
+      className={`flex flex-col items-center justify-center py-8 lg:py-28 px-4 text-center ${style.container}`}
     >
       <div className={`p-2.5 rounded-full mb-3 ${style.iconBg}`}>
         <Icon className={`size-7 ${style.iconColor}`} />
       </div>
-      <p className={`text-sm font-semibold ${style.titleColor}`}>{title}</p>
-      <p className={`text-xs mt-1 max-w-xs ${style.descColor}`}>
+      <p
+        className={`text-sm md:text-base lg:text-lg font-semibold ${style.titleColor}`}
+      >
+        {title}
+      </p>
+      <p className={`text-xs md:text-sm  mt-1 max-w-xs ${style.descColor}`}>
         {description}
       </p>
+      {action && <div className="mt-3">{action} </div>}
     </div>
   );
 };

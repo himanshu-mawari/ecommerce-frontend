@@ -10,11 +10,18 @@ import { Link, useSearchParams } from "react-router-dom";
 import DeleteConfirmModal from "../components/DeleteConfirmModal";
 import FilterProductBottomSheet from "../components/FilterProductBottomSheet";
 import ProductFilterBar from "../components/ProductFilterBar";
-import { useGetProductPageDataQuery , useDeleteProductMutation } from "../services/AdminService";
-import { Dot } from "lucide-react";
+import {
+  useGetProductPageDataQuery,
+  useDeleteProductMutation,
+} from "../services/AdminService";
+import { Dot, Package } from "lucide-react";
 import useDebounce from "../helpers/useDebounce";
 import EmptySearchState from "../components/EmptySearchState";
 import Pagination from "../components/Pagination";
+import AdminProductSkeleton from "../components/AdminProductSkeleton";
+import EmptyState from "../components/EmptyState";
+import ErrorState from "../components/ErrorState";
+import useErrorHandler from "../hooks/useErrorHandler";
 
 const AdminProductPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -39,7 +46,6 @@ const AdminProductPage = () => {
     subCategory: searchParams.get("sub_category") || "",
     stockStatus: searchParams.get("stock_status") || "",
   });
-
 
   const handleApply = () => {
     const filters = {
@@ -73,13 +79,14 @@ const AdminProductPage = () => {
     ...(currentPage !== 1 && { page: currentPage }),
   };
 
-  const { data, isLoading } = useGetProductPageDataQuery(queryParams);
+  const { data, isLoading, isError, error, refetch, isFetching } =
+    useGetProductPageDataQuery(queryParams);
   const displayProductData = data?.data;
   const { totalPages, pageSize, totalProductCount } = data?.metadata || {};
   const start = (currentPage - 1) * pageSize + 1;
   const end = Math.min(currentPage * pageSize, totalProductCount);
 
-  const [deleteProduct ] = useDeleteProductMutation();
+  const [deleteProduct] = useDeleteProductMutation();
 
   const getStatusByValue = (value) => {
     if (value === "Out of Stock")
@@ -95,7 +102,7 @@ const AdminProductPage = () => {
   };
 
   const handleProductDelete = async () => {
-    await deleteProduct({productId:selectedProduct._id})
+    await deleteProduct({ productId: selectedProduct._id });
     setOpen(false);
   };
 
@@ -125,14 +132,12 @@ const AdminProductPage = () => {
     });
   };
 
-  if (isLoading) {
-    return (
-      <div>
-        Hey software developer wait until data comes , i see you r very
-        inpatience
-      </div>
-    );
-  }
+  const hasActiveFilters = Object.values(activeFilter).some(
+    (value) => value !== "",
+  );
+  const showFilteredEmptyState = hasActiveFilters || inputValue !== "";
+
+  const { message, showRetry } = useErrorHandler(error, "Products");
 
   return (
     <div className="max-w-md sm:max-w-full sm:px-12 lg:px-6 mx-auto px-4 py-6 min-h-screen inter">
@@ -252,9 +257,36 @@ const AdminProductPage = () => {
             />
           )}{" "}
         </div>
-        {displayProductData?.length !== 0 ? (
+        {isLoading ? (
+          <AdminProductSkeleton />
+        ) : isError ? (
+          <ErrorState
+            message={message}
+            onRetry={refetch}
+            showRetry={showRetry}
+            isRetrying={isFetching}
+          />
+        ) : displayProductData?.length === 0 ? (
+          showFilteredEmptyState ? (
+            <EmptySearchState value={inputValue} />
+          ) : (
+            <EmptyState
+              icon={Package}
+              title="No products yet"
+              description="Add your first product to start building your catalog."
+              action={
+                <Link
+                  to="/admin/products/add"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700"
+                >
+                  + Add Product
+                </Link>
+              }
+            />
+          )
+        ) : (
           <div className="space-y-5">
-            {displayProductData.map((item) => (
+            {displayProductData?.map((item) => (
               <div
                 key={item._id}
                 className="bg-white border border-gray-200 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow"
@@ -319,8 +351,8 @@ const AdminProductPage = () => {
                 </div>
                 <div className="px-3  border-t pt-2 ">
                   <div className="flex gap-3">
-                    {item.sizes.map((size) => (
-                      <div className="flex text-xs ">
+                    {item?.sizes?.map((size) => (
+                      <div className="flex text-xs " key={size?.size}>
                         <p className="font-medium">{size.size}</p>:
                         <p className="text-gray-500">{size.stock}</p>
                       </div>
@@ -329,10 +361,6 @@ const AdminProductPage = () => {
                 </div>
               </div>
             ))}
-          </div>
-        ) : (
-          <div>
-            <EmptySearchState value={inputValue} />
           </div>
         )}
 
@@ -343,14 +371,16 @@ const AdminProductPage = () => {
           productName={selectedProduct?.name}
         />
       </div>
-      <Pagination
-        start={start}
-        end={end}
-        totalProductCount={totalProductCount}
-        onPageChange={goToPage}
-        currentPage={currentPage}
-        totalPages={totalPages}
-      />
+      {!isError && displayProductData?.length > 0 && (
+        <Pagination
+          start={start}
+          end={end}
+          totalProductCount={totalProductCount}
+          onPageChange={goToPage}
+          currentPage={currentPage}
+          totalPages={totalPages}
+        />
+      )}
       {isFilterOpen && (
         <FilterProductBottomSheet
           isOpen={isFilterOpen}
