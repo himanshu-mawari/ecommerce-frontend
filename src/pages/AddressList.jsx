@@ -3,17 +3,15 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { selectAddress } from "../store/addressSlice";
 import { useState } from "react";
-import Toast from "../components/Toast.jsx";
 import { useGetAllAddressesQuery } from "../services/addressService.js";
 import { useGetCartQuery } from "../services/cartService.js";
 import AddressSkeleton from "../components/AddressSkeleton.jsx";
 import ErrorState from "../components/ErrorState";
 import useErrorHandler from "../hooks/useErrorHandler";
 import EmptyAddress from "../components/EmptyAddress.jsx";
+import { toast } from "sonner";
 
 const AddressList = () => {
-  const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
   const [isBagOpen, setIsBagOpen] = useState(false);
   const [isPriceOpen, setIsPriceOpen] = useState(false);
 
@@ -64,8 +62,7 @@ const AddressList = () => {
 
   const handleShip = () => {
     if (!selectedAddressId || selectedAddressId.length === 0) {
-      setToastMessage("Please select an address first");
-      setShowToast(true);
+      toast.warning("Please select an address first");
       return;
     }
 
