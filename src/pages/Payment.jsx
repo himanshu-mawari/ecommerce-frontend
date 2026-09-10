@@ -4,10 +4,9 @@ import { useSelector } from "react-redux";
 import { useGetSingleAddressQuery } from "../services/addressService";
 import { useGetCartQuery } from "../services/cartService";
 import { useAddOrderMutation } from "../services/orderService";
-import { showToast } from "../store/toastSlice";
-import { useDispatch } from "react-redux";
 import useErrorHandler from "../hooks/useErrorHandler";
 import ErrorState from "../components/ErrorState";
+import { toast } from "sonner";
 
 const Payment = () => {
   const selectedAddressId = useSelector(
@@ -18,7 +17,6 @@ const Payment = () => {
   const [method, setMethod] = useState("COD");
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const {
     data: selectedAddress,
@@ -61,12 +59,12 @@ const Payment = () => {
 
   const handlePlaceOrder = async () => {
     if (!selectedAddress) {
-      dispatch(showToast("Select Address"));
+      toast.warning("Select an address");
       return;
     }
 
     if (!method) {
-      dispatch(showToast("Select a payment method"));
+      toast.warning("Select a payment method");
       return;
     }
     try {
@@ -77,14 +75,14 @@ const Payment = () => {
 
       if (method === "COD") {
         const data = await createOrder(orderData).unwrap();
-
-        dispatch(showToast("Order created successfully"));
         navigate(`/order-success/${data.data._id}`);
+        toast.success("Order created successfully");
       } else {
         console.error("Online payment flow");
       }
     } catch (err) {
       console.error(err);
+      toast.error(err?.data?.message || "Failed to place order")
     }
   };
 
