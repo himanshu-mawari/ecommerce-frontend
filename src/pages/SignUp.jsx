@@ -1,11 +1,9 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { useNavigate, useLocation, Link } from "react-router-dom";
-import { showToast } from "../store/toastSlice";
+import { useNavigate, Link } from "react-router-dom";
 import { useSignupMutation } from "../services/authService";
 import { getSafeRedirect } from "../helpers/redirect";
 import { useSearchParams } from "react-router-dom";
- 
+import { toast } from "sonner";
 
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -13,7 +11,6 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [searchParams] = useSearchParams();
@@ -25,27 +22,27 @@ const SignUp = () => {
     e.preventDefault();
 
     if (!name || !email || !password) {
-      return setError("please fill both field");
+      return setError("Please fill both fields");
     }
     try {
       await signup({ name, email, password }).unwrap();
       navigate(safeRedirect);
-      dispatch(showToast("Signup successful. Complete your profile"));
+      toast.success("Signup successful. Complete your profile");
     } catch (err) {
       console.error(err);
+      toast.error(err?.data?.message || "Failed signup");
     }
   };
-
 
   return (
     <div className="py-20 flex items-center justify-center bg-gray-50 px-4 border-t border-gray-300">
       <div className="max-w-md w-full  bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
         <div className="pt-8 pb-4 px-6">
           <h1 className="text-2xl md:text-3xl font-bold text-center text-gray-900">
-            Log in to your account
+            Create your account
           </h1>
           <p className="mt-2 text-center text-sm text-gray-500">
-            Welcome back! Please enter your details.
+            Let's get you started. Please enter your details.
           </p>
         </div>
 
@@ -78,7 +75,7 @@ const SignUp = () => {
           </div>
           <div className="flex flex-col gap-1.5">
             <input
-              type="email"
+              type="password"
               placeholder="Password"
               value={password}
               onChange={(e) => {
@@ -96,7 +93,7 @@ const SignUp = () => {
             type="submit"
             className="mt-2 w-full bg-black text-white py-2.5 rounded-lg font-semibold active:scale-95 duration-300 transition-all cursor-pointer"
           >
-            Sign in
+            Sign up
           </button>
 
           <Link
