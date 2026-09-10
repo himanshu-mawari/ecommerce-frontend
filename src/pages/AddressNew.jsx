@@ -16,6 +16,7 @@ import { selectAddress } from "../store/addressSlice";
 import { useDispatch } from "react-redux";
 import useErrorHandler from "../hooks/useErrorHandler.js";
 import ErrorState from "../components/ErrorState.jsx";
+import { toast } from "sonner";
 
 const AddressNew = () => {
   const { id } = useParams();
@@ -110,20 +111,29 @@ const AddressNew = () => {
       return;
     }
 
-    try {
-      if (isEdit) {
+    if (isEdit) {
+      try {
         const updatedAddress = await updateAddress({
           addressId: id,
           ...form,
         }).unwrap();
         dispatch(selectAddress(updatedAddress?.data?._id));
-      } else {
+        navigate(redirect || "/payment");
+        toast.success("Address updated successfully");
+      } catch (err) {
+        console.error(err);
+        toast.error(err?.data?.message || "Failed update address");
+      }
+    } else {
+      try {
         const newAddress = await addAddress(form).unwrap();
         dispatch(selectAddress(newAddress?.data?._id));
+        navigate(redirect || "/payment");
+        toast.success("Address added successfully");
+      } catch (err) {
+        console.error(err);
+        toast.error(err?.data?.message || "Failed add address");
       }
-      navigate(redirect || "/payment");
-    } catch (err) {
-      console.error(err.messages);
     }
   };
 
