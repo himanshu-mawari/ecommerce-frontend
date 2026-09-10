@@ -14,6 +14,7 @@ import {
   useAddWishlistProductMutation,
   useRemoveWishlistProductMutation,
 } from "../services/userService";
+import { toast } from "sonner";
 
 const Cart = () => {
   const [localQuantity, setLocalQuantity] = useState([]);
@@ -42,7 +43,7 @@ const Cart = () => {
       maximumFractionDigits: 0,
     }).format(price);
 
-  const handleIncreaseQuantity = (item) => {
+  const handleIncreaseQuantity = async (item) => {
     const { quantity, _id } = item;
     const newQty = quantity + 1;
 
@@ -51,27 +52,34 @@ const Cart = () => {
       [item._id]: newQty,
     }));
 
-    updateCart({
-      cartItemId: _id,
-      quantity: newQty,
-    });
-  };
-  const handleDecreaseQuantity = async (item) => {
-    try {
-      const { quantity, _id } = item;
-      const newQty = quantity === 1 ? 0 : quantity - 1;
-
-      setLocalQuantity((prev) => ({
-        ...prev,
-        [item._id]: newQty,
-      }));
+    try{
 
       await updateCart({
         cartItemId: _id,
         quantity: newQty,
       }).unwrap();
+    }catch(err){
+      console.error(err);
+      toast.error(err?.data?.message || "Failed increasing item quantity")
+    }
+  };
+  const handleDecreaseQuantity = async (item) => {
+    const { quantity, _id } = item;
+    const newQty = quantity === 1 ? 0 : quantity - 1;
+
+    setLocalQuantity((prev) => ({
+      ...prev,
+      [item._id]: newQty,
+    }));
+
+    try {
+      await updateCart({
+        cartItemId: _id,
+        quantity: newQty,
+      }).unwrap();
     } catch (err) {
-      console.error("Failed:", err);
+      console.error(err);
+      toast.error(err?.data?.message || "Failed decreasing item quantity");
     }
   };
 
@@ -79,7 +87,8 @@ const Cart = () => {
     try {
       await removeCartItem({ cartItemId: id }).unwrap();
     } catch (err) {
-      console.error("Failed:", err);
+      console.error(err);
+      toast.error(err?.data?.message || "Failed removing item from cart");
     }
   };
 
@@ -94,9 +103,21 @@ const Cart = () => {
 
   const handleWishlist = async (productId, isWishlisted) => {
     if (isWishlisted) {
-      await removeWishlistProduct({ productId });
+      try {
+        await removeWishlistProduct({ productId }).unwrap();
+        toast.success("Product removed successfully");
+      } catch (err) {
+        console.error(err);
+        toast.error(err?.data?.message || "Failed removing item from wishlist");
+      }
     } else {
-      await addWishlistProduct({ productId });
+      try {
+        await addWishlistProduct({ productId }).unwrap();
+        toast.success("Product added successfully");
+      } catch (err) {
+        console.error(err);
+        toast.error(err?.data?.message || "Failed adding item on wishlist");
+      }
     }
   };
 
