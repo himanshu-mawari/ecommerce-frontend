@@ -1,10 +1,9 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { useNavigate, useLocation, Link } from "react-router-dom";
-import { showToast } from "../store/toastSlice";
+import { useNavigate, Link } from "react-router-dom";
 import { useLoginMutation } from "../services/authService.js";
 import { getSafeRedirect } from "../helpers/redirect";
 import { useSearchParams } from "react-router-dom";
+import { toast } from "sonner";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -12,7 +11,6 @@ const Login = () => {
   const [login] = useLoginMutation();
   const [error, setError] = useState("");
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [searchParams] = useSearchParams();
@@ -22,15 +20,15 @@ const Login = () => {
     e.preventDefault();
 
     if (!email || !password) {
-      return setError("please fill both field");
+      return setError("Please fill both fields");
     }
     try {
       await login({ email, password }).unwrap();
-
-      dispatch(showToast("Login successful"));
       navigate(safeRedirect);
+      toast.success("Login successfully");
     } catch (err) {
       console.error(err);
+      toast.error(err?.data?.message || "Login failed");
     }
   };
 
