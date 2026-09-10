@@ -47,30 +47,23 @@ const Cart = () => {
     const { quantity, _id } = item;
     const newQty = quantity + 1;
 
-    setLocalQuantity((prev) => ({
-      ...prev,
-      [item._id]: newQty,
-    }));
+    setLocalQuantity((prev) => ({ ...prev, [item._id]: newQty }));
 
-    try{
-
+    try {
       await updateCart({
         cartItemId: _id,
         quantity: newQty,
       }).unwrap();
-    }catch(err){
+    } catch (err) {
       console.error(err);
-      toast.error(err?.data?.message || "Failed increasing item quantity")
+      toast.error(err?.data?.message || "Failed increasing item quantity");
+      setLocalQuantity((prev) => ({ ...prev, [item._id]: quantity }));
     }
   };
   const handleDecreaseQuantity = async (item) => {
     const { quantity, _id } = item;
     const newQty = quantity === 1 ? 0 : quantity - 1;
-
-    setLocalQuantity((prev) => ({
-      ...prev,
-      [item._id]: newQty,
-    }));
+    setLocalQuantity((prev) => ({ ...prev, [item._id]: newQty }));
 
     try {
       await updateCart({
@@ -80,6 +73,7 @@ const Cart = () => {
     } catch (err) {
       console.error(err);
       toast.error(err?.data?.message || "Failed decreasing item quantity");
+      setLocalQuantity((prev) => ({ ...prev, [item._id]: quantity }));
     }
   };
 
