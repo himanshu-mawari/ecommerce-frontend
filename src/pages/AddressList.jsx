@@ -338,12 +338,6 @@ const AddressList = () => {
           </button>
         </div>
       </div>
-      <Toast
-        message={toastMessage}
-        isVisible={showToast}
-        setIsVisible={setShowToast}
-        duration={2500}
-      />
     </div>
   );
 };
