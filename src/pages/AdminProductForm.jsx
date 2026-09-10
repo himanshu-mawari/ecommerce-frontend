@@ -8,6 +8,7 @@ import {
 import useErrorHandler from "../hooks/useErrorHandler";
 import ErrorState from "../components/ErrorState";
 import { useGetProductByIdQuery } from "../services/productService";
+import { toast } from "sonner";
 
 const AdminProductForm = () => {
   const initialSizes = [
@@ -118,11 +119,20 @@ const AdminProductForm = () => {
       formData.append(`image${index + 1}`, file),
     );
 
-    try {
-      if (isEdit) {
+    if (isEdit) {
+      try {
         await updateProduct({ data: formData, productId }).unwrap();
-      } else {
+        navigate("/admin/products");
+        toast.success("Product updated successfully");
+      } catch (err) {
+        console.error(err);
+        toast.error(err?.data?.message || "Failed product update");
+      }
+    } else {
+      try {
         await addProduct(formData).unwrap();
+        navigate("/admin/products");
+        toast.success("Product added successfully");
         setForm({
           title: "",
           description: "",
