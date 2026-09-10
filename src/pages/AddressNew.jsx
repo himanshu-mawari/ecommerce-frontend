@@ -151,7 +151,10 @@ const AddressNew = () => {
     }));
   };
 
-  const { message, showRetry } = useErrorHandler(addressError, "Edit infomation");
+  const { message, showRetry } = useErrorHandler(
+    addressError,
+    "Edit infomation",
+  );
 
   return (
     <div className="pb-12 relative">
