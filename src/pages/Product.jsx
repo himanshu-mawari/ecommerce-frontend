@@ -6,12 +6,12 @@ import RelatedProduct from "../components/RelatedProduct.jsx";
 import Reviews from "../components/Reviews.jsx";
 import { FaStar } from "react-icons/fa";
 import { FiStar } from "react-icons/fi";
-import Toast from "../components/Toast.jsx";
 import { useGetProductByIdQuery } from "../services/productService.js";
 import { useAddToCartMutation } from "../services/cartService.js";
 import ProductDetailSkeleton from "../components/ProductSkeleton.jsx";
 import ErrorState from "../components/ErrorState";
 import useErrorHandler from "../hooks/useErrorHandler";
+import { toast } from "sonner";
 
 const Product = () => {
   const [showToast, setShowToast] = useState(false);
@@ -47,17 +47,26 @@ const Product = () => {
 
     setError("");
 
-    await addToCart({
-      productId: activeProduct._id,
-      size: selectedSize,
-      quantity,
-    });
+    try {
+      await addToCart({
+        productId: activeProduct._id,
+        size: selectedSize,
+        quantity,
+      }).unwrap();
+      toast.success("Product added to cart");
 
-    setSelectedSize(null);
-    setToastMessage("Item added to cart");
-    setShowToast(true);
+      setSelectedSize(null);
+      setToastMessage("Item added to cart");
+      setShowToast(true);
+    } catch (err) {
+      console.error(err);
+      toast.error(err?.data?.message || "Failed add to cart");
+    }
   };
-  const { message, showRetry } = useErrorHandler(productError, "Product details");
+  const { message, showRetry } = useErrorHandler(
+    productError,
+    "Product details",
+  );
 
   return isLoading ? (
     <ProductDetailSkeleton />
