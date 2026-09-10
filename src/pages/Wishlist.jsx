@@ -8,6 +8,7 @@ import useAuth from "../hooks/useAuth";
 import CollectionSkeleton from "../components/CollectionSkeleton";
 import ErrorState from "../components/ErrorState";
 import useErrorHandler from "../hooks/useErrorHandler";
+import { toast } from "sonner";
 
 const Wishlist = () => {
   const { isAuthenticated } = useAuth();
@@ -27,9 +28,11 @@ const Wishlist = () => {
 
   const handleRemoveWishlist = async (productId) => {
     try {
-      await removeWishlistProduct({ productId });
+      await removeWishlistProduct({ productId }).unwrap();
+      toast.success("Product removed successfully");
     } catch (err) {
       console.error(err.message);
+      toast.error(err?.data?.message || "Failed removing item from wishlist");
     }
   };
 
