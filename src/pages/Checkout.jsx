@@ -159,7 +159,7 @@ const Cart = () => {
                       <div className="flex items-start gap-5 md:gap-8">
                         <div className="w-28 h-36 lg:w-32 lg:h-44 bg-gray-50 shrink-0 overflow-hidden rounded-xl border border-gray-100">
                           <img
-                            src={item?.product?.images[0]?.url}
+                            src={item?.product?.images?.[0]?.url}
                             alt={item?.name}
                             className="w-full h-full object-cover"
                           />
