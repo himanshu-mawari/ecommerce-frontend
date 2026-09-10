@@ -1,13 +1,12 @@
-import { useState, useEffect } from "react";
 import { FiHeart } from "react-icons/fi";
 import { FaHeart } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import {
   useAddWishlistProductMutation,
-  useGetUserWishlistQuery,
   useRemoveWishlistProductMutation,
 } from "../services/userService";
 import useAuth from "../hooks/useAuth";
+import { toast } from "sonner";
 
 const ProductCard = ({ data, variant }) => {
   const formatPrice = (price) =>
@@ -17,38 +16,31 @@ const ProductCard = ({ data, variant }) => {
       maximumFractionDigits: 0,
     }).format(price);
 
-  const { isAuthenticated } = useAuth();
+  const { user } = useAuth();
   const [addWishlistProduct] = useAddWishlistProductMutation();
-  const { data: wishlist, isLoading } = useGetUserWishlistQuery(undefined, {
-    skip: !isAuthenticated,
-  });
   const [removeWishlistProduct] = useRemoveWishlistProductMutation();
 
-  let isWishlistProduct = false;
-  if (!isLoading) {
-    isWishlistProduct =
-      wishlist?.wishlist?.some((product) => product._id === data._id) ?? false;
-  }
-  const [liked, setLiked] = useState(isWishlistProduct || false);
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    if (!isLoading) {
-      setLiked(isWishlistProduct);
-    }
-  }, [isWishlistProduct, isLoading]);
-
-  const handleWishlist = async (productId) => {
-    try {
-      if (!isWishlistProduct) {
-        await addWishlistProduct({ productId });
-      } else {
-        await removeWishlistProduct({ productId });
+  const handleWishlist = async (productId, isWishlisted) => {
+    if (isWishlisted) {
+      try {
+        await removeWishlistProduct({ productId }).unwrap();
+        toast.success("Product removed successfully");
+      } catch (err) {
+        console.error(err);
+        toast.error(err?.data?.message || "Failed removing item from wishlist");
       }
-    } catch (err) {
-      console.error(err.message);
+    } else {
+      try {
+        await addWishlistProduct({ productId }).unwrap();
+        toast.success("Product added successfully");
+      } catch (err) {
+        console.error(err);
+        toast.error(err?.data?.message || "Failed adding item on wishlist");
+      }
     }
   };
+
+  const isWishlisted = user?.wishlist?.includes(data?._id);
 
   return (
     <div>
@@ -73,11 +65,10 @@ const ProductCard = ({ data, variant }) => {
           <button
             className="mt-1 cursor-pointer"
             onClick={() => {
-              setLiked(!liked);
-              handleWishlist(data._id);
+              handleWishlist(data._id, isWishlisted);
             }}
           >
-            {liked ? <FaHeart /> : <FiHeart />}
+            {isWishlisted ? <FaHeart /> : <FiHeart />}
           </button>
         )}
       </div>
