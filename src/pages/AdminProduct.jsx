@@ -22,6 +22,7 @@ import AdminProductSkeleton from "../components/AdminProductSkeleton";
 import EmptyState from "../components/EmptyState";
 import ErrorState from "../components/ErrorState";
 import useErrorHandler from "../hooks/useErrorHandler";
+import { toast } from "sonner";
 
 const AdminProductPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -102,8 +103,14 @@ const AdminProductPage = () => {
   };
 
   const handleProductDelete = async () => {
-    await deleteProduct({ productId: selectedProduct._id });
-    setOpen(false);
+    try {
+      await deleteProduct({ productId: selectedProduct._id }).unwrap();
+      toast.success("Product delete successfully");
+      setOpen(false);
+    } catch (err) {
+      console.error(err);
+      toast.error(err?.data?.message || "Failed delete product");
+    }
   };
 
   const handleDraftFilterState = (key, value) => {
