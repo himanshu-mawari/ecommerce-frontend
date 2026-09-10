@@ -6,7 +6,6 @@ import Cart from "./pages/Checkout.jsx";
 import Login from "./pages/Login.jsx";
 import AddressNew from "./pages/AddressNew.jsx";
 import AddressList from "./pages/AddressList.jsx";
-import { useDispatch, useSelector } from "react-redux";
 import AuthGuard from "./components/AuthGuard.jsx";
 import Payment from "./pages/Payment.jsx";
 import PaymentGuard from "./components/PaymentGuard.jsx";
@@ -18,8 +17,6 @@ import OrderDetail from "./pages/OrderDetail.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import Error from "./components/Error.jsx";
 import SignUp from "./pages/SignUp.jsx";
-import { hideToast } from "./store/toastSlice";
-import Toast from "./components/Toast.jsx";
 import AddressGuard from "./components/AddressGuard.jsx";
 import AdminLayout from "./Layouts/AdminLayout.jsx";
 import AdminLogin from "./components/AdminLogin.jsx";
@@ -32,6 +29,7 @@ import AdminOrderDetail from "./pages/AdminOrderDetail.jsx";
 import Aboutus from "./pages/Aboutus.jsx";
 import Contactus from "./pages/Contactus.jsx";
 import Wishlist from "./pages/Wishlist.jsx";
+import { Toaster } from "sonner";
 
 const router = createBrowserRouter([
   {
@@ -143,18 +141,11 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
-  const dispatch = useDispatch();
-  const { message, isVisible } = useSelector((store) => store.toast);
-
   return (
     <>
-      <RouterProvider router={router} />{" "}
-      <Toast
-        message={message}
-        isVisible={isVisible}
-        setIsVisible={() => dispatch(hideToast())}
-        duration={2500}
-      />
+    
+      <Toaster position="top-center" richColors />
+      <RouterProvider router={router} />
     </>
   );
 };
