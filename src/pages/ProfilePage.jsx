@@ -6,8 +6,7 @@ import {
   Phone,
   Mail,
 } from "lucide-react";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useState, useEffect } from "react";
 import InputField from "../components/InputField";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -46,13 +45,22 @@ const ProfilePage = () => {
     email: user?.email || "",
   });
 
-  const dispatch = useDispatch();
-
   const profileFields = [
     { name: "name", label: "Full Name", type: "text" },
     { name: "phone", label: "Phone Number", type: "tel" },
     { name: "email", label: "Email Address", type: "email" },
   ];
+
+  useEffect(() => {
+    if (user) {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      setFormData({
+        name: user.name || "",
+        phone: user.phone || "",
+        email: user.email || "",
+      });
+    }
+  }, [user]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -215,7 +223,7 @@ const ProfilePage = () => {
             <section className="p-6 bg-gray-50 rounded-3xl">
               <h2 className="text-xl font-semibold mb-6">Recent Orders</h2>
               <div className="space-y-4">
-                {orders.slice(0, 2).map((order) => (
+                {orders?.slice(0, 2).map((order) => (
                   <div
                     key={order._id}
                     className="flex items-center justify-between p-4 bg-white rounded-2xl border border-gray-100 hover:border-gray-300 transition-all"
