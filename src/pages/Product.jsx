@@ -174,12 +174,6 @@ const Product = () => {
       <div className="max-w-7xl mx-auto px-4 py-10">
         <Reviews productReview={activeProduct.reviews} />
       </div>
-      <Toast
-        message={toastMessage}
-        isVisible={showToast}
-        setIsVisible={setShowToast}
-        duration={2500}
-      />
     </div>
   );
 };
