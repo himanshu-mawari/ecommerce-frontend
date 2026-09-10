@@ -17,9 +17,9 @@ import { useGetUserOrderQuery } from "../services/orderService.js";
 import { useLogoutMutation } from "../services/authService.js";
 import { useUpdateUserProfileMutation } from "../services/userService.js";
 import ProfilePageSkeleton from "../components/ProfilePageSkeleton.jsx";
-import { showToast } from "../store/toastSlice";
 import ErrorState from "../components/ErrorState";
 import useErrorHandler from "../hooks/useErrorHandler";
+import { toast } from "sonner";
 
 const ProfilePage = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -65,15 +65,25 @@ const ProfilePage = () => {
       phone: formData.phone,
       email: formData.email,
     };
-    await updateUserProfile(data);
-    dispatch(showToast("Profile update successfully"));
-    setIsEditOpen(false);
+    try {
+      await updateUserProfile(data).unwrap();
+      toast.success("Profile updated successfully");
+      setIsEditOpen(false);
+    } catch (err) {
+      console.error(err);
+      toast.error(err?.data?.message || "Failed profile update");
+    }
   };
 
   const handleLogout = async () => {
-    await logout();
-    navigate("/");
-    dispatch(showToast("Logout successful"));
+    try {
+      await logout().unwrap();
+      navigate("/");
+      toast.success("Logout successfully");
+    } catch (err) {
+      console.error(err);
+      toast.error(err?.data?.message || "Failed logout");
+    }
   };
   const { message, showRetry } = useErrorHandler(error, "Profile");
 
