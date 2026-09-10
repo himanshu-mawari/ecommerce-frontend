@@ -17,6 +17,7 @@ import { ORDER_STEPS } from "../helpers/constant";
 import AdminOrderDetailSkeleton from "../components/AdminOrderDetailSkeleton";
 import useErrorHandler from "../hooks/useErrorHandler";
 import ErrorState from "../components/ErrorState";
+import { toast } from "sonner";
 
 const AdminOrderDetail = () => {
   const { orderId } = useParams();
@@ -103,16 +104,20 @@ const AdminOrderDetail = () => {
   const handleOrderStatusChange = async (newStatus) => {
     try {
       await changeOrderStatus({ orderId, status: newStatus }).unwrap();
+      toast.success("Order status update successfully");
     } catch (err) {
       console.error("failure :" + err.message);
+      toast.error(err?.data?.message || "Failed order status update");
     }
   };
 
   const handleCancelOrder = async (newStatus) => {
     try {
       await cancelOrder({ orderId, status: newStatus }).unwrap();
+      toast.success("Order cancelled successfully");
     } catch (err) {
-      console.error("failure :" + err.message);
+      console.error(err);
+      toast.error(err?.data?.message || "Failed order cancel");
     }
   };
 
@@ -243,7 +248,9 @@ const AdminOrderDetail = () => {
                   Payment Summary
                 </h2>
                 <span
-                  className={`px-3 py-0.5 rounded-full text-xs font-bold uppercase ${statusStyles[paymentStatus]}`}
+                  className={`px-3 py-0.5 rounded-full text-xs font-bold uppercase ${
+                    statusStyles[paymentStatus] || "bg-gray-100 text-gray-800"
+                  }`}
                 >
                   {paymentStatus}
                 </span>
@@ -332,10 +339,10 @@ const AdminOrderDetail = () => {
 
             <div className="p-5 border border-gray-200 shadow-sm rounded-xl bg-white">
               <h2 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">
-                Items ({orderItems.length})
+                Items ({orderItems?.length ?? 0})
               </h2>
               <div className="divide-y divide-gray-100">
-                {orderItems.map((item) => (
+                {orderItems?.map((item) => (
                   <div
                     key={item.id}
                     className="flex py-4 gap-4 first:pt-0 last:pb-0"
