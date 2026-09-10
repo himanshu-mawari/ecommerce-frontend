@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { assets } from "../assets/assets.js";
 import { NavLink, Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import {
   ChevronRight,
   HelpCircle,
@@ -10,12 +9,12 @@ import {
   LogOut,
   X,
 } from "lucide-react";
-import { removeUser } from "../store/userSlice.js";
-import { showToast } from "../store/toastSlice";
 import { useGetCartQuery } from "../services/cartService.js";
 import { FiHeart } from "react-icons/fi";
 import { UserRound, ShoppingCart, Search } from "lucide-react";
 import useAuth from "../hooks/useAuth.js";
+import { toast } from "sonner";
+import { useLogoutMutation } from "../services/authService.js";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,9 +27,9 @@ const Navbar = () => {
   const { data: cartData = [] } = useGetCartQuery(undefined, {
     skip: !isAuthenticated,
   });
+  const [logout] = useLogoutMutation();
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const navLinks = [
     { label: "Men", path: "/men" },
@@ -43,11 +42,15 @@ const Navbar = () => {
   const handleSearch = (searchTerm) => {
     navigate(`/collections/shop-all?q=${searchTerm}`);
   };
-
   const handleLogout = async () => {
-    dispatch(removeUser());
-    navigate("/");
-    dispatch(showToast("Logout successful"));
+    try {
+      await logout().unwrap();
+      navigate("/");
+      toast.success("Logout successful");
+    } catch (err) {
+      console.error(err);
+      toast.error(err?.data?.message || "Logout failed");
+    }
   };
 
   return (
