@@ -17,7 +17,7 @@ import {
 import { toast } from "sonner";
 
 const Cart = () => {
-  const [localQuantity, setLocalQuantity] = useState([]);
+  const [localQuantity, setLocalQuantity] = useState({});
   const { isAuthenticated, user } = useAuth();
 
   const navigate = useNavigate();
