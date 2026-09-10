@@ -26,12 +26,12 @@ const AdminLogin = () => {
     try {
       const { data: user } = await login({ email, password }).unwrap();
       if (user?.role === "admin") {
-        toast.success("Admin login successful");
         navigate(redirect);
+        toast.success("Admin login successful");
       } else {
+        navigate("/");
         toast.success("Logged in successfully");
 
-        navigate("/");
       }
     } catch (err) {
       setError(err?.data?.message || "Invalid credentials");
