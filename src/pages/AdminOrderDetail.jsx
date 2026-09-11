@@ -36,8 +36,9 @@ const AdminOrderDetail = () => {
     data?.shippingAddress || {};
   const { method, status: paymentStatus } = data?.paymentDetails || {};
 
-  const [changeOrderStatus] = useChangeOrderStatusMutation();
-  const [cancelOrder] = useCancelOrderMutation();
+  const [changeOrderStatus, { isLoading: isChangingStatus }] =
+    useChangeOrderStatusMutation();
+  const [cancelOrder, { isLoading: isCancelling }] = useCancelOrderMutation();
 
   const handleDateFormat = (mongoDate) => {
     const dateObj = new Date(mongoDate);
@@ -223,6 +224,7 @@ const AdminOrderDetail = () => {
                     <button
                       className="hidden md:inline-flex items-center justify-center px-5 py-2.5 bg-[#0b1329] hover:bg-[#162245] text-white text-sm font-semibold rounded-xl shadow-sm gap-1.5 transition-all active:scale-[0.98]"
                       onClick={() => handleOrderStatusChange(nextStep)}
+                      disabled={isChangingStatus}
                     >
                       <span>Mark as {nextStep}</span>
                       <FiChevronRight className="size-4" />
@@ -233,6 +235,7 @@ const AdminOrderDetail = () => {
                     <button
                       className="inline-flex items-center justify-center px-4 py-2.5 border border-gray-200 hover:bg-gray-50 text-gray-700 text-xs font-semibold rounded-xl shadow-sm gap-2 transition-colors"
                       onClick={() => handleCancelOrder("cancelled")}
+                      disabled={isCancelling}
                     >
                       <TbCancel className="size-4 text-red-500" />
                       <span>Cancel order</span>
@@ -343,7 +346,7 @@ const AdminOrderDetail = () => {
               <div className="divide-y divide-gray-100">
                 {orderItems?.map((item) => (
                   <div
-                    key={item.id}
+                    key={item._id}
                     className="flex py-4 gap-4 first:pt-0 last:pb-0"
                   >
                     <img
