@@ -4,6 +4,7 @@ import OrdersSkeleton from "../components/OrderSkeleton";
 import ErrorState from "../components/ErrorState";
 import useErrorHandler from "../hooks/useErrorHandler";
 import EmptyOrder from "../components/EmptyOrder.jsx";
+import { STATUS_STYLES } from "../helpers/constant.js";
 
 const OrderCard = () => {
   const {
@@ -26,13 +27,6 @@ const OrderCard = () => {
       day: "numeric",
       year: "numeric",
     });
-  };
-
-  const statusStyles = {
-    delivered: "bg-green-100 text-green-700",
-    shipped: "bg-blue-100 text-blue-700",
-    pending: "bg-yellow-100 text-yellow-600",
-    cancelled: "bg-red-100 text-red-700",
   };
 
   const { message, showRetry } = useErrorHandler(error, "Profile");
@@ -67,7 +61,7 @@ const OrderCard = () => {
                   </span>
 
                   <span
-                    className={`px-3 md:px-5 py-1 rounded-full text-xs md:text-sm font-semibold ${statusStyles[order.status]}`}
+                    className={`px-3 md:px-5 py-1 rounded-full text-xs md:text-sm font-semibold ${STATUS_STYLES[order.status]}`}
                   >
                     {order.status}
                   </span>

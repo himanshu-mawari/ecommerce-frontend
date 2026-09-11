@@ -6,7 +6,6 @@ import {
   FiCheckCircle,
 } from "react-icons/fi";
 import { CiClock1, CiCircleCheck } from "react-icons/ci";
-import { statusStyles } from "../data/orderDetail";
 import {
   useGetOrderDetailPageDataQuery,
   useChangeOrderStatusMutation,
@@ -18,6 +17,7 @@ import AdminOrderDetailSkeleton from "../components/AdminOrderDetailSkeleton";
 import useErrorHandler from "../hooks/useErrorHandler";
 import ErrorState from "../components/ErrorState";
 import { toast } from "sonner";
+import { STATUS_STYLES } from "../helpers/constant";
 
 const AdminOrderDetail = () => {
   const { orderId } = useParams();
@@ -128,7 +128,6 @@ const AdminOrderDetail = () => {
     error,
     "Order detail information",
   );
-
   return (
     <div className="max-w-2xl lg:max-w-full mx-auto px-4 sm:px-0 lg:px-6 py-6 pb-24 inter">
       <div className="flex items-center gap-4 sm:gap-0 md:gap-1 w-full">
@@ -167,7 +166,7 @@ const AdminOrderDetail = () => {
           {data && (
             <span
               className={`inline-flex items-center px-3 py-1 rounded-full text-xs lg:text-sm lg:font-medium font-semibold ${
-                statusStyles[status] || "bg-gray-100 text-gray-800"
+                STATUS_STYLES[status] || "bg-gray-100 text-gray-800"
               }`}
             >
               {capitalize(status)}
@@ -249,7 +248,7 @@ const AdminOrderDetail = () => {
                 </h2>
                 <span
                   className={`px-3 py-0.5 rounded-full text-xs font-bold uppercase ${
-                    statusStyles[paymentStatus] || "bg-gray-100 text-gray-800"
+                    STATUS_STYLES[paymentStatus] || "bg-gray-100 text-gray-800"
                   }`}
                 >
                   {paymentStatus}

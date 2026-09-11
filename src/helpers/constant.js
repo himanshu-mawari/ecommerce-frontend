@@ -8,10 +8,13 @@ export const ORDER_STEPS = [
   "delivered",
 ];
 export const STATUS_STYLES = {
-  delivered: "bg-green-100 text-green-700",
-  shipped: "bg-blue-100 text-blue-700",
-  pending: "bg-yellow-100 text-yellow-600",
-  cancelled: "bg-red-100 text-red-700",
-  packed: "bg-purple-100 text-purple-700",
-  confirmed: "bg-emerald-100 text-emerald-700",
+  pending: "bg-amber-100 text-amber-800 border-amber-200",
+  confirmed: "bg-blue-100 text-blue-800 border-blue-200",
+  packed: "bg-purple-100 text-purple-800 border-purple-200",
+  shipped: "bg-indigo-100 text-indigo-800 border-indigo-200",
+  delivered: "bg-emerald-100 text-emerald-800 border-emerald-200",
+  cancelled: "bg-red-100 text-red-800 border-red-200",
+  paid: "bg-green-100 text-green-800",
+  unpaid: "bg-amber-100 text-amber-800",
+  failed: "bg-red-100 text-red-800",
 };

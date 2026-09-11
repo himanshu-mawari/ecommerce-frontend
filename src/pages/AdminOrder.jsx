@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { CiClock1 } from "react-icons/ci";
 import { MdOutlineCancel } from "react-icons/md";
-import { statusStyles } from "../data/orderDetail";
 import FilterBottomSheet from "../components/FilterBottomSheet";
 import OrderFilterBar from "../components/OrderFilterBar";
 import { useGetOrderPageDataQuery } from "../services/AdminService";
@@ -13,6 +12,7 @@ import useErrorHandler from "../hooks/useErrorHandler";
 import ErrorState from "../components/ErrorState";
 import { PackageOpen, SearchX } from "lucide-react";
 import EmptyState from "../components/EmptyState";
+import { STATUS_STYLES } from "../helpers/constant";
 
 const AdminOrderPage = () => {
   const navigate = useNavigate();
@@ -305,7 +305,7 @@ const AdminOrderPage = () => {
                         <span className="ml-1">+{order.items.length}</span>
                       </p>
                       <span
-                        className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${statusStyles[order.status.toLowerCase()]}`}
+                        className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${STATUS_STYLES[order.status.toLowerCase()]}`}
                       >
                         {order.status}
                       </span>
@@ -378,7 +378,7 @@ const AdminOrderPage = () => {
                         <td className="px-6 py-4">
                           <span
                             className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                              statusStyles[order.status?.toLowerCase()] ||
+                              STATUS_STYLES[order.status?.toLowerCase()] ||
                               "bg-gray-100 text-gray-800"
                             }`}
                           >
