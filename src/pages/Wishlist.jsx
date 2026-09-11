@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import ProductCard from "../components/ProductCard";
 import {
   useGetUserWishlistQuery,
@@ -9,8 +10,10 @@ import CollectionSkeleton from "../components/CollectionSkeleton";
 import ErrorState from "../components/ErrorState";
 import useErrorHandler from "../hooks/useErrorHandler";
 import { toast } from "sonner";
+import ProductModal from "../components/ProductModal.jsx";
 
 const Wishlist = () => {
+  const [activeProduct, setActiveProduct] = useState(null);
   const { isAuthenticated } = useAuth();
   const {
     data: wishlist,
@@ -22,7 +25,8 @@ const Wishlist = () => {
   } = useGetUserWishlistQuery(undefined, {
     skip: !isAuthenticated,
   });
-  const [removeWishlistProduct] = useRemoveWishlistProductMutation();
+  const [removeWishlistProduct, { isLoading: isRemoving }] =
+    useRemoveWishlistProductMutation();
 
   const wishlistData = wishlist?.wishlist;
 
@@ -37,6 +41,18 @@ const Wishlist = () => {
   };
 
   const { message, showRetry } = useErrorHandler(error, "Wishlist");
+
+  useEffect(() => {
+    if (activeProduct) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [activeProduct]);
 
   return (
     <div className="px-4 md:px-8 lg:px-14 xl:px-24 border-t">
@@ -61,9 +77,10 @@ const Wishlist = () => {
           {wishlistData.map((product) => (
             <div className="relative" key={product._id}>
               <ProductCard data={product} variant="wishlist" />
-              <div
+              <button
                 className="absolute top-1 right-2 z-10"
                 onClick={() => handleRemoveWishlist(product._id)}
+                disabled={isRemoving}
               >
                 <span
                   className="bg-gray-100 rounded-full flex items-center justify-center shadow-sm cursor-pointer hover:bg-gray-200 transition-colors
@@ -87,15 +104,25 @@ const Wishlist = () => {
                     <path d="m6 6 12 12" />
                   </svg>
                 </span>
-              </div>
+              </button>
               <div className="border border-gray-300 my-1  rounded-full inline-block text-xs md:text-lg">
-                <button className="py-1.5 px-5 md:px-10 md:py-2">
+                <button
+                  className="py-1.5 px-5 md:px-10 md:py-2"
+                  onClick={() => setActiveProduct(product)}
+                >
                   Move to Bag
                 </button>
               </div>
             </div>
           ))}
         </div>
+      )}
+      {activeProduct && (
+        <ProductModal
+          key={activeProduct._id}
+          product={activeProduct}
+          setActiveProduct={setActiveProduct}
+        />
       )}
     </div>
   );
