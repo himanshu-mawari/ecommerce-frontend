@@ -9,14 +9,16 @@ export const authApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags:["User"]
     }),
-
+    
     signup: builder.mutation({
       query: (data) => ({
         url: "api/auth/signup",
         method: "POST",
         body: data,
       }),
+      invalidatesTags:["User"]
     }),
 
     logout: builder.mutation({
@@ -24,6 +26,13 @@ export const authApi = baseApi.injectEndpoints({
         url: "api/auth/logout",
         method: "POST",
       }),
+      async onQueryStarted(_, {dispatch, queryFulfilled}){
+        try{
+          await queryFulfilled
+        }finally{
+          dispatch(baseApi.util.resetApiState())
+        }
+      }
     }),
 
   }),
