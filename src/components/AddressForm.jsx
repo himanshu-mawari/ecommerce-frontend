@@ -70,10 +70,11 @@ const AddressForm = ({ form, id, handleChange, error, onSubmit, isEdit }) => {
             <div className="lg:col-span-2 flex justify-start mt-2">
               <button
                 type="button"
+                disabled={isLoading}
                 className="text-sm text-red-500 geist border-b border-red-500 cursor-pointer active:scale-95 transition-all"
                 onClick={handleRemove}
               >
-                Remove address
+                {isLoading ? "Removing..." : "Remove address"}
               </button>
             </div>
           )}
