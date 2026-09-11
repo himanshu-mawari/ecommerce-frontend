@@ -51,7 +51,7 @@ const OrderDetail = () => {
               </div>
               <div>
                 <span
-                  className={`${statusStyles["pending"]} text-xs font-bold px-2 py-1 rounded-full uppercase tracking-wider`}
+                  className={`${STATUS_STYLES[order.status]} text-xs font-bold px-2 py-1 rounded-full uppercase tracking-wider`}
                 >
                   {order.status}
                 </span>
