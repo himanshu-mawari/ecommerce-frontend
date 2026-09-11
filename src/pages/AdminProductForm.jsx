@@ -35,13 +35,13 @@ const AdminProductForm = () => {
   const isEdit = Boolean(productId);
   const navigate = useNavigate();
 
-  const [addProduct] = useAddProductMutation();
+  const [addProduct, { isLoading: isAdding }] = useAddProductMutation();
   const { data, isLoading, isError, error, refetch, isFetching } =
     useGetProductByIdQuery(productId, {
       skip: !isEdit,
     });
   const selectedProduct = data?.data;
-  const [updateProduct] = useUpdateProductMutation();
+  const [updateProduct, { isLoading: isUpdating }] = useUpdateProductMutation();
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -152,6 +152,8 @@ const AdminProductForm = () => {
 
   const { message, showRetry } = useErrorHandler(error, "Product infomation");
 
+  const isSubmitting = isAdding || isUpdating;
+
   return (
     <div className=" max-w-md mx-auto md:max-w-full px-5 md:px-12 lg:px-6 py-6 min-h-screen font-sans pb-32">
       <form onSubmit={handleProductAdd}>
@@ -169,10 +171,13 @@ const AdminProductForm = () => {
           <div className="hidden lg:flex items-center gap-3">
             <button
               type="submit"
-              disabled={isLoading || isFetching}
-              className="w-full sm:w-auto bg-indigo-700 text-white hover:bg-indigo-800 hover:shadow-sm rounded-lg font-medium px-6 py-2 text-sm transition-colors cursor-pointer disabled:opacity-50"
+              disabled={isSubmitting || isFetching}
+              className="w-full sm:w-auto bg-indigo-700 text-white hover:bg-indigo-800 hover:shadow-sm rounded-lg font-medium px-6 py-2 text-sm transition-colors cursor-pointer disabled:opacity-50 inline-flex items-center justify-center gap-2"
             >
-              Save Product
+              {isSubmitting && (
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+              )}
+              {isSubmitting ? "Saving..." : "Save Product"}
             </button>
 
             <button
@@ -211,14 +216,28 @@ const AdminProductForm = () => {
         <div className="fixed bottom-0 left-0 right-0 p-4 bg-white/80 backdrop-blur-lg border-t border-gray-100 z-40 lg:hidden">
           <div className="max-w-md mx-auto">
             <button
-              className="w-full bg-indigo-700 text-white py-3.5 rounded-2xl font-bold text-md shadow-lg shadow-indigo-100 active:scale-[0.98] transition-all disabled:opacity-50"
+              className="w-full bg-indigo-700 text-white py-3.5 rounded-2xl font-bold text-md shadow-lg shadow-indigo-100 active:scale-[0.98] transition-all disabled:opacity-50 inline-flex items-center justify-center gap-2"
               type="submit"
-              disabled={isLoading || isFetching}
+              disabled={isSubmitting || isFetching}
             >
-              Save Product
+              {isSubmitting && (
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+              )}
+              {isSubmitting ? "Saving..." : "Save Product"}
             </button>
           </div>
         </div>
+
+        {isSubmitting && (
+          <div className="fixed inset-0 bg-white/60 backdrop-blur-sm flex items-center justify-center z-50">
+            <div className="flex flex-col items-center gap-3">
+              <div className="h-10 w-10 animate-spin rounded-full border-2 border-indigo-700 border-t-transparent" />
+              <p className="text-sm font-medium text-gray-600">
+                Saving product...
+              </p>
+            </div>
+          </div>
+        )}
       </form>
     </div>
   );
