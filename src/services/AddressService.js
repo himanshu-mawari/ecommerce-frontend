@@ -27,7 +27,7 @@ export const addressApi = baseApi.injectEndpoints({
         method: "GET",
       }),
       transformResponse: (data) => data.data,
-      providesTags: ["Address"], 
+      keepUnusedDataFor: 0
     }),
 
     updateAddress: builder.mutation({
