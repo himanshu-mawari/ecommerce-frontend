@@ -221,6 +221,7 @@ const AddressNew = () => {
           <div>
             <AddressForm
               form={form}
+              id={id}
               handleChange={handleChange}
               error={error}
               onSubmit={handleSubmit}

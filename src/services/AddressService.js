@@ -9,7 +9,7 @@ export const addressApi = baseApi.injectEndpoints({
         method: "POST",
         body: address,
       }),
-      invalidatesTags: ["Address"], 
+      invalidatesTags: ["Addresses"], 
     }),
 
     getAllAddresses: builder.query({
@@ -18,7 +18,7 @@ export const addressApi = baseApi.injectEndpoints({
         method: "GET",
       }),
       transformResponse: (data) => data.data,
-      providesTags: ["Address"],
+      providesTags: ["Addresses"],
     }),
 
     getSingleAddress: builder.query({
@@ -36,7 +36,7 @@ export const addressApi = baseApi.injectEndpoints({
         method: "PATCH",
         body: data,
       }),
-      invalidatesTags: ["Address"],
+      invalidatesTags: ["Addresses"],
     }),
 
     deleteAddress: builder.mutation({
@@ -44,7 +44,7 @@ export const addressApi = baseApi.injectEndpoints({
         url: `/api/address/${addressId}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Address"], 
+      invalidatesTags: ["Addresses"], 
     }),
   }),
 });

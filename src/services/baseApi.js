@@ -16,7 +16,7 @@ export const baseApi = createApi({
     "Order",
     "HomeProduct",
     "UserWishlist",
-    "Address",
+    "Addresses",
     "Dashboard",
     "AdminProduct",
     "AdminOrder",

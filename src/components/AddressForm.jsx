@@ -1,13 +1,21 @@
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import InputField from "./InputField.jsx";
+import { useDeleteAddressMutation } from "../services/addressService.js";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
-const AddressForm = ({ form, handleChange, error, onSubmit, isEdit }) => {
+const AddressForm = ({ form, id, handleChange, error, onSubmit, isEdit }) => {
+  const [deleteAddress , {isLoading}] = useDeleteAddressMutation();
   const navigate = useNavigate();
 
-  const handleRemove = () => {
-    // dispatch(deleteAddress(form.id));
-    // navigate("/address/saved");
+  const handleRemove = async () => {
+    try {
+      await deleteAddress({ addressId: id }).unwrap();
+      navigate("/address/saved", { state: { manual: true } });
+      toast.success("Address deleted successfully");
+    } catch (err) {
+      console.error(err);
+      toast.error(err?.data?.message || "Failed address delete");
+    }
   };
 
   const topFields = [
