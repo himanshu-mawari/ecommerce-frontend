@@ -18,3 +18,5 @@ export const STATUS_STYLES = {
   unpaid: "bg-amber-100 text-amber-800",
   failed: "bg-red-100 text-red-800",
 };
+
+export const SIZES = ["S", "M", "L", "XL", "XXL"];
