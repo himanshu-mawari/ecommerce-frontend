@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useGetSingleOrderQuery } from "../services/orderService";
+import { STATUS_STYLES } from "../helpers/constant";
 
 import { Package, Calendar, CreditCard, MapPin } from "lucide-react";
 
@@ -8,14 +9,6 @@ const OrderDetail = () => {
 
   const { data: order, isLoading } = useGetSingleOrderQuery(orderId);
   if (isLoading) return <div></div>;
-
-  const statusStyles = {
-    pending: "bg-yellow-100 text-yellow-600",
-    confirmed: "bg-gray-100 text-gray-700",
-    delivered: "bg-green-100 text-green-700",
-    shipped: "bg-blue-100 text-blue-700",
-    cancelled: "bg-red-100 text-red-700",
-  };
 
   const formatPrice = (price) =>
     new Intl.NumberFormat("en-IN", {
