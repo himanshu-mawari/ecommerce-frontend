@@ -43,6 +43,9 @@ const AdminProductForm = () => {
   const selectedProduct = data?.data;
   const [updateProduct, { isLoading: isUpdating }] = useUpdateProductMutation();
 
+  const isSubmitting = isAdding || isUpdating;
+
+
   useEffect(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
 
@@ -152,7 +155,6 @@ const AdminProductForm = () => {
 
   const { message, showRetry } = useErrorHandler(error, "Product infomation");
 
-  const isSubmitting = isAdding || isUpdating;
 
   return (
     <div className=" max-w-md mx-auto md:max-w-full px-5 md:px-12 lg:px-6 py-6 min-h-screen font-sans pb-32">
