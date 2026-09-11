@@ -196,7 +196,11 @@ const ProfilePage = () => {
                         Phone: {mostRecentAddress?.phone}
                       </p>
                     </div>
-                    <Link to="/address/saved" className="inline-block">
+                    <Link
+                      to="/address/saved"
+                      state={{ manual: true }}
+                      className="inline-block"
+                    >
                       <button className="text-black font-semibold border-b border-black text-sm pb-1 hover:text-gray-500 hover:border-gray-500 transition-all cursor-pointer">
                         Manage all addresses
                       </button>
