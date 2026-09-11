@@ -12,14 +12,14 @@ import ProductDetailSkeleton from "../components/ProductSkeleton.jsx";
 import ErrorState from "../components/ErrorState";
 import useErrorHandler from "../hooks/useErrorHandler";
 import { toast } from "sonner";
+import useAuth from "../hooks/useAuth.js";
 
 const Product = () => {
-  const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
   const { id } = useParams();
   const [selectedSize, setSelectedSize] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [error, setError] = useState("");
+  const { isAuthenticated } = useAuth();
 
   const {
     data,
@@ -41,6 +41,10 @@ const Product = () => {
   const sizes = ["S", "M", "L", "XL", "XXL"];
 
   const handleAddProduct = async () => {
+    if (!isAuthenticated) {
+      return toast.warning("Please log in to add items to your cart");
+    }
+
     if (!selectedSize) {
       return setError("Please select a size");
     }
@@ -56,8 +60,6 @@ const Product = () => {
       toast.success("Product added to cart");
 
       setSelectedSize(null);
-      setToastMessage("Item added to cart");
-      setShowToast(true);
     } catch (err) {
       console.error(err);
       toast.error(err?.data?.message || "Failed add to cart");
