@@ -201,42 +201,40 @@ const Navbar = () => {
         </div>
       </div>
 
-      {isSearchOpen && (
-        <div
-          className={`overflow-hidden transition-all duration-300 ease-in-out bg-white border-b border-gray-100 ${
-            isSearchOpen ? "max-h-24 opacity-100" : "max-h-0 opacity-0"
-          }`}
-        >
-          <div className="max-w-4xl mx-auto px-4 py-4 flex items-center gap-4">
-            <div className="relative flex-1">
-              <input
-                type="text"
-                placeholder="Search for products..."
-                className="w-full bg-gray-50 border border-gray-200 rounded-full py-2.5 px-10 focus:outline-none focus:border-black transition-all text-sm"
-                autoFocus
-                onChange={(e) => setSearchTerm(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    handleSearch(searchTerm);
-                  }
-                }}
-              />
-              <img
-                src={assets.searchIcon}
-                className="w-4 absolute left-4 top-1/2 -translate-y-1/2 opacity-50"
-                alt="search"
-              />
-            </div>
-
-            <button
-              onClick={() => setIsSearchOpen(false)}
-              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-            >
-              <X className="size-5 text-gray-500" />
-            </button>
+      <div
+        className={`overflow-hidden transition-all duration-300 ease-in-out bg-white border-b border-gray-100 ${
+          isSearchOpen ? "max-h-24 opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
+        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center gap-4">
+          <div className="relative flex-1">
+            <input
+              type="text"
+              placeholder="Search for products..."
+              className="w-full bg-gray-50 border border-gray-200 rounded-full py-2.5 px-10 focus:outline-none focus:border-black transition-all text-sm"
+              autoFocus
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleSearch(searchTerm);
+                }
+              }}
+            />
+            <img
+              src={assets.searchIcon}
+              className="w-4 absolute left-4 top-1/2 -translate-y-1/2 opacity-50"
+              alt="search"
+            />
           </div>
+
+          <button
+            onClick={() => setIsSearchOpen(false)}
+            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+          >
+            <X className="size-5 text-gray-500" />
+          </button>
         </div>
-      )}
+      </div>
 
       {isOpen && (
         <div
