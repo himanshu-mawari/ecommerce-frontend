@@ -8,7 +8,6 @@ const HomePageSkeleton = () => {
 
       {[1, 2].map((section) => (
         <div key={section} className="flex flex-col items-center mt-14">
-          {/* Section Title */}
           <div className="flex flex-col md:flex-row md:items-center md:pb-3 lg:justify-center gap-2">
             <Skeleton className="h-10 w-32 md:w-40 rounded" />
             <div className="flex items-center gap-2">

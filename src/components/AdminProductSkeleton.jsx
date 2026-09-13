@@ -10,7 +10,6 @@ const AdminProductSkeleton = () => {
           className="border border-gray-100 rounded-2xl bg-white p-4 shadow-sm space-y-4"
         >
           <div className="flex items-start gap-4">
-            {/* Product Thumbnail */}
             <Skeleton className="h-20 w-20 rounded-xl shrink-0" />
 
             <div className="flex-1 space-y-2">

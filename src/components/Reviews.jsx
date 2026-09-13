@@ -98,7 +98,6 @@ const Reviews = ({ productReview = [] }) => {
                   key={review.id || index}
                   className="py-10 flex flex-col gap-4 first:pt-0"
                 >
-                  {/* 1. Stars Section - Increased gap below stars */}
                   <div className="flex text-[#FFA41C] text-lg">
                     {[...Array(5)].map((_, i) =>
                       i < review.rating ? (
@@ -109,19 +108,16 @@ const Reviews = ({ productReview = [] }) => {
                     )}
                   </div>
 
-                  {/* 2. User Info - Made bold and clean */}
                   <div className="flex flex-col gap-1">
                     <span className="text-base font-semibold lg:font-bold  text-gray-900">
                       {review.user}
                     </span>
 
-                    {/* 3. Review Comment - Added leading-loose for better readability */}
                     <p className="text-sm text-gray-700 leading-relaxed font-mono tracking-tight mt-1">
                       {review.comment}
                     </p>
                   </div>
 
-                  {/* 4. Footer Section */}
                   <div className="flex items-center gap-4 mt-2">
                     <button className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-black transition-colors">
                       <span>Helpful?</span>

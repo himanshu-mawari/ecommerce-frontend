@@ -10,7 +10,6 @@ const FilterBottomSheet = ({
 }) => {
   const categories = ["All", "Men", "Women", "Kids"];
   const subCategories = ["All", "Topwear", "Bottomwear", "Wintewear"];
-  // const stockOptions = ["All", "Low Stock", "Out of Stock"];
 
   const stockOptions = [
     { label: "All", value: "All" },
@@ -141,7 +140,7 @@ const FilterBottomSheet = ({
               onClick={() => {
                 onClose(false);
                 handleApplyDraftFilter();
-                handleApply();    
+                handleApply();
               }}
               className="py-3 text-sm md:text-md bg-indigo-600 hover:bg-indigo-700 text-white font-normal rounded-lg shadow-lg shadow-indigo-100 active:scale-95 duration-100 transition-all cursor-pointer"
             >

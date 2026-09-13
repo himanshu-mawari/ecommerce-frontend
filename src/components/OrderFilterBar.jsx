@@ -199,8 +199,8 @@ const OrderFilterBar = ({
                   }}
                   className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200  ${
                     isSelected
-                      ? "bg-black text-white shadow-sm" // Active state
-                      : "text-gray-500 hover:text-gray-900" // Inactive state
+                      ? "bg-black text-white shadow-sm"
+                      : "text-gray-500 hover:text-gray-900"
                   }`}
                 >
                   {time.label}

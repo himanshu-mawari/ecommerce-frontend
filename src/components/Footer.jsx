@@ -42,10 +42,10 @@ const Footer = () => {
             </h1>
             <ul className="text-sm text-gray-600 flex flex-col gap-2">
               <li className={linkStyle}>
-              <Link to="/about-us">
-                About Us
-                <span className={underlineStyle}></span>
-              </Link>
+                <Link to="/about-us">
+                  About Us
+                  <span className={underlineStyle}></span>
+                </Link>
               </li>
               <li className={linkStyle}>
                 Contact Us
@@ -77,15 +77,12 @@ const Footer = () => {
 
       <div className="border-t border-gray-200 pb-5">
         <div className="max-w-7xl mx-auto px-4 sm:px-12 lg:px-28 pt-5 flex flex-col sm:flex-row items-center justify-between gap-3">
-          {/* Left */}
           <div className="text-xs sm:text-sm text-gray-500 text-center sm:text-left">
             © 2026 Forever. All rights reserved.
           </div>
 
-          {/* Center (optional personal) */}
           <div className="text-xs text-gray-400">Built by Himanshu</div>
 
-          {/* Right */}
           <div className="flex gap-4 text-xs sm:text-sm text-gray-500">
             <span className={linkStyle}>
               Privacy Policy

@@ -82,7 +82,7 @@ const Payment = () => {
       }
     } catch (err) {
       console.error(err);
-      toast.error(err?.data?.message || "Failed to place order")
+      toast.error(err?.data?.message || "Failed to place order");
     }
   };
 
@@ -197,7 +197,7 @@ const Payment = () => {
                   </label>
                   <label
                     className={`flex items-start gap-4 p-6 transition-colors rounded-xl border border-transparent ${
-                      true /* disabled state */
+                      true
                         ? "opacity-50 cursor-not-allowed bg-gray-50/50"
                         : "cursor-pointer hover:bg-gray-50"
                     }`}

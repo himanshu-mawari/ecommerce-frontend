@@ -27,9 +27,7 @@ const InputField = ({ field, value, onChange, error, className }) => {
         <label
           className="absolute left-3 top-4 px-1 text-gray-500 transition-all duration-200 pointer-events-none
           bg-white
-          /* Placeholder state */
           peer-placeholder-shown:top-4 peer-placeholder-shown:text-base 
-          /* Focused/Filled state */
           peer-focus:-top-2.5 peer-focus:text-xs 
           peer-[:not(:placeholder-shown)]:-top-2.5 peer-[:not(:placeholder-shown)]:text-xs"
         >

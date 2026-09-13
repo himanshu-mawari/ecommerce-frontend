@@ -57,7 +57,6 @@ const ProductModal = ({ product, setActiveProduct }) => {
         className="relative flex w-full max-w-3xl flex-col sm:flex-row max-h-[90vh] sm:max-h-[520px] overflow-hidden rounded-t-3xl sm:rounded-3xl bg-white shadow-2xl touch-auto animate-in slide-in-from-bottom duration-300 sm:animate-none"
         onWheel={(e) => e.stopPropagation()}
       >
-        {/* Image Section - Full width/height fill on desktop */}
         <div className="relative flex flex-1 items-center justify-center bg-[#f5f5f5]  w-full min-h-[260px] sm:min-h-full">
           <img
             src={product?.images?.[index]?.url}
@@ -65,7 +64,6 @@ const ProductModal = ({ product, setActiveProduct }) => {
             className="w-full h-full max-h-56 sm:max-h-none object-contain object-center"
           />
 
-          {/* Close button for Mobile */}
           <button
             onClick={() => setActiveProduct(null)}
             className="absolute right-4 top-4 sm:hidden z-10 rounded-full p-1 text-gray-600 bg-white/80 hover:text-black transition-colors"
@@ -73,7 +71,6 @@ const ProductModal = ({ product, setActiveProduct }) => {
             <X className="h-5 w-5" />
           </button>
 
-          {/* Controls */}
           <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 flex gap-2">
             <button
               className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-white shadow-md hover:bg-gray-100 transition-colors disabled:opacity-50"
@@ -94,9 +91,7 @@ const ProductModal = ({ product, setActiveProduct }) => {
           </div>
         </div>
 
-        {/* Content Section */}
         <div className="relative flex flex-1 flex-col justify-between p-6 sm:p-8 bg-white overflow-y-auto overscroll-contain">
-          {/* Close button for Desktop */}
           <button
             onClick={() => setActiveProduct(null)}
             className="hidden sm:block absolute right-6 top-6 text-gray-400 hover:text-gray-600 transition-colors"

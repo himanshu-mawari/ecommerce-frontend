@@ -91,7 +91,6 @@ const Product = () => {
             />
           </div>
 
-          {/* Thumbnails Column */}
           <div className="flex md:flex-col gap-2 shrink-0">
             <div className="w-16 h-16 md:w-20 md:h-20 overflow-hidden rounded-lg border border-gray-200 cursor-pointer hover:border-black bg-gray-50">
               <img
