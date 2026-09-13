@@ -1,11 +1,9 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 const NotFound = () => {
   return (
     <div className=" pt-12 pb-24 lg:pt-24 lg:pb-40 flex flex-col items-center justify-center px-6 bg-white border-t border-gray-300">
       <div className="text-center">
-        {/* Abstract 404 Visual */}
         <div className="relative inline-block">
           <h1 className="text-[12rem] font-bold text-gray-100 leading-none select-none">
             404
