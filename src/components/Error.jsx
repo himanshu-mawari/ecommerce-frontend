@@ -15,17 +15,16 @@ const NotFound = () => {
           </div>
         </div>
 
-        {/* Messaging */}
         <div className="mt-4">
           <h2 className="text-2xl font-light tracking-tight text-gray-900 uppercase sm:text-3xl">
             Lost in the clouds?
           </h2>
           <p className="mt-3 text-gray-500 font-light max-w-sm mx-auto">
-            The page you are looking for doesn't exist or has been moved to a new URL.
+            The page you are looking for doesn't exist or has been moved to a
+            new URL.
           </p>
         </div>
 
-        {/* Action Buttons */}
         <div className="mt-12 flex flex-col sm:flex-row gap-3 justify-center items-center">
           <Link
             to="/"
@@ -33,7 +32,7 @@ const NotFound = () => {
           >
             Back to Home
           </Link>
-          <button 
+          <button
             onClick={() => window.history.back()}
             className="w-full sm:w-48 py-3 bg-white text-black text-sm font-medium rounded-3xl uppercase tracking-widest border border-gray-900 hover:bg-gray-50 transition-all duration-300 active:scale-95"
           >
