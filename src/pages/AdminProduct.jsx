@@ -13,7 +13,7 @@ import ProductFilterBar from "../components/ProductFilterBar";
 import {
   useGetProductPageDataQuery,
   useDeleteProductMutation,
-} from "../services/AdminService";
+} from "../services/adminService";
 import { Dot, Package } from "lucide-react";
 import useDebounce from "../helpers/useDebounce";
 import EmptySearchState from "../components/EmptySearchState";

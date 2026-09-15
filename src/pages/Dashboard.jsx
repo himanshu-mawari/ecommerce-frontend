@@ -7,7 +7,7 @@ import {
 } from "react-icons/ci";
 import { ShoppingBag, CheckCircle2, Inbox } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useGetDashboardQuery } from "../services/AdminService";
+import { useGetDashboardQuery } from "../services/adminService";
 import { STATUS_STYLES } from "../helpers/constant";
 import DashboardSkeleton from "../components/DashboardSkeleton";
 import useErrorHandler from "../hooks/useErrorHandler";

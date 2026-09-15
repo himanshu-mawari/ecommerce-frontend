@@ -4,7 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import {
   useAddProductMutation,
   useUpdateProductMutation,
-} from "../services/AdminService";
+} from "../services/adminService";
 import useErrorHandler from "../hooks/useErrorHandler";
 import ErrorState from "../components/ErrorState";
 import { useGetProductByIdQuery } from "../services/productService";

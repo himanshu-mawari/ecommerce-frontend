@@ -10,7 +10,7 @@ import {
   useGetOrderDetailPageDataQuery,
   useChangeOrderStatusMutation,
   useCancelOrderMutation,
-} from "../services/AdminService";
+} from "../services/adminService";
 import { useParams } from "react-router-dom";
 import { ORDER_STEPS } from "../helpers/constant";
 import AdminOrderDetailSkeleton from "../components/AdminOrderDetailSkeleton";

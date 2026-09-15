@@ -4,7 +4,7 @@ import { CiClock1 } from "react-icons/ci";
 import { MdOutlineCancel } from "react-icons/md";
 import FilterBottomSheet from "../components/FilterBottomSheet";
 import OrderFilterBar from "../components/OrderFilterBar";
-import { useGetOrderPageDataQuery } from "../services/AdminService";
+import { useGetOrderPageDataQuery } from "../services/adminService";
 import useDebounce from "../helpers/useDebounce";
 import Pagination from "../components/Pagination";
 import AdminOrderSkeleton from "../components/AdminOrderSkeleton";
