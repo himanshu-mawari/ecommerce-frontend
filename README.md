@@ -67,3 +67,9 @@ npm run build
 ## Related Repository
 
 Backend: [ecommerce-backend](https://github.com/himanshu-mawari/ecommerce-backend)
+
+
+## Deployment
+
+Live demo: https://forever-himanshu-five.vercel.app
+>**Note:** The first load may take 30–60s after a period of inactivity.
